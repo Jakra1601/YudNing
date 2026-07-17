@@ -1,0 +1,257 @@
+import { useState } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
+import { Search, ArrowRight, BookOpen, Sprout, ChevronRight } from 'lucide-react';
+import { topics } from '../data/topics';
+import { categories } from '../data/categories';
+import { TopicCard } from '../components/topics/TopicCard';
+import { usePageSEO } from '../hooks/usePageSEO';
+
+const FEATURED_TOPIC_IDS = [
+  'topic-01', 'topic-02', 'topic-06', 'topic-07', 'topic-05', 'topic-08',
+];
+
+const EXAMPLE_QUERIES = [
+  'นั่งแล้วง่วงทำอย่างไร',
+  'ใจฟุ้งซ่าน',
+  'ควรวางใจตรงไหน',
+  'นั่งสมาธิกี่นาที',
+  'ปวดขาขณะนั่ง',
+  'นึกภาพไม่ออก',
+];
+
+export function HomePage() {
+  usePageSEO({
+    title: 'หน้าแรก',
+    description:
+      'YudNing — เรียนรู้การนั่งสมาธิอย่างเป็นขั้นตอน ค้นหาคำตอบ และกลับไปดูวิดีโอต้นฉบับจากช่อง YouTube ธรรมะ โฆษก ได้ทุกหัวข้อ',
+  });
+  const [query, setQuery] = useState('');
+  const navigate = useNavigate();
+
+  const handleSearch = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (query.trim()) {
+      navigate(`/search?q=${encodeURIComponent(query.trim())}`);
+    }
+  };
+
+  const featuredTopics = FEATURED_TOPIC_IDS
+    .map((id) => topics.find((t) => t.id === id))
+    .filter(Boolean) as typeof topics;
+
+  return (
+    <main id="main-content">
+      {/* ─── Hero Section ─────────────────────────────────────────── */}
+      <section
+        aria-labelledby="hero-heading"
+        className="bg-gradient-to-b from-[var(--color-primary-soft)] to-[var(--color-background)] py-12 sm:py-24"
+      >
+        <div className="container-content text-center">
+          <p className="text-sm font-medium text-[var(--color-primary)] tracking-widest mb-3 uppercase">
+            YudNing · หยุดนิ่ง
+          </p>
+          <h1
+            id="hero-heading"
+            className="text-3xl sm:text-4xl lg:text-5xl font-bold text-[var(--color-text-main)] leading-tight mb-4"
+          >
+            หยุดนิ่ง เริ่มต้นได้จากตรงนี้
+          </h1>
+          <p className="text-base sm:text-lg text-[var(--color-text-muted)] mb-8 max-w-xl mx-auto leading-relaxed">
+            เรียนรู้การนั่งสมาธิอย่างเป็นขั้นตอน ค้นหาคำตอบ และกลับไปดูวิดีโอต้นฉบับจากช่อง{' '}
+            <strong className="text-[var(--color-text-main)]">ธรรมะ โฆษก</strong>{' '}
+            ได้ทุกหัวข้อ
+          </p>
+
+          {/* Search Box */}
+          <form
+            onSubmit={handleSearch}
+            className="max-w-xl mx-auto mb-6"
+            role="search"
+            aria-label="ค้นหาหัวข้อสมาธิ"
+          >
+            <label htmlFor="hero-search" className="sr-only">
+              วันนี้คุณอยากเรียนรู้เรื่องอะไร?
+            </label>
+            <div className="relative">
+              <Search
+                size={20}
+                className="absolute left-4 top-1/2 -translate-y-1/2 text-[var(--color-text-muted)]"
+                aria-hidden="true"
+              />
+              <input
+                id="hero-search"
+                type="search"
+                value={query}
+                onChange={(e) => setQuery(e.target.value)}
+                placeholder="วันนี้คุณอยากเรียนรู้เรื่องอะไร?"
+                className="w-full pl-12 pr-4 py-4 text-base bg-white border-2 border-[var(--color-border)] rounded-[var(--radius-card)] text-[var(--color-text-main)] placeholder:text-[var(--color-text-muted)] shadow-[var(--shadow-card)] focus:outline-none focus:border-[var(--color-primary)] focus:ring-4 focus:ring-[var(--color-primary-soft)] transition-all duration-200"
+              />
+              <button
+                type="submit"
+                className="absolute right-2 top-1/2 -translate-y-1/2 bg-[var(--color-primary)] hover:bg-[var(--color-primary-hover)] text-white px-4 py-2 rounded-[var(--radius-btn)] text-sm font-medium transition-colors duration-200 focus-visible:ring-2 focus-visible:ring-[var(--color-focus-ring)]"
+              >
+                ค้นหา
+              </button>
+            </div>
+          </form>
+
+          {/* Example queries */}
+          <div className="flex flex-wrap justify-center gap-2 mb-10" aria-label="ตัวอย่างคำค้นหา">
+            {EXAMPLE_QUERIES.map((q) => (
+              <button
+                key={q}
+                onClick={() => navigate(`/search?q=${encodeURIComponent(q)}`)}
+                className="text-sm text-[var(--color-text-muted)] bg-white border border-[var(--color-border)] px-3 py-1.5 rounded-full hover:border-[var(--color-primary)] hover:text-[var(--color-primary)] transition-colors duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-focus-ring)]"
+              >
+                {q}
+              </button>
+            ))}
+          </div>
+
+          {/* CTA Buttons */}
+          <div className="flex flex-wrap justify-center gap-3">
+            <Link
+              to="/start"
+              className="inline-flex items-center gap-2 bg-[var(--color-primary)] hover:bg-[var(--color-primary-hover)] text-white px-5 py-3 sm:px-6 rounded-[var(--radius-btn)] font-medium transition-colors duration-200 shadow-sm focus-visible:ring-2 focus-visible:ring-[var(--color-focus-ring)] focus-visible:outline-none"
+            >
+              <Sprout size={18} />
+              เริ่มต้นนั่งสมาธิ
+            </Link>
+            <Link
+              to="/topics"
+              className="inline-flex items-center gap-2 bg-white hover:bg-gray-50 text-[var(--color-text-main)] px-5 py-3 sm:px-6 rounded-[var(--radius-btn)] font-medium border border-[var(--color-border)] transition-colors duration-200 shadow-sm focus-visible:ring-2 focus-visible:ring-[var(--color-focus-ring)] focus-visible:outline-none"
+            >
+              <BookOpen size={18} />
+              สำรวจหัวข้อทั้งหมด
+            </Link>
+          </div>
+        </div>
+      </section>
+
+      {/* ─── Featured Topics ──────────────────────────────────────── */}
+      <section aria-labelledby="featured-heading" className="py-14">
+        <div className="container-wide">
+          <div className="flex items-center justify-between mb-6">
+            <div>
+              <h2
+                id="featured-heading"
+                className="text-xl sm:text-2xl font-bold text-[var(--color-text-main)]"
+              >
+                หัวข้อยอดนิยม
+              </h2>
+              <p className="text-sm text-[var(--color-text-muted)] mt-0.5">
+                หัวข้อที่พบบ่อยในหมู่ผู้ฝึกสมาธิ
+              </p>
+            </div>
+            <Link
+              to="/topics"
+              className="hidden sm:inline-flex items-center gap-1 text-sm font-medium text-[var(--color-primary)] hover:text-[var(--color-primary-hover)] transition-colors duration-200"
+            >
+              ดูทั้งหมด
+              <ChevronRight size={16} />
+            </Link>
+          </div>
+
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+            {featuredTopics.map((topic) => (
+              <TopicCard key={topic.id} topic={topic} />
+            ))}
+          </div>
+
+          <div className="mt-4 text-center sm:hidden">
+            <Link
+              to="/topics"
+              className="inline-flex items-center gap-1 text-sm font-medium text-[var(--color-primary)]"
+            >
+              ดูหัวข้อทั้งหมด <ArrowRight size={15} />
+            </Link>
+          </div>
+        </div>
+      </section>
+
+      {/* ─── Beginner Section ────────────────────────────────────── */}
+      <section
+        aria-labelledby="beginner-heading"
+        className="py-14 bg-white border-y border-[var(--color-border)]"
+      >
+        <div className="container-content text-center">
+          <span className="inline-block text-3xl mb-4" aria-hidden="true">🌱</span>
+          <h2
+            id="beginner-heading"
+            className="text-xl sm:text-2xl font-bold text-[var(--color-text-main)] mb-3"
+          >
+            ไม่เคยนั่งสมาธิมาก่อน?
+          </h2>
+          <p className="text-[var(--color-text-muted)] mb-6 max-w-md mx-auto leading-relaxed">
+            ไม่เป็นไร เราจะเริ่มไปด้วยกันทีละขั้น ตั้งแต่ความหมายของสมาธิ
+            จนถึงการฝึกใจในชีวิตประจำวัน
+          </p>
+          <Link
+            to="/start"
+            className="inline-flex items-center gap-2 bg-[var(--color-primary)] hover:bg-[var(--color-primary-hover)] text-white px-6 py-3 rounded-[var(--radius-btn)] font-medium transition-colors duration-200 shadow-sm"
+          >
+            เริ่มต้นที่นี่
+            <ArrowRight size={16} />
+          </Link>
+        </div>
+      </section>
+
+      {/* ─── Categories ──────────────────────────────────────────── */}
+      <section aria-labelledby="categories-heading" className="py-14">
+        <div className="container-wide">
+          <h2
+            id="categories-heading"
+            className="text-xl sm:text-2xl font-bold text-[var(--color-text-main)] mb-6"
+          >
+            หมวดหมู่
+          </h2>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
+            {categories.map((cat) => (
+              <Link
+                key={cat.id}
+                to={`/topics?category=${cat.slug}`}
+                className="flex items-center gap-3 bg-white p-4 rounded-[var(--radius-card)] border border-[var(--color-border)] hover:border-[var(--color-primary)] hover:shadow-[var(--shadow-card-hover)] transition-all duration-200 group focus-visible:ring-2 focus-visible:ring-[var(--color-focus-ring)] focus-visible:outline-none"
+              >
+                <span
+                  className="w-10 h-10 rounded-lg bg-[var(--color-primary-soft)] text-[var(--color-primary)] flex items-center justify-center shrink-0 group-hover:bg-[var(--color-primary)] group-hover:text-white transition-colors duration-200"
+                  aria-hidden="true"
+                >
+                  <BookOpen size={18} />
+                </span>
+                <div>
+                  <p className="font-medium text-[var(--color-text-main)] leading-tight">
+                    {cat.name}
+                  </p>
+                  <p className="text-xs text-[var(--color-text-muted)] mt-0.5 line-clamp-1">
+                    {cat.description}
+                  </p>
+                </div>
+              </Link>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ─── Daily Practice ──────────────────────────────────────── */}
+      <section
+        aria-labelledby="daily-heading"
+        className="py-10 bg-[var(--color-primary-soft)] border-t border-[#C8DDD9]"
+      >
+        <div className="container-content text-center">
+          <h2
+            id="daily-heading"
+            className="text-base font-semibold text-[var(--color-primary)] mb-2"
+          >
+            คำแนะนำประจำวัน
+          </h2>
+          <p className="text-[var(--color-text-main)] text-lg">
+            วันนี้ลองหยุดนิ่งกับตัวเองสัก 5 นาที
+          </p>
+          <p className="text-sm text-[var(--color-text-muted)] mt-1">
+            ไม่ต้องสมบูรณ์แบบ เพียงแค่เริ่ม
+          </p>
+        </div>
+      </section>
+    </main>
+  );
+}
