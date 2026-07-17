@@ -1,0 +1,20 @@
+# Dependencies
+node_modules/
+
+# Production build
+dist/
+
+# Temporary files
+temp_transcript/
+*.log
+
+# Environment files
+.env
+.env.*
+!.env.example
+
+# Editor and OS files
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
