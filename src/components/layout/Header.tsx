@@ -1,6 +1,18 @@
-import { useState, useEffect } from 'react';
+/**
+ * Header.tsx — Navigation Header สำหรับ YudNing
+ *
+ * อัปเดต Session 14 (Version 1.2): เพิ่ม Authentication State
+ * - เมื่อยังไม่ Login: แสดงปุ่ม "เข้าสู่ระบบ"
+ * - เมื่อ Login แล้ว: แสดง avatar/ชื่อผู้ใช้ + dropdown menu พร้อม Logout
+ *
+ * รักษา Design เดิมให้มากที่สุด — เพิ่มเฉพาะส่วน Auth ด้านขวาสุด
+ */
+
+import { useState, useEffect, useRef } from 'react';
 import { Link, NavLink, useNavigate, useLocation } from 'react-router-dom';
-import { Search, Menu, X, Leaf } from 'lucide-react';
+import { Search, Menu, X, LogIn, LogOut, ChevronDown } from 'lucide-react';
+import { useAuth } from '../../contexts/AuthContext';
+import yudningLogo from '../../assets/branding/yudning-logo-main.png';
 
 const navLinks = [
   { to: '/start', label: 'เริ่มต้นที่นี่' },
@@ -10,12 +22,153 @@ const navLinks = [
   { to: '/faq', label: 'คำถามที่พบบ่อย' },
 ];
 
+// ─── Helper: ดึง display name จาก user object ─────────────────────────────────
+
+function getUserDisplayName(user: { email?: string; user_metadata?: { full_name?: string; name?: string } } | null): string {
+  if (!user) return '';
+  return (
+    user.user_metadata?.full_name ||
+    user.user_metadata?.name ||
+    user.email?.split('@')[0] ||
+    'ผู้ใช้'
+  );
+}
+
+function getUserAvatarUrl(user: { user_metadata?: { avatar_url?: string; picture?: string } } | null): string | null {
+  if (!user) return null;
+  return user.user_metadata?.avatar_url || user.user_metadata?.picture || null;
+}
+
+// ─── UserMenu Component ───────────────────────────────────────────────────────
+
+interface UserMenuProps {
+  onClose: () => void;
+}
+
+function UserMenu({ onClose }: UserMenuProps) {
+  const { user, signOut } = useAuth();
+  const navigate = useNavigate();
+  const menuRef = useRef<HTMLDivElement>(null);
+
+  const displayName = getUserDisplayName(user);
+  const email = user?.email ?? '';
+
+  // ─── Handle Sign Out ───────────────────────────────────────────────────────
+
+  async function handleSignOut() {
+    try {
+      await signOut();
+      onClose();
+      navigate('/');
+    } catch {
+      // signOut ไม่ควร throw ใน normal case — ถ้า error ให้ ignore และ close menu
+      onClose();
+    }
+  }
+
+  // ─── Close on outside click ────────────────────────────────────────────────
+
+  useEffect(() => {
+    function handleClickOutside(e: MouseEvent) {
+      if (menuRef.current && !menuRef.current.contains(e.target as Node)) {
+        onClose();
+      }
+    }
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, [onClose]);
+
+  // ─── Close on Escape ──────────────────────────────────────────────────────
+
+  useEffect(() => {
+    function handleKeyDown(e: KeyboardEvent) {
+      if (e.key === 'Escape') onClose();
+    }
+    document.addEventListener('keydown', handleKeyDown);
+    return () => document.removeEventListener('keydown', handleKeyDown);
+  }, [onClose]);
+
+  return (
+    <div
+      ref={menuRef}
+      role="menu"
+      aria-label="เมนูผู้ใช้"
+      className="absolute right-0 top-full mt-2 w-56 bg-white rounded-[var(--radius-card)] shadow-[var(--shadow-card-hover)] border border-[var(--color-border)] z-50 animate-fade-in overflow-hidden"
+    >
+      {/* User Info */}
+      <div className="px-4 py-3 border-b border-[var(--color-border)]">
+        <p className="text-sm font-medium text-[var(--color-text-main)] truncate">{displayName}</p>
+        {email && (
+          <p className="text-xs text-[var(--color-text-muted)] truncate mt-0.5">{email}</p>
+        )}
+      </div>
+
+      {/* Actions */}
+      <div className="py-1">
+        <button
+          id="header-btn-signout"
+          role="menuitem"
+          onClick={handleSignOut}
+          className="w-full flex items-center gap-2.5 px-4 py-2.5 text-sm text-[var(--color-text-main)] hover:bg-[var(--color-background)] transition-colors duration-200 focus-visible:outline-none focus-visible:bg-[var(--color-background)]"
+        >
+          <LogOut size={15} aria-hidden="true" className="text-[var(--color-text-muted)]" />
+          ออกจากระบบ
+        </button>
+      </div>
+    </div>
+  );
+}
+
+// ─── Avatar Component ─────────────────────────────────────────────────────────
+
+interface UserAvatarProps {
+  user: { email?: string; user_metadata?: { full_name?: string; name?: string; avatar_url?: string; picture?: string } } | null;
+  size?: number;
+}
+
+function UserAvatar({ user, size = 32 }: UserAvatarProps) {
+  const avatarUrl = getUserAvatarUrl(user);
+  const displayName = getUserDisplayName(user);
+  const initial = displayName.charAt(0).toUpperCase() || 'U';
+
+  if (avatarUrl) {
+    return (
+      <img
+        src={avatarUrl}
+        alt={`รูปโปรไฟล์ของ ${displayName}`}
+        width={size}
+        height={size}
+        className="rounded-full object-cover"
+        style={{ width: size, height: size }}
+        onError={(e) => {
+          // Fallback ถ้าโหลดรูปไม่ได้
+          (e.target as HTMLImageElement).style.display = 'none';
+        }}
+      />
+    );
+  }
+
+  return (
+    <div
+      aria-hidden="true"
+      style={{ width: size, height: size }}
+      className="rounded-full bg-[var(--color-primary)] flex items-center justify-center text-white font-medium text-xs"
+    >
+      {initial}
+    </div>
+  );
+}
+
+// ─── Main Header Component ────────────────────────────────────────────────────
+
 export function Header() {
   const [menuOpen, setMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
+  const [userMenuOpen, setUserMenuOpen] = useState(false);
   const navigate = useNavigate();
   const location = useLocation();
+  const { user, isLoading: authLoading, signOut } = useAuth();
 
   useEffect(() => {
     const handleScroll = () => setScrolled(window.scrollY > 8);
@@ -26,6 +179,7 @@ export function Header() {
   // ปิด mobile menu เมื่อ route เปลี่ยน
   useEffect(() => {
     setMenuOpen(false);
+    setUserMenuOpen(false);
   }, [location.pathname]);
 
   const handleSearch = (e: React.FormEvent) => {
@@ -36,6 +190,112 @@ export function Header() {
       setMenuOpen(false);
     }
   };
+
+  // ─── Render Auth Section ──────────────────────────────────────────────────
+
+  function renderAuthSection(isMobile = false) {
+    // ระหว่างโหลด session: แสดง placeholder เพื่อไม่ให้ layout กระโดด
+    if (authLoading) {
+      return (
+        <div
+          className={`${isMobile ? 'w-full h-9' : 'w-24 h-8'} rounded-[var(--radius-btn)] bg-[var(--color-background)] animate-pulse`}
+          aria-hidden="true"
+        />
+      );
+    }
+
+    if (user) {
+      // ─── Logged In State ───────────────────────────────────────────────────
+      if (isMobile) {
+        return (
+          <div className="border-t border-[var(--color-border)] pt-3 mt-1">
+            <div className="flex items-center gap-3 px-4 py-2 mb-1">
+              <UserAvatar user={user} size={28} />
+              <div className="min-w-0">
+                <p className="text-sm font-medium text-[var(--color-text-main)] truncate">
+                  {getUserDisplayName(user)}
+                </p>
+                {user.email && (
+                  <p className="text-xs text-[var(--color-text-muted)] truncate">{user.email}</p>
+                )}
+              </div>
+            </div>
+            <button
+              id="header-mobile-signout"
+              onClick={async () => {
+                try {
+                  await signOut();
+                } catch { /* ignore */ }
+                setMenuOpen(false);
+                navigate('/');
+              }}
+              className="w-full flex items-center gap-2.5 px-4 py-2.5 text-sm text-[var(--color-text-main)] hover:bg-gray-50 transition-colors rounded-[var(--radius-btn)]"
+            >
+              <LogOut size={15} aria-hidden="true" className="text-[var(--color-text-muted)]" />
+              ออกจากระบบ
+            </button>
+          </div>
+        );
+      }
+
+      // Desktop logged-in
+      return (
+        <div className="relative">
+          <button
+            id="header-user-menu-btn"
+            onClick={() => setUserMenuOpen((prev) => !prev)}
+            aria-expanded={userMenuOpen}
+            aria-haspopup="menu"
+            aria-label={`เมนูผู้ใช้: ${getUserDisplayName(user)}`}
+            className="flex items-center gap-2 px-2 py-1 rounded-[var(--radius-btn)] hover:bg-[var(--color-background)] transition-colors duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-focus-ring)]"
+          >
+            <UserAvatar user={user} size={28} />
+            <span className="text-sm font-medium text-[var(--color-text-main)] max-w-[120px] truncate hidden xl:block">
+              {getUserDisplayName(user)}
+            </span>
+            <ChevronDown
+              size={14}
+              aria-hidden="true"
+              className={`text-[var(--color-text-muted)] transition-transform duration-200 ${userMenuOpen ? 'rotate-180' : ''}`}
+            />
+          </button>
+
+          {userMenuOpen && (
+            <UserMenu onClose={() => setUserMenuOpen(false)} />
+          )}
+        </div>
+      );
+    }
+
+    // ─── Not Logged In State ─────────────────────────────────────────────────
+    if (isMobile) {
+      return (
+        <div className="border-t border-[var(--color-border)] pt-3 mt-1">
+          <NavLink
+            to="/login"
+            onClick={() => setMenuOpen(false)}
+            className="flex items-center gap-2.5 px-4 py-2.5 text-sm font-medium text-[var(--color-primary)] hover:bg-[var(--color-primary-soft)] rounded-[var(--radius-btn)] transition-colors duration-200"
+          >
+            <LogIn size={15} aria-hidden="true" />
+            เข้าสู่ระบบ
+          </NavLink>
+        </div>
+      );
+    }
+
+    // Desktop not logged in
+    return (
+      <NavLink
+        id="header-btn-login"
+        to="/login"
+        className="flex items-center gap-1.5 px-3 py-1.5 rounded-[var(--radius-btn)] bg-[var(--color-primary)] text-white text-sm font-medium hover:bg-[var(--color-primary-hover)] transition-colors duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-focus-ring)] focus-visible:ring-offset-2 shrink-0"
+      >
+        <LogIn size={14} aria-hidden="true" />
+        เข้าสู่ระบบ
+      </NavLink>
+    );
+  }
+
 
   return (
     <header
@@ -51,9 +311,12 @@ export function Header() {
             className="flex items-center gap-2 shrink-0 group"
             aria-label="YudNing หน้าแรก"
           >
-            <span className="w-8 h-8 rounded-lg bg-[var(--color-primary)] flex items-center justify-center text-white transition-transform duration-200 group-hover:scale-105">
-              <Leaf size={16} strokeWidth={2} />
-            </span>
+            <img
+              src={yudningLogo}
+              alt=""
+              aria-hidden="true"
+              className="w-14 h-14 object-contain transition-transform duration-200 group-hover:scale-105"
+            />
             <div className="leading-none">
               <span className="block font-bold text-[var(--color-text-main)] text-lg tracking-tight font-sans">
                 YudNing
@@ -108,6 +371,11 @@ export function Header() {
               />
             </div>
           </form>
+
+          {/* Desktop Auth Section */}
+          <div className="hidden md:flex items-center shrink-0">
+            {renderAuthSection(false)}
+          </div>
 
           {/* Mobile Hamburger */}
           <button
@@ -184,6 +452,9 @@ export function Header() {
             >
               เกี่ยวกับเรา
             </NavLink>
+
+            {/* Mobile Auth Section */}
+            {renderAuthSection(true)}
           </div>
         </div>
       )}

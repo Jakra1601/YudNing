@@ -12,6 +12,8 @@ import { SearchPage } from './pages/SearchPage';
 import { FAQPage } from './pages/FAQPage';
 import { AboutPage } from './pages/AboutPage';
 import { NotFoundPage } from './pages/NotFoundPage';
+import { LoginPage } from './pages/LoginPage';
+import { AuthCallbackPage } from './pages/AuthCallbackPage';
 import { ErrorBoundary } from './components/common/ErrorBoundary';
 
 export default function App() {
@@ -28,7 +30,7 @@ export default function App() {
       <DevBanner />
       <Header />
 
-      <main className="flex-1">
+      <main className="flex-1" id="main-content">
         <ErrorBoundary>
           <Routes>
             <Route path="/" element={<HomePage />} />
@@ -40,6 +42,10 @@ export default function App() {
             <Route path="/search" element={<SearchPage />} />
             <Route path="/faq" element={<FAQPage />} />
             <Route path="/about" element={<AboutPage />} />
+            {/* Version 1.2 — Authentication */}
+            <Route path="/login" element={<LoginPage />} />
+            {/* Supabase Email Confirmation callback — รับ token_hash จาก email link */}
+            <Route path="/auth/callback" element={<AuthCallbackPage />} />
             <Route path="*" element={<NotFoundPage />} />
           </Routes>
         </ErrorBoundary>

@@ -1,6 +1,7 @@
 import { Link } from 'react-router-dom';
 import { Home, Search, BookOpen } from 'lucide-react';
 import { usePageSEO } from '../hooks/usePageSEO';
+import yudningLogo from '../assets/branding/yudning-logo-main.png';
 
 export function NotFoundPage() {
   usePageSEO({
@@ -10,7 +11,12 @@ export function NotFoundPage() {
   return (
     <main id="main-content" className="py-20 sm:py-28">
       <div className="container-content text-center">
-        <p className="text-6xl mb-6" aria-hidden="true">🍃</p>
+        <img
+          src={yudningLogo}
+          alt=""
+          aria-hidden="true"
+          className="w-20 h-20 object-contain mx-auto mb-6"
+        />
         <h1 className="text-2xl sm:text-3xl font-bold text-[var(--color-text-main)] mb-3">
           ไม่พบหน้านี้
         </h1>

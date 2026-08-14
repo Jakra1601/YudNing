@@ -1,5 +1,6 @@
 import { Link } from 'react-router-dom';
-import { Leaf, ExternalLink, Youtube } from 'lucide-react';
+import { ExternalLink, Youtube } from 'lucide-react';
+import yudningLogo from '../../assets/branding/yudning-logo-main.png';
 
 export function Footer() {
   const year = new Date().getFullYear();
@@ -11,9 +12,12 @@ export function Footer() {
           {/* Brand */}
           <div className="lg:col-span-2">
             <Link to="/" className="flex items-center gap-2 mb-3 w-fit">
-              <span className="w-8 h-8 rounded-lg bg-[var(--color-primary)] flex items-center justify-center text-white">
-                <Leaf size={16} />
-              </span>
+              <img
+                src={yudningLogo}
+                alt=""
+                aria-hidden="true"
+                className="w-9 h-9 object-contain"
+              />
               <div className="leading-none">
                 <span className="block font-bold text-[var(--color-text-main)] font-sans">YudNing</span>
                 <span className="block text-xs text-[var(--color-text-muted)]">Stillness for Everyone</span>

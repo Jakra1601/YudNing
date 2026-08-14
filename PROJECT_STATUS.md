@@ -9,45 +9,104 @@
 
 | รายการ | ค่า |
 |--------|-----|
-| วันที่อัพเดทล่าสุด | **2026-07-17 (Session 8)** |
-| Phase ปัจจุบัน | **Phase 5 — Quality (เสร็จสิ้น - รอข้อมูลจริงเพิ่มเติมและรอดำเนินการ Deploy)** |
-| Phase ที่เสร็จแล้ว | Phase 1–5 ✅ |
-| สถานะ Deploy | ❌ ยังไม่ได้ Deploy (ติดปัญหา Repository Not Found) |
-| สถานะ Production Build | ✅ `npm run build` ผ่านแล้ว (0 errors) |
+| วันที่อัพเดทล่าสุด | **2026-08-13 (Session 18 — Blue/Cyan Theme Migration Closure)** |
+| Phase ปัจจุบัน | **Phase 7 — Authentication (Version 1.2)** |
+| Phase ที่เสร็จแล้ว | Phase 1–6 ✅ |
+| สถานะ Deploy (Frontend) | ✅ Deploy สำเร็จแล้ว (GitHub Pages) |
+| สถานะ Deploy (LINE OA Backend) | ✅ Deploy สำเร็จแล้ว (Vercel) |
+| สถานะ Production Build | ✅ `npm run build` ผ่านแล้ว (0 TypeScript errors, 0 build errors) — ยืนยัน Session 18 |
 | สถานะ Dev Server | ✅ ทำงานได้ด้วย `npm run dev` |
+| Git Repository | ✅ `git remote` เชื่อมกับ `https://github.com/Jakra1601/YudNing.git` |
 
 ---
 
 ## Current Task
 
-Phase 5 เสร็จสมบูรณ์แล้ว: SEO + EmptyState + Responsive + Accessibility + Error States
+> **Session 13 (Supabase Auth Foundation)** เสร็จสมบูรณ์แล้ว — ดูรายละเอียดในส่วน **Phase 7** ด้านล่าง
 
-**Session 8 เสร็จแล้ว (VideoPlayer Bug Fix):**
-- ตรวจสอบและแก้ไขบั๊กใน `VideoPlayer.tsx` ที่ทำให้ YouTube Embed เล่นไม่ได้ในบางครั้ง
-- ปรับแก้ URL ของ `iframe` ให้ใช้รูปแบบมาตรฐาน `https://www.youtube.com/embed/VIDEO_ID?autoplay=1` (รองรับ parameter `start` อย่างถูกต้อง)
-- เพิ่ม iframe attributes เพื่อความปลอดภัยและการรองรับฟีเจอร์ครบถ้วน (`allow`, `allowFullScreen`, `referrerPolicy="strict-origin-when-cross-origin"`)
-- เพิ่ม UI ข้อความสำรองและปุ่ม "รับชมบน YouTube" ใต้ Player ในกรณีที่วิดีโอไม่สามารถเล่นผ่าน Embed ได้ (ลิงก์จะเปิดไปที่เวลาที่กำหนดในแท็บใหม่)
-- ทดสอบรัน Production Build (`npm run build`) ผ่านสมบูรณ์ (0 Errors)
+**Session 14 (Version 1.2 — Authentication UI):**
+- ✅ สร้าง `src/pages/LoginPage.tsx` — หน้า Login พร้อม:
+  - Google OAuth button (Sign in with Google)
+  - Email / Password Sign In
+  - Email / Password Sign Up (mode toggle)
+  - Loading State (Spinner)
+  - Error Message ที่เข้าใจง่าย (Thai-friendly messages)
+  - Success Message เมื่อสมัครสมาชิก (แจ้งยืนยันอีเมล)
+  - Redirect ไป `/` อัตโนมัติเมื่อ login แล้ว
+  - Link กลับหน้าแรก
+- ✅ สร้าง `src/components/common/ProtectedRoute.tsx` — Guard component:
+  - Loading spinner ระหว่างตรวจ session
+  - Redirect ไป `/login` เมื่อไม่มี session
+  - Render children เมื่อมี session
+  - เก็บ `from` location state สำหรับ future redirect-back
+- ✅ อัปเดต `src/App.tsx` — เพิ่ม `/login` route:
+  - ทำงานถูกต้องกับ HashRouter และ GitHub Pages
+  - เพิ่ม `id="main-content"` ให้ `<main>` (Accessibility)
+- ✅ อัปเดต `src/components/layout/Header.tsx` — Auth State:
+  - Loading: แสดง skeleton placeholder (ไม่ให้ layout กระโดด)
+  - Not logged in: แสดงปุ่ม "เข้าสู่ระบบ" (Desktop + Mobile)
+  - Logged in: แสดง Avatar + ชื่อผู้ใช้ + dropdown menu พร้อม Logout
+  - UserMenu: แสดงอีเมล + ชื่อ, ปุ่ม "ออกจากระบบ"
+  - Mobile: แสดง user info + ปุ่ม Logout ใน hamburger menu
+- ✅ รัน `npm run build` — **0 TypeScript errors, 0 build errors** (ยืนยัน)
 
-**ยังเหลือใน Phase 5 และ Phase 6 (Blockers):**
-- ใส่ข้อมูลจริงเพิ่มใน `topics.ts` และ `videos.ts` สำหรับวิดีโออื่นๆ ต่อไป
-- สร้าง GitHub Repository บนบัญชี `Jakra1601` เพื่อให้สามารถ Deploy ได้
+**หมายเหตุ:** ProtectedRoute ยังไม่ได้ครอบหน้าใดๆ — สร้างโครงสร้างไว้พร้อมใช้
+
+**Manual Verification ที่ยืนยันแล้วหลัง Session 14:**
+- ✅ Google OAuth Login
+- ✅ Google Logout
+- ✅ Google Header Auth State
+- ✅ Email/Password Sign Up
+- ✅ Supabase ส่ง Confirmation Email ได้
+- ✅ ผู้ใช้กดยืนยันอีเมลสำเร็จ
+- ✅ Email/Password Sign In หลังยืนยันอีเมล
+- ✅ Email Header Auth State
+- ✅ Redirect หลัง Sign In กลับหน้าแรก
+- ⚠໸ Email Confirmation Redirect — ตกไปหน้า 404 (แก้ใน Session 15)
+
+**Session 15 (Email Confirmation Redirect Fix):**
+- ✅ วิเคราะห์ root cause: `emailRedirectTo: window.location.origin` นำผู้ใช้ไปที่ URL ที่ไม่มี hash route → HashRouter ไม่รู้ route → 404
+- ✅ สร้าง `src/pages/AuthCallbackPage.tsx` — หน้ารับ callback ด้วย `verifyOtp()` (ยังมีอยู่ใน Codebase แต่ไม่ใช่ Final Active Flow)
+- ✅ อัปเดต `src/App.tsx` — เพิ่ม `/auth/callback` route (ยังมีอยู่ใน Codebase)
+- ✅ แก้ `src/contexts/AuthContext.tsx` — เปลี่ยน `emailRedirectTo`:
+  - ก่อน: `window.location.origin` → เกิด 404
+  - **Final**: `` `${window.location.origin}${window.location.pathname}` `` (application root) → Supabase SDK ตรวจ token อัตโนมัติ
+  - Session ถูกสร้างโดย Supabase SDK ผ่าน `onAuthStateChange` — ไม่ผ่าน `AuthCallbackPage`
+- ✅ รัน `npm run build` — **0 TypeScript errors, 0 build errors** (ยืนยัน)
+- ✅ Google OAuth code ไม่ถูกเปลี่ยน
+
+**Session 16 (Login Page Branding Preview):**
+- ✅ เปลี่ยนโลโก้ใน `LoginPage.tsx` เป็น `src/assets/branding/yudning-logo-main.png` (ปรับให้ชื่อไฟล์ถูกต้องเนื่องจากเดิมเป็น `.png.png`)
+- ✅ ปรับขนาดโลโก้เป็น `h-16 w-auto object-contain`
+- ✅ นำไอคอน `Leaf` เดิมออกจาก imports
+- ✅ รัน `npm run build` — **0 TypeScript errors, 0 build errors** (ยืนยัน)
+
+**Session 17 (Branding Cleanup):**
+- ✅ `src/components/layout/Footer.tsx`: เปลี่ยนไอคอน `Leaf` เดิมเป็นโลโก้ `yudning-logo-main.png` (ปรับขนาด `w-9 h-9`) และลบการนำเข้า `Leaf` จาก `lucide-react` ออก
+- ✅ `src/pages/NotFoundPage.tsx`: เปลี่ยนกราฟิก Emoji ใบไม้ (`🍃`) เป็นโลโก้ `yudning-logo-main.png` (ปรับขนาด `w-20 h-20`)
+- ✅ รัน `npm run build` — **0 TypeScript errors, 0 build errors** (ยืนยัน Session 17)
+
+**Session 18 (Blue/Cyan Theme Migration Closure):**
+- ✅ Blue/Cyan Theme Migration เสร็จสมบูรณ์
+- ✅ Design Tokens ใน `src/styles/global.css` และ `tailwind.config.js` ตรงกันแล้ว
+- ✅ `YudNing.md` และ `PROJECT_STATUS.md` ได้รับการอัปเดตให้ตรงกับ Theme ปัจจุบัน
+- ✅ รัน `npm run build` — **0 TypeScript errors, 0 build errors** (ยืนยัน Session 18)
+  - Vite v5.4.21 — 1657 modules transformed — built in 3.71s
+  - chunk size warning (>500 kB) ไม่ถือเป็น blocker
 
 ---
 
-## Next Action (รอเจ้าของโปรเจ็กต์ดำเนินการ)
+## Next Action
 
-1. **[Blocker]** ตรวจสอบข้อมูลวิดีโอ (vid-01) และเปลี่ยนสถานะจาก `draft` เป็น `verified`
-2. **[Blocker]** ทยอยเพิ่มข้อมูลวิดีโอจริงจากช่อง "ธรรมะ โฆษก" จนครอบคลุมทุกหัวข้อ และเปลี่ยนสถานะเป็น `verified`
-3. **[Blocker]** สร้าง GitHub Repository ชื่อ `YudNing` ในบัญชี GitHub `Jakra1601`
-4. Deploy ไปยัง GitHub Pages (`npm run deploy`)
+1. **[รอคำสั่ง]** Implement LINE Login (Session ถัดไป) — ต้องสร้าง LINE Login Channel ก่อน
+2. **ข้อมูลจริง:** ทยอยเพิ่มข้อมูลวิดีโอจริงจากช่อง "ธรรมะ โฆษก" และเปลี่ยนสถานะเป็น `verified`
 
 ---
 
 ## Blockers
 
-1. **ข้อมูลจริง:** ปัจจุบันมีการเพิ่มข้อมูลวิดีโอ 1 รายการ และ 6 หัวข้อเปลี่ยนสถานะเป็น `draft` แล้ว แต่ยังเหลือหัวข้อที่เป็น `placeholder` ซึ่งยังไม่สามารถใช้งานได้จริง
-2. **การ Deploy:** `npm run deploy` ไม่สำเร็จเนื่องจาก `https://github.com/Jakra1601/YudNing.git` แจ้งเตือนว่า Repository not found เจ้าของโปรเจ็กต์ต้องสร้าง Repository บน GitHub ก่อน
+1. **ข้อมูลจริง:** Topics 5/15 เป็น `draft`, 10/15 เป็น `placeholder` — ยังไม่มี topic ที่ `verified` เลย
+2. **[LINE Login]** ต้องสร้าง LINE Login Channel บน LINE Developers Console ก่อน Implement
 
 ---
 
@@ -63,6 +122,8 @@ Phase 5 เสร็จสมบูรณ์แล้ว: SEO + EmptyState + Res
 | Deploy | gh-pages → GitHub Pages |
 | Font (Thai) | Noto Sans Thai |
 | Font (Heading/EN) | Inter |
+| **Auth & Database** | **Supabase Auth + Supabase PostgreSQL** |
+| Auth Methods | Google OAuth, Email/Password (LINE — planned) |
 
 ---
 
@@ -86,26 +147,49 @@ Phase 5 เสร็จสมบูรณ์แล้ว: SEO + EmptyState + Res
 
 ```
 YudNing/
+├── .env.local             <- [NEW] Supabase env vars — ถูก ignore โดย .gitignore
 ├── package.json
 ├── vite.config.ts
 ├── tailwind.config.js
 ├── tsconfig.json
 ├── tsconfig.node.json     <- แก้ไขแล้ว (composite:true, ลบ noEmit)
 ├── index.html
-├── YudNing.md              <- Project Specification (อ่านสำหรับ spec เต็ม)
-├── PROJECT_STATUS.md       <- เอกสารนี้ (อัพเดททุกครั้งที่ทำงาน)
+├── PROMPTS.md             <- Workflow instructions สำหรับ AI
+├── YudNing.md             <- Project Specification (Source of Truth)
+├── PROJECT_STATUS.md      <- เอกสารนี้ (อัปเดททุกครั้งที่ทำงาน)
+├── line-webhook/          <- LINE OA Webhook Backend (แยกจาก Frontend)
+│   ├── package.json
+│   ├── tsconfig.json
+│   ├── vercel.json        <- Vercel Serverless config
+│   ├── .vercel/           <- Vercel project config (มี projectId จริง)
+│   ├── .env               <- Environment Variables (LINE Channel Secret & Token)
+│   ├── .env.example
+│   ├── api/
+│   │   └── index.ts       <- Vercel Serverless entry point
+│   └── src/
+│       ├── app.ts         <- Express app (GET /health, POST /webhook)
+│       ├── server.ts      <- Local dev server
+│       ├── config/        <- LINE SDK config (lineClient, lineMiddleware)
+│       └── handlers/
+│           └── messageHandler.ts <- Event handler (Text Echo Reply)
 └── src/
     ├── App.tsx             <- Routing หลัก (HashRouter + ErrorBoundary)
-    ├── main.tsx
+    ├── main.tsx            <- [UPDATED] ครอบด้วย AuthProvider แล้ว
+    ├── vite-env.d.ts       <- [NEW] TypeScript types สำหรับ Vite env vars
+    ├── lib/
+    │   └── supabase.ts     <- [NEW] Supabase client (anon key เท่านั้น)
+    ├── contexts/
+    │   └── AuthContext.tsx  <- [NEW] AuthProvider + useAuth hook
     ├── components/
     │   ├── layout/
-    │   │   ├── Header.tsx      [DONE]
+    │   │   ├── Header.tsx      [UPDATED — Session 14: เพิ่ม Auth State]
     │   │   ├── Footer.tsx      [DONE]
     │   │   └── DevBanner.tsx   [DONE]
     │   ├── common/
     │   │   ├── StatusBadge.tsx [DONE]
     │   │   ├── EmptyState.tsx  [DONE]
-    │   │   └── ErrorBoundary.tsx [DONE] (NEW — Phase 5)
+    │   │   ├── ErrorBoundary.tsx [DONE]
+    │   │   └── ProtectedRoute.tsx [NEW — Session 14]
     │   ├── topics/
     │   │   └── TopicCard.tsx   [DONE]
     │   └── videos/
@@ -123,10 +207,12 @@ YudNing/
     │   ├── SearchPage.tsx      [DONE]
     │   ├── FAQPage.tsx         [DONE]
     │   ├── AboutPage.tsx       [DONE]
-    │   └── NotFoundPage.tsx    [DONE]
+    │   ├── NotFoundPage.tsx    [DONE]
+    │   ├── LoginPage.tsx       [NEW — Session 14]
+    │   └── AuthCallbackPage.tsx [NEW — Session 15] รับ Supabase Email Confirmation callback
     ├── data/
-    │   ├── topics.ts       [DONE] (15 topics: 6 draft, 9 placeholder)
-    │   ├── videos.ts       [PARTIAL] มีข้อมูล 1 วิดีโอจริง ('vid-01')
+    │   ├── topics.ts       [DONE] (15 topics: 5 draft, 10 placeholder)
+    │   ├── videos.ts       [PARTIAL] มีวิดีโอจริง 1 รายการ ('vid-01') + 5 timestamps
     │   ├── categories.ts   [DONE]
     │   └── faq.ts          [DONE] (FAQ + LearningPaths)
     ├── hooks/
@@ -135,7 +221,8 @@ YudNing/
     ├── types/
     │   ├── topic.ts        [DONE]
     │   ├── video.ts        [DONE]
-    │   └── category.ts     [DONE]
+    │   ├── category.ts     [DONE]
+    │   └── auth.ts         [NEW] User, Session, AuthContextValue types
     ├── utils/
     │   ├── youtube.ts      [DONE]
     │   └── slugify.ts      [DONE]
@@ -216,63 +303,119 @@ YudNing/
 - [x] Error States — เพิ่ม `ErrorBoundary` ครอบหน้าแอปทั้งหมดเพื่อรับมือกับ render errors
 - [x] **[Session 8]** แก้บั๊ก `VideoPlayer.tsx` เพิ่ม Fallback UI และตรวจสอบความถูกต้องของ iframe src
 
-### Phase 6: Deployment — ติด Blocker
-- [ ] Deploy บน GitHub Pages (`npm run deploy`) — **Blocker: Repository Not Found**
-- [ ] ตรวจสอบลิงก์ทั้งหมด
-- [ ] ตรวจสอบ mobile จริง
-- [ ] ตรวจสอบ meta & social preview
+### Phase 6: Deployment — เสร็จสมบูรณ์ ✅
+- [x] สร้าง GitHub Repository (`Jakra1601/YudNing`)
+- [x] Deploy บน GitHub Pages สำเร็จแล้ว
+- [x] ตรวจสอบลิงก์ทั้งหมด
+- [x] ตรวจสอบ mobile จริง
+- [x] ตรวจสอบ meta & social preview
+
+### Phase 7: Authentication (ดำเนินการอยู่)
+
+**Session 13 — Supabase Auth Foundation:**
+- [x] ติดตั้ง `@supabase/supabase-js`
+- [x] สร้าง `.env.local` — Supabase env vars (ถูก ignore โดย `.gitignore`)
+- [x] สร้าง `src/vite-env.d.ts` — TypeScript types สำหรับ Vite env vars
+- [x] สร้าง `src/lib/supabase.ts` — Supabase client (anon key เท่านั้น)
+- [x] สร้าง `src/types/auth.ts` — TypeScript types สำหรับ Auth
+- [x] สร้าง `src/contexts/AuthContext.tsx` — AuthProvider + useAuth hook
+- [x] อัปเดต `src/main.tsx` — ครอบ App ด้วย `<AuthProvider>`
+
+**Session 14 — Version 1.2 Authentication UI:**
+- [x] สร้าง `src/pages/LoginPage.tsx` — หน้า Login (Google OAuth + Email/Password)
+- [x] สร้าง `src/components/common/ProtectedRoute.tsx` — Guard component พร้อมใช้
+- [x] อัปเดต `src/App.tsx` — เพิ่ม `/login` route (HashRouter compatible)
+- [x] อัปเดต `src/components/layout/Header.tsx` — Auth State (Login button / User dropdown)
+- [x] `npm run build` ผ่าน — 0 TypeScript errors
+
+**Session 15 — Email Confirmation Redirect Fix:**
+- [x] วิเคราะห์ root cause: `emailRedirectTo: window.location.origin` → URL ไม่มี hash route → 404
+- [x] สร้าง `src/pages/AuthCallbackPage.tsx` — รับ callback ด้วย `verifyOtp()` (ยังมีอยู่ใน Codebase แต่ไม่ใช่ Final Active Flow)
+- [x] อัปเดต `src/App.tsx` — เพิ่ม `/auth/callback` route (ยังมีอยู่ใน Codebase)
+- [x] แก้ `src/contexts/AuthContext.tsx` — `emailRedirectTo` เปลี่ยนเป็น `` `${window.location.origin}${window.location.pathname}` `` (application root)
+  - Session ถูกสร้างโดย Supabase SDK ผ่าน `onAuthStateChange` — ไม่ผ่าน `AuthCallbackPage`
+- [x] `npm run build` ผ่าน — 0 TypeScript errors (Session 15)
+- [x] Manual Verify — ยืนยันสำเร็จ (Session 18): Supabase ยืนยันอีเมลและ redirect กลับ YudNing, SDK สร้าง session อัตโนมัติ, ผู้ใช้เข้าสู่ระบบอัตโนมัติ, Header Auth State เปลี่ยนเป็น Logged In สำเร็จ, ไม่ตกหน้า 404
+
+**Session 16 — Login Page Branding Preview:**
+- [x] แสดง Preview โลโก้ใหม่ในหน้า LoginPage (`yudning-logo-main.png`)
+- [x] `npm run build` ผ่าน — 0 TypeScript errors (Session 16)
+
+**Session 17 — Branding Cleanup (Footer & 404):**
+- [x] นำโลโก้แบรนด์ `yudning-logo-main.png` ไปแทนที่ `Leaf` ใน Footer
+- [x] นำโลโก้แบรนด์ `yudning-logo-main.png` ไปแทนที่ Emoji 🍃 ในหน้า NotFoundPage (404)
+- [x] `npm run build` ผ่าน — 0 TypeScript errors (Session 17)
+
+**Session 18 — Blue/Cyan Theme Migration Closure:**
+- [x] Blue/Cyan Theme Migration เสร็จสมบูรณ์
+- [x] Design Tokens ใน `src/styles/global.css` และ `tailwind.config.js` ตรงกันแล้ว
+- [x] `YudNing.md` และ `PROJECT_STATUS.md` ได้รับการอัปเดตให้ตรงกับ Theme ปัจจุบัน
+- [x] `npm run build` ผ่าน — 0 TypeScript errors, 0 build errors (Session 18)
 
 ---
 
 ## สิ่งที่ต้องทำต่อ (เรียงตามลำดับความสำคัญ)
 
-### ลำดับความสำคัญสูง (Phase 5 & 6 — Blockers)
+### ลำดับความสำคัญสูง (Content & Data)
 
 1. **เปลี่ยนสถานะข้อมูลเป็น Verified**
    - ตรวจสอบข้อมูลวิดีโอ (vid-01) และเปลี่ยนสถานะจาก `draft` เป็น `verified` (รอคำสั่ง)
 
-2. **สร้าง GitHub Repository**
-   - สร้าง repository ชื่อ `YudNing` บน GitHub ภายใต้บัญชี `Jakra1601` เพื่อให้ `gh-pages` สามารถพุชโค้ดไปได้
-
-3. **ใส่ข้อมูลจริงใน `topics.ts` และ `videos.ts` เพิ่มเติม**
+2. **ใส่ข้อมูลจริงใน `topics.ts` และ `videos.ts` เพิ่มเติม**
    - ทยอยเพิ่มข้อมูลวิดีโอจากช่อง "ธรรมะ โฆษก" จนครอบคลุมทุกหัวข้อ
-
-4. **Deploy** 
-   - รัน `npm run deploy` ไปยัง GitHub Pages หลังจากแก้ไข blockers เรื่อง Repository แล้ว
 
 ### ลำดับความสำคัญต่ำ
 
-5. **Version 1.1 Features** (ดูใน `YudNing.md` → Version 1.1 Features)
+3. **Version 1.1 Features** (ดูใน `YudNing.md` → Version 1.1 Features)
    - Learn Page Progress (localStorage)
    - Continue Learning
 
 ---
 
+## LINE OA Webhook Backend
+
+| รายการ | รายละเอียด |
+|--------|----------|
+| ที่ตั้ง | `line-webhook/` (แยกจาก React Frontend) |
+| Runtime | Node.js + Express + TypeScript |
+| SDK | `@line/bot-sdk` v9 |
+| Hosting | Vercel Serverless Functions |
+| Vercel Project ID | `prj_1VwyDQPhZOewoVJI8MQLy8XNUcG0` |
+| สถานะ Deploy | ✅ สำเร็จ (Vercel) |
+| Webhook Verify | ✅ Success (เปิด Use webhook แล้ว) |
+| Endpoints | `GET /health` (ตอบกลับ `ok`), `POST /webhook` |
+| Current Capability | Echo Reply สำหรับ Text Message (ทดสอบใช้งานจริงสำเร็จแล้ว) |
+
+> **หมายเหตุ:** LINE OA Webhook เป็นระบบแยกจาก Frontend และ Authentication — ไม่เกี่ยวข้องกัน
+
+---
+
 ## Data Status — สถานะข้อมูลปัจจุบัน
 
-### Topics (15 รายการ) — ทั้งหมดเป็น placeholder
+### Topics (15 รายการ) — ยืนยันจาก Codebase Session 9
 
 | ID | Slug | Title | Status |
 |----|------|-------|--------|
-| topic-01 | what-is-meditation | สมาธิคืออะไร | placeholder |
-| topic-02 | how-to-start | เริ่มนั่งสมาธิอย่างไร | placeholder |
-| topic-03 | sitting-posture | ท่านั่งสมาธิสำหรับผู้เริ่มต้น | placeholder |
-| topic-04 | body-relaxation | วิธีผ่อนคลายร่างกายก่อนนั่ง | placeholder |
-| topic-05 | how-to-place-mind | วิธีวางใจเบื้องต้น | placeholder |
-| topic-06 | drowsy-during-meditation | นั่งสมาธิแล้วง่วง ควรทำอย่างไร | placeholder |
-| topic-07 | restless-mind | ใจฟุ้งซ่าน ควรทำอย่างไร | placeholder |
-| topic-08 | leg-pain | นั่งแล้วปวดขา ควรทำอย่างไร | placeholder |
-| topic-09 | cannot-visualize | นึกภาพไม่ออก ทำอย่างไร | placeholder |
-| topic-10 | how-long-to-meditate | ควรนั่งสมาธิกี่นาที | placeholder |
-| topic-11 | meditation-before-sleep | นั่งสมาธิก่อนนอนได้ไหม | placeholder |
-| topic-12 | no-expectations | ไม่ควรคาดหวังผลอย่างไร | placeholder |
-| topic-13 | consistent-practice | ฝึกสมาธิให้ต่อเนื่องได้อย่างไร | placeholder |
-| topic-14 | maintaining-mind-daily | วิธีรักษาใจระหว่างวัน | placeholder |
-| topic-15 | seeing-light | เห็นแสงขณะนั่งสมาธิ หมายความว่าอะไร | placeholder |
+| topic-01 | what-is-meditation | สมาธิคืออะไร | **placeholder** |
+| topic-02 | how-to-start | เริ่มนั่งสมาธิอย่างไร | **draft** |
+| topic-03 | sitting-posture | ท่านั่งสมาธิสำหรับผู้เริ่มต้น | **draft** |
+| topic-04 | body-relaxation | วิธีผ่อนคลายร่างกายก่อนนั่ง | **draft** |
+| topic-05 | how-to-place-mind | วิธีวางใจเบื้องต้น | **draft** |
+| topic-06 | drowsy-during-meditation | นั่งสมาธิแล้วง่วง ควรทำอย่างไร | **placeholder** |
+| topic-07 | restless-mind | ใจฟุ้งซ่าน ควรทำอย่างไร | **placeholder** |
+| topic-08 | leg-pain | นั่งแล้วปวดขา ควรทำอย่างไร | **placeholder** |
+| topic-09 | cannot-visualize | นึกภาพไม่ออก ทำอย่างไร | **draft** |
+| topic-10 | how-long-to-meditate | ควรนั่งสมาธิกี่นาที | **placeholder** |
+| topic-11 | meditation-before-sleep | นั่งสมาธิก่อนนอนได้ไหม | **placeholder** |
+| topic-12 | no-expectations | ไม่ควรคาดหวังผลอย่างไร | **placeholder** |
+| topic-13 | consistent-practice | ฝึกสมาธิให้ต่อเนื่องได้อย่างไร | **placeholder** |
+| topic-14 | maintaining-mind-daily | วิธีรักษาใจระหว่างวัน | **placeholder** |
+| topic-15 | seeing-light | เห็นแสงขณะนั่งสมาธิ หมายความว่าอะไร | **draft** |
+
+**สรุป:** 5 draft, 10 placeholder, 0 verified
 
 ### Videos
-- **สถานะ:** มีวิดีโอ placeholder 1 รายการ (`data/videos.ts`)
-- ยังไม่มีวิดีโอจริงจากช่อง "ธรรมะ โฆษก"
+- **สถานะ:** มีวิดีโอจริง 1 รายการ (`vid-01`): "ฝึกหยุดใจให้ได้ทุกสภาพอากาศ" — YouTube ID: `5MG92_nCOd4`, มี 5 timestamps, สถานะ: `draft`
 - `LibraryPage.tsx` แสดง empty state เมื่อไม่มีวิดีโอ
 
 ### Learning Paths (3 เส้นทาง ใน `data/faq.ts`)
@@ -284,20 +427,23 @@ YudNing/
 
 ## Design System Reference
 
+> **Blue/Cyan Theme** — Migration เสร็จสมบูรณ์ Session 18 (2026-08-13)
+> ค่าในส่วนนี้คือ **Source of Truth** ปัจจุบัน ตรงกับ `tailwind.config.js` และ `src/styles/global.css`
+
 ### CSS Variables (ใน `src/styles/global.css`)
 
 ```css
---color-primary:        #3D7A6E;  /* เขียว teal */
---color-primary-hover:  #32675D;
---color-primary-soft:   #E5F0ED;
---color-secondary:      #6B8FA3;
---color-accent:         #B8935A;
+--color-primary:        #2F6FAF;  /* น้ำเงินหม่น — สงบ น่าเชื่อถือ */
+--color-primary-hover:  #255D95;
+--color-primary-soft:   #E8F2FA;
+--color-secondary:      #53B8D1;
+--color-accent:         #63D5D0;
 --color-background:     #F7F5F0;
 --color-surface:        #FFFFFF;
 --color-text-main:      #2D3436;
 --color-text-muted:     #636E72;
---color-border:         #E8E4DC;
---color-focus-ring:     #5B9489;
+--color-border:         #E3E8EC;
+--color-focus-ring:     #4FA7C5;
 --color-error:          #A65353;
 --color-success:        #477A61;
 
@@ -308,6 +454,24 @@ YudNing/
 --shadow-card:       0 1px 4px rgba(0,0,0,0.07), 0 4px 12px rgba(0,0,0,0.05);
 --shadow-card-hover: 0 4px 16px rgba(0,0,0,0.10);
 ```
+
+### Tailwind Config Colors (ใน `tailwind.config.js`)
+
+| Token | ค่า |
+|-------|-----|
+| `primary.DEFAULT` | `#2F6FAF` |
+| `primary.hover` | `#255D95` |
+| `primary.soft` | `#E8F2FA` |
+| `secondary` | `#53B8D1` |
+| `accent` | `#63D5D0` |
+| `bg-main` | `#F7F5F0` |
+| `surface` | `#FFFFFF` |
+| `text-main` | `#2D3436` |
+| `text-muted` | `#636E72` |
+| `border` | `#E3E8EC` |
+| `focus-ring` | `#4FA7C5` |
+| `error` | `#A65353` |
+| `success` | `#477A61` |
 
 ### Utility Classes (ใน `global.css`)
 - `.container-content` — max-width: 760px (สำหรับเนื้อหาบทความ)
@@ -418,4 +582,4 @@ npm run deploy
 
 ---
 
-*เอกสารนี้สร้างเมื่อ 2026-07-15 Session 1 | อัพเดทล่าสุด Session 6 (2026-07-17)*
+*เอกสารนี้สร้างเมื่อ 2026-07-15 Session 1 | อัพเดทล่าสุด Session 18 (2026-08-13)*

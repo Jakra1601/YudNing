@@ -23,7 +23,7 @@
 | รายการ | รายละเอียด |
 |--------|----------|
 | Project Version | **1.0** |
-| Document Version | **1.0.0** |
+| Document Version | **1.3.0** |
 | Status | **Approved** |
 
 **Description:**
@@ -739,22 +739,24 @@ YudNing เชื่อว่าการออกแบบเว็บไซต
 * Natural
 * Modern
 
-### Color Palette (Confirmed)
+### Color Palette (Confirmed — Blue/Cyan Theme)
 
-Color Palette ที่ผ่านการยืนยันแล้วสำหรับ YudNing Design System:
+Color Palette ที่ผ่านการยืนยันแล้วสำหรับ YudNing Design System (Blue/Cyan Theme ปัจจุบัน):
+
+> **Note:** Theme นี้ได้รับการ migrate เสร็จสมบูรณ์แล้ว (Session 18 — 2026-08-13) โดยเปลี่ยนจาก Green/Teal Theme เดิมมาเป็น Blue/Cyan Theme ปัจจุบัน
 
 ```css
---color-primary        : #3D7A6E;  /* เขียว teal หม่น — สงบ น่าเชื่อถือ */
---color-primary-hover  : #32675D;  /* Primary กดหรือ hover */
---color-primary-soft   : #E5F0ED;  /* Primary พื้นหลังอ่อน */
---color-secondary      : #6B8FA3;  /* ฟ้ากรมนุ่ม */
---color-accent         : #B8935A;  /* ทองอ่อน — อบอุ่น */
+--color-primary        : #2F6FAF;  /* น้ำเงินหม่น — สงบ น่าเชื่อถือ */
+--color-primary-hover  : #255D95;  /* Primary กดหรือ hover */
+--color-primary-soft   : #E8F2FA;  /* Primary พื้นหลังอ่อน */
+--color-secondary      : #53B8D1;  /* ฟ้าสว่าง */
+--color-accent         : #63D5D0;  /* เขียวฟ้า — สดชื่น */
 --color-background     : #F7F5F0;  /* พื้นหลังขาวครีม */
 --color-surface        : #FFFFFF;  /* พื้นผิว Card */
 --color-text-main      : #2D3436;  /* ข้อความหลัก */
 --color-text-muted     : #636E72;  /* ข้อความรอง */
---color-border         : #E8E4DC;  /* เส้นขอบ */
---color-focus-ring     : #5B9489;  /* Focus outline */
+--color-border         : #E3E8EC;  /* เส้นขอบ */
+--color-focus-ring     : #4FA7C5;  /* Focus outline */
 --color-error          : #A65353;  /* ข้อความผิดพลาด */
 --color-success        : #477A61;  /* ข้อความสำเร็จ */
 ```
@@ -834,12 +836,12 @@ Mobile Version ต้องให้ความสำคัญสูง เพ�
 
 ### Styling
 
-เลือกใช้หนึ่งในสองแนวทาง:
+YudNing ใช้เทคโนโลยี Styling ที่ยืนยันแล้วดังนี้:
 
-* Tailwind CSS
-* Vanilla CSS พร้อม CSS Variables
+* **Tailwind CSS** — ใช้สำหรับ Layout, Responsive Design และ Utility Styles
+* **CSS Variables** — ใช้สำหรับ Design Tokens เช่น สี ฟอนต์ ระยะห่าง เงา และ Border Radius
 
-สำหรับโครงการนี้ Tailwind CSS เหมาะกับการพัฒนา UI ที่รวดเร็ว แต่หากต้องการควบคุมรายละเอียดและลด Dependency สามารถใช้ Vanilla CSS ได้
+การใช้ CSS Variables ร่วมกับ Tailwind CSS ช่วยให้ Design System มีความสม่ำเสมอและสามารถปรับ Theme ได้ง่ายในอนาคต
 
 ### Routing
 
@@ -869,6 +871,26 @@ Mobile Version ต้องให้ความสำคัญสูง เพ�
 * Supabase
 * Firebase
 * PostgreSQL
+
+> Database และ Authentication Provider ยังไม่ได้รับการยืนยันอย่างเป็นทางการ โดยจะพิจารณาและตัดสินใจก่อนเริ่มพัฒนา Version 1.2 เพื่อให้เหมาะสมกับระบบ Authentication, User Account และฟีเจอร์ส่วนบุคคลของ YudNing
+
+### Backend / LINE OA
+
+Backend นี้เป็นระบบแยกจาก React Frontend หลักของ YudNing และปัจจุบันใช้สำหรับรองรับ LINE OA Webhook โดยเฉพาะ
+
+เทคโนโลยีที่ใช้งานจริง:
+
+* Node.js
+* Express
+* TypeScript
+* LINE Bot SDK
+* Vercel Serverless Functions
+
+โครงสร้างถูกออกแบบให้สามารถเชื่อมต่อกับระบบต่อไปนี้ในอนาคตได้ โดยไม่ต้องแก้ไข Webhook Layer หลักจำนวนมาก:
+
+* AI Chat
+* RAG (Retrieval-Augmented Generation)
+* YudNing Knowledge Base
 
 ### Deployment
 
@@ -1207,18 +1229,13 @@ function createYouTubeTimestampUrl(
 * **Learn Page Progress** — บันทึกความคืบหน้าของผู้ใช้งานใน Learning Paths ผ่าน Local Storage
 * **Continue Learning** — แนะนำบทเรียนถัดไปจากเส้นทางที่กำลังศึกษา
 
-### Not Required in Version 1
+### Version 1.2 Features — Authentication
 
-* Login
-* User Account
-* Database
-* AI Chatbot
-* AI Search
-* Automatic Transcript Extraction
-* Automatic Video Summarization
-* Meditation Tracking
-* Social Community
-* Comment System
+Version 1.2 จะเพิ่มระบบ Authentication และ User Account เพื่อรองรับฟีเจอร์ส่วนบุคคลของ YudNing
+
+ดูรายละเอียด Login Methods และข้อกำหนดของระบบได้ในหัวข้อ **[Authentication / User Account](#authentication--user-account)**
+
+
 
 ---
 
@@ -1257,7 +1274,7 @@ Version 1 จะถือว่าพัฒนาเสร็จสมบูร�
 * ระบบติดตามการฝึกสมาธิแบบออนไลน์
 * Community หรือ Social Features
 
-หากมีการเพิ่มฟีเจอร์เหล่านี้ในอนาคต ให้จัดอยู่ใน Version 1.1 หรือเวอร์ชันถัดไป โดยไม่กระทบต่อความเรียบง่ายและความเสถียรของ Version 1
+ฟีเจอร์ที่อยู่นอกขอบเขตของ Version 1 จะถูกพิจารณาและกำหนดให้กับ Version 1.1, Version 1.2 หรือเวอร์ชันถัดไปตาม Roadmap ของโครงการ โดยต้องไม่กระทบต่อความเรียบง่ายและความเสถียรของ Version 1
 
 ---
 
@@ -1552,3 +1569,73 @@ YudNing ไม่ควรเป็นเพียงเว็บไซต์ร
 4. ทุกข้อมูลต้องสามารถอ้างอิงกลับไปยังช่อง YouTube ธรรมะ โฆษก ได้
 5. ห้ามสร้างหรือตีความคำสอนเพิ่มเติมจากแหล่งข้อมูลต้นฉบับ
 6. ออกแบบระบบให้สามารถขยายได้ในอนาคต แต่ไม่เพิ่มความซับซ้อนเกินความจำเป็นใน Version 1
+
+---
+
+## Authentication / User Account
+
+YudNing จะมีระบบบัญชีผู้ใช้ เพื่อรองรับฟีเจอร์ส่วนบุคคลในอนาคต
+เช่น ประวัติการใช้งาน เนื้อหาที่บันทึกไว้ และการตั้งค่าของผู้ใช้
+
+### Login Methods
+
+Version 1.2 วางแผนรองรับ:
+
+* Google
+* LINE
+* Email / Password
+
+ช่องทางที่อาจเพิ่มในอนาคต:
+
+* Apple
+
+> **หมายเหตุ: LINE Login vs LINE OA Webhook**
+>
+> LINE Login และ LINE OA Webhook เป็นคนละระบบกัน:
+>
+> * **LINE Login** — ใช้สำหรับยืนยันตัวตนผู้ใช้บนเว็บไซต์ เพื่อให้ผู้ใช้สามารถเข้าสู่ระบบด้วยบัญชี LINE ได้
+> * **LINE OA Webhook** — ใช้สำหรับรับและตอบข้อความที่ส่งมาจาก LINE Official Account โดยไม่เกี่ยวข้องกับการยืนยันตัวตนบนเว็บไซต์
+
+---
+
+## LINE OA Integration
+
+LINE Official Account (LINE OA) เป็นช่องทางเสริมสำหรับ YudNing ที่ให้ผู้ใช้งานสามารถโต้ตอบผ่าน LINE ได้โดยตรง โดยระบบ LINE OA Webhook แยกเป็นอิสระจากเว็บไซต์หลักและระบบ Authentication
+
+### Status: ✅ Webhook Backend พร้อมใช้งานจริง
+
+Backend พัฒนาสำเร็จ Deploy บน Vercel แล้ว และเชื่อมต่อกับ LINE Official Account สำเร็จแล้ว
+
+| รายการ | รายละเอียด |
+|--------|----------|
+| Runtime | Node.js |
+| Framework | Express |
+| Language | TypeScript |
+| SDK | LINE Bot SDK |
+| Hosting | Vercel Serverless Functions |
+| สถานะการเชื่อมต่อ | ✅ เชื่อมต่อกับ LINE Official Account สำเร็จ |
+
+### Endpoints
+
+| Method | Path | คำอธิบาย |
+|--------|------|---------|
+| `GET` | `/health` | ตรวจสอบสถานะ Server |
+| `POST` | `/webhook` | รับ Event จาก LINE OA |
+
+### Current Capabilities
+
+* รับ Text Message Event จาก LINE OA
+* Verify LINE Webhook Signature
+* LINE Webhook Verification ผ่านสำเร็จ
+* Auto-reply / Echo Reply ทำงานได้
+* Reply Message กลับไปยังผู้ใช้ได้สำเร็จ
+* Environment Variables จัดเก็บบน Vercel
+* รองรับ LINE Verify Webhook ที่ส่ง `events: []` โดยไม่เกิด Error
+* Event ประเภทที่ยังไม่รองรับจะถูกข้ามโดยไม่ทำให้ระบบล้ม
+
+### Future Plans
+
+* เชื่อมต่อ AI Chat
+* เชื่อม YudNing Knowledge Base / RAG
+* เพิ่ม Rich Message / Flex Message
+* เพิ่มระบบป้องกัน Event ซ้ำ (Idempotency)
