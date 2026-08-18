@@ -23,7 +23,7 @@
 | รายการ | รายละเอียด |
 |--------|----------|
 | Project Version | **1.0** |
-| Document Version | **1.3.0** |
+| Document Version | **1.3.1** |
 | Status | **Approved** |
 
 **Description:**
@@ -1572,6 +1572,36 @@ YudNing ไม่ควรเป็นเพียงเว็บไซต์ร
 
 ---
 
+## Member Personalization Features (Version 1)
+
+การเข้าสู่ระบบปลดล็อกความเป็นส่วนตัวและการจดจำผู้ใช้ ไม่ใช่การล็อกเนื้อหาธรรมะไว้หลังบัญชีสมาชิก (Login unlocks personalization, not Dhamma content) ผู้ใช้แบบ Guest ยังสามารถเข้าถึงเนื้อหาธรรมะหลักได้ตามปกติ
+
+ฟีเจอร์ส่วนบุคคลที่ได้รับการอนุมัติใน Version 1 (ต้องเข้าสู่ระบบก่อนใช้งาน) ได้แก่:
+
+1. **Saved Content (บันทึกเนื้อหาโปรด)**
+   - บันทึกบทความ วิดีโอ หรือเนื้อหาที่สนใจ เพื่อกลับมาดูภายหลัง และสามารถยกเลิกได้
+   - ป้องกัน duplicate save สำหรับ user และ content เดียวกัน
+
+2. **Continue Learning (เรียนต่อจากครั้งล่าสุด)**
+   - ระบบจดจำว่าผู้ใช้เปิดดูเนื้อหาใดล่าสุด เพื่อนำมาแสดงเป็นเมนู "เรียนต่อ" 
+   - (สำหรับ Version 1 จะจดจำเพียงหัวข้อหรือวิดีโอที่เปิดล่าสุด ยังไม่มีการจำ timestamp ของ YouTube แบบวินาที หรือคำนวณ progress percentage)
+
+3. **Learning History (ประวัติการเรียนรู้)**
+   - แสดงรายการเนื้อหาที่เคยเปิดดู หรือเริ่มดูครั้งแรกและดูล่าสุดเมื่อใด (ใช้ข้อมูลร่วมกับ Continue Learning)
+
+4. **Meditation Practice Log (บันทึกการนั่งสมาธิ)**
+   - บันทึกการปฏิบัติส่วนตัว เช่น วันที่/เวลาปฏิบัติ ระยะเวลา (นาที) และบันทึกข้อความส่วนตัว (Optional)
+   - ข้อมูลนี้เป็นความลับเฉพาะผู้ใช้ (Private data) ห้ามผู้ใช้อื่นเข้าถึง
+   - (ยังไม่มีระบบ streak, badges, สถิติขั้นสูง หรือ gamification ใน Version 1)
+
+5. **Cross-device Sync**
+   - ข้อมูลส่วนบุคคลทั้งหมดผูกกับบัญชีผู้ใช้ใน Supabase (auth.uid)
+   - สามารถเข้าถึงข้อมูลเดียวกันได้เมื่อเข้าสู่ระบบจากอุปกรณ์อื่น (Desktop, Mobile)
+
+> **หมายเหตุสำหรับ Future Enhancements:** ฟีเจอร์ Exact YouTube playback timestamp, Resume playback, Progress/Completion percentage, Practice streak, Achievements, Badges และ สถิติขั้นสูง ถูกจัดให้อยู่นอกขอบเขตของ Version 1 Implementation ปัจจุบัน
+
+---
+
 ## Authentication / User Account
 
 YudNing จะมีระบบบัญชีผู้ใช้ เพื่อรองรับฟีเจอร์ส่วนบุคคลในอนาคต
@@ -1579,15 +1609,27 @@ YudNing จะมีระบบบัญชีผู้ใช้ เพื่�
 
 ### Login Methods
 
-Version 1.2 วางแผนรองรับ:
+Version 1.2 สถานะปัจจุบัน:
 
-* Google
-* LINE
-* Email / Password
+| Method | สถานะ |
+|--------|--------|
+| Google | ✅ ทำงานสมบูรณ์ |
+| Email / Password | ✅ ทำงานสมบูรณ์ |
+| LINE | ⚠️ IN PROGRESS — OAuth callback/profile retrieval issue |
+
+**LINE Login — สถานจริง (Session 19):**
+
+- LINE Login Channel สร้างแล้ว (ชื่อ: YudNing, Region: Thailand, Status: Developing)
+- Supabase Custom Provider ตั้งค่าแล้ว (Identifier: `custom:line`, Scopes: `openid profile`)
+- Frontend code สมบูรณ์: `signInWithLine()` ใน AuthContext, ปุ่ม LINE ใน LoginPage, build ผ่าน
+- OAuth redirect flow ถึง LINE ได้สำเร็จ — ผู้ใช้ Authorize ได้
+- เกิด error หลัง callback: `server_error / unexpected_failure / Error getting user profile`
+- สาเหตุที่สงสัย: Supabase provider type ถูกตั้งเป็น OIDC (Dashboard บังคับ Issuer/JWKS) แต่ LINE เป็น OAuth2
+- แนวทางถัดไป: สร้าง provider ด้วย Supabase Admin API ด้วย `type: oauth2`
 
 ช่องทางที่อาจเพิ่มในอนาคต:
 
-* Apple
+- Apple
 
 > **หมายเหตุ: LINE Login vs LINE OA Webhook**
 >

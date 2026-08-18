@@ -14,7 +14,11 @@ import { AboutPage } from './pages/AboutPage';
 import { NotFoundPage } from './pages/NotFoundPage';
 import { LoginPage } from './pages/LoginPage';
 import { AuthCallbackPage } from './pages/AuthCallbackPage';
+import { SavedContentPage } from './pages/SavedContentPage';
+import { LearningHistoryPage } from './pages/LearningHistoryPage';
+import { PracticeLogPage } from './pages/PracticeLogPage';
 import { ErrorBoundary } from './components/common/ErrorBoundary';
+import { ProtectedRoute } from './components/common/ProtectedRoute';
 
 export default function App() {
   return (
@@ -46,6 +50,10 @@ export default function App() {
             <Route path="/login" element={<LoginPage />} />
             {/* Supabase Email Confirmation callback — รับ token_hash จาก email link */}
             <Route path="/auth/callback" element={<AuthCallbackPage />} />
+            {/* Version 1.3 — Member Features */}
+            <Route path="/saved" element={<ProtectedRoute><SavedContentPage /></ProtectedRoute>} />
+            <Route path="/history" element={<ProtectedRoute><LearningHistoryPage /></ProtectedRoute>} />
+            <Route path="/practice" element={<ProtectedRoute><PracticeLogPage /></ProtectedRoute>} />
             <Route path="*" element={<NotFoundPage />} />
           </Routes>
         </ErrorBoundary>

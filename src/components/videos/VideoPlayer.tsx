@@ -1,6 +1,8 @@
 import { useState } from 'react';
 import { Play, ExternalLink } from 'lucide-react';
 import { createYouTubeEmbedUrl, createYouTubeTimestampUrl, getYouTubeThumbnailUrl } from '../../utils/youtube';
+import { useAuth } from '../../contexts/AuthContext';
+import { trackActivity } from '../../services/learningActivity';
 
 interface VideoPlayerProps {
   /** YouTube Video ID */
@@ -11,6 +13,8 @@ interface VideoPlayerProps {
   startSeconds?: number;
   /** ความสูงของ Player — default "aspect-video" (16:9) */
   className?: string;
+  /** Video ID (Local Content) สำหรับใช้ Track Activity */
+  videoId?: string;
 }
 
 /**
@@ -22,8 +26,17 @@ interface VideoPlayerProps {
  * หลักการ: ผู้ใช้ต้องคลิกเองถึงจะโหลด iframe
  * ทำให้หน้าโหลดเร็วขึ้นและไม่เสียแบนด์วิธโดยไม่จำเป็น
  */
-export function VideoPlayer({ youtubeId, title, startSeconds, className = '' }: VideoPlayerProps) {
+export function VideoPlayer({ youtubeId, title, startSeconds, className = '', videoId }: VideoPlayerProps) {
   const [isPlaying, setIsPlaying] = useState(false);
+  const { user } = useAuth();
+
+  const handlePlay = () => {
+    setIsPlaying(true);
+    // Track เมื่อ Member explicitly activates/opens the video player
+    if (user && videoId) {
+      trackActivity(user.id, videoId, 'video').catch(console.error);
+    }
+  };
 
   const thumbnailUrl = getYouTubeThumbnailUrl(youtubeId);
   const embedUrl = createYouTubeEmbedUrl(youtubeId, startSeconds);
@@ -72,7 +85,7 @@ export function VideoPlayer({ youtubeId, title, startSeconds, className = '' }: 
           /* Lazy Thumbnail — แสดงก่อนคลิก */
           <button
             type="button"
-            onClick={() => setIsPlaying(true)}
+            onClick={handlePlay}
             aria-label={`เล่นวิดีโอ: ${title}`}
             className="absolute inset-0 w-full h-full group focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-focus-ring)] focus-visible:ring-offset-2"
           >

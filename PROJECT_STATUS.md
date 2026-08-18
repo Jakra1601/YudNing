@@ -9,7 +9,7 @@
 
 | รายการ | ค่า |
 |--------|-----|
-| วันที่อัพเดทล่าสุด | **2026-08-13 (Session 18 — Blue/Cyan Theme Migration Closure)** |
+| วันที่อัพเดทล่าสุด | **2026-08-18 (Session 25 — Member Personalization Integration Verification)** |
 | Phase ปัจจุบัน | **Phase 7 — Authentication (Version 1.2)** |
 | Phase ที่เสร็จแล้ว | Phase 1–6 ✅ |
 | สถานะ Deploy (Frontend) | ✅ Deploy สำเร็จแล้ว (GitHub Pages) |
@@ -23,6 +23,53 @@
 ## Current Task
 
 > **Session 13 (Supabase Auth Foundation)** เสร็จสมบูรณ์แล้ว — ดูรายละเอียดในส่วน **Phase 7** ด้านล่าง
+
+**Session 25 (Member Personalization Integration Verification):**
+- ✅ **Completed / Manually Verified**
+- ✅ **Manual Verification ผ่านครบ:** Account A baseline/persistence, Account A↔B RLS isolation, Guest behavior/protection, Database verification, Cross-session/cross-device persistence, Auth regression.
+- ✅ Member Personalization V1 (Sessions 21–25) ผ่าน Integration Verification ครบแล้ว
+
+**Session 24 (Meditation Practice Log):**
+- ✅ **Completed / Manually Verified**
+- ✅ สร้าง Service `src/services/meditationSession.ts` สำหรับ CRUD (บันทึก, อ่าน, ลบ ประวัติ)
+- ✅ สร้างหน้า `/practice` ใช้ฟอร์ม Inline (datetime-local) ควบคู่กับประวัติการปฏิบัติ
+- ✅ จัดการ Timezone จาก Browser (Local) กลับเป็น UTC ใน Supabase อย่างปลอดภัย
+- ✅ เพิ่ม Validation (duration > 0, วันที่ถูกต้อง) และใช้ RLS ควบคุมสิทธิ์
+- ✅ **Manual Verification ผ่านครบ:** สร้าง/ลบสำเร็จ, Timezone ถูกต้อง, Guest behavior ถูกต้อง, และแก้ไข Bug Local State sorting (รายการใหม่เรียงตาม practiced_at DESC เสมอ) สำเร็จแล้ว
+
+**Session 23 (Learning Activity / Continue Learning / History):**
+- ✅ **Completed / Manually Verified**
+- ✅ พัฒนา `src/services/learningActivity.ts` เพื่อจัดการ Track Activity และ History โดยจัดการ race condition ผ่าน Unique Constraint อย่างปลอดภัย
+- ✅ อัปเดต `VideoPlayer` และ `TopicDetailPage` เพื่อ Track เมื่อผู้ใช้เปิดเนื้อหา
+- ✅ สร้าง `ContinueLearningSection` ใน `HomePage` ที่แสดงผลเนื้อหาสูงสุด 2 รายการล่าสุด (รองรับกรณี local data หายไป)
+- ✅ สร้างหน้า `/history` สำหรับแสดงประวัติการเข้าชมทั้งหมด
+- ✅ **Manual Verification ผ่านครบ:** Topic Tracking, repeated Topic update, Video Tracking, Continue Learning, Learning History และ Guest Behavior
+
+**Session 22 (Saved Content):**
+- ✅ **Completed / Manually Verified**
+- ✅ พัฒนา Frontend data-access/helper (`getSavedContent`, `saveContent`, `unsaveContent`)
+- ✅ สร้าง `SavedContentContext` และ `SaveButton` (รองรับ Guest Redirect)
+- ✅ สร้าง `/saved` แสดงเนื้อหาที่บันทึกไว้ เรียงตาม `created_at` DESC
+- ✅ **Manual Verification ผ่านครบ:** Save/Unsave, แสดงผล, Guest Behavior, และ RLS
+- 🚧 **ปัญหาที่พบระหว่างตรวจสอบ:** `permission denied for table user_saved_content` (PostgreSQL error 42501)
+  - **สาเหตุ:** ขาดสิทธิ์ระดับตารางสำหรับ role `authenticated`
+  - **การแก้ไข:** รัน `GRANT SELECT, INSERT, UPDATE, DELETE ON TABLE ... TO authenticated;` บนทั้ง 3 ตาราง
+  - **อัปเดต:** เพิ่มคำสั่ง GRANT ลงใน `database/01_member_personalization.sql` เพื่อให้สอดคล้องกับ Database จริง
+
+**Session 21 (Member Personalization Database Schema + RLS):**
+- ✅ **Completed / Database Executed & Manually Verified**
+- ✅ สร้างไฟล์ SQL `database/01_member_personalization.sql` 
+- ✅ ผลการตรวจสอบบน Supabase:
+  - 3 Tables verified (user_saved_content, user_learning_activity, meditation_sessions)
+  - RLS enabled = true ทั้ง 3 Tables
+  - 12 Policies verified (SELECT/INSERT/UPDATE/DELETE ต่อตาราง)
+  - Policies restricted to `authenticated` role อย่างถูกต้อง
+
+**Session 20 (Member Personalization Features Planning):**
+- ✅ Member Personalization Requirements ได้รับการอนุมัติแล้ว (เพิ่มลงใน `YudNing.md`)
+- ✅ Architecture/Data Model Planning ได้ดำเนินการใน Session นี้
+- 🚧 Implementation NOT STARTED (ยังไม่เริ่ม)
+- 🚧 LINE Login: IN PROGRESS — OAuth callback/profile retrieval issue (ยังคงสถานะเดิม)
 
 **Session 14 (Version 1.2 — Authentication UI):**
 - ✅ สร้าง `src/pages/LoginPage.tsx` — หน้า Login พร้อม:
@@ -98,15 +145,41 @@
 
 ## Next Action
 
-1. **[รอคำสั่ง]** Implement LINE Login (Session ถัดไป) — ต้องสร้าง LINE Login Channel ก่อน
-2. **ข้อมูลจริง:** ทยอยเพิ่มข้อมูลวิดีโอจริงจากช่อง "ธรรมะ โฆษก" และเปลี่ยนสถานะเป็น `verified`
+**Member Personalization Implementation:**
+1. ✅ นำไฟล์ `database/01_member_personalization.sql` ไปรันและตรวจสอบผล (Session 21 เสร็จสมบูรณ์)
+2. ✅ **Session 22 — Saved Content (เสร็จสมบูรณ์ / ตรวจสอบแล้ว):**
+   - พัฒนา Frontend data-access/helper เรียบร้อย
+   - เพิ่มฟังก์ชัน Save / Unsave content เรียบร้อย
+   - สร้าง UI ให้ Member ดู Saved Content ของตนเองได้ (`/saved`)
+   - เพิ่ม Logic กรณี Guest (แจ้งให้เข้าสู่ระบบ ไม่บันทึกข้อมูล)
+   - เพิ่มคำสั่ง GRANT บน Database เพื่อแก้ไขปัญหา permission denied สำหรับ role authenticated
+3. ✅ **Session 23 — Learning Activity / Continue Learning / History (Completed / Manually Verified)**
+4. ✅ **Session 24 — Meditation Practice Log (Completed / Manually Verified)**
+5. ✅ **Session 25 — Member Personalization Integration Verification (Completed / Manually Verified)**
+
+**LINE Login (IN PROGRESS — Session 19):**
+1. ตรวจสอบ/สร้าง Supabase custom provider ให้เป็น `provider_type = oauth2` อย่างชัดเจน
+   - พิจารณาใช้ Supabase Admin API เพื่อสร้าง provider แทน Dashboard UI
+   - Dashboard UI อาจ default เป็น OIDC และบังคับ Issuer/JWKS ซึ่งอาจเป็นต้นเหตุ
+2. ทดสอบ LINE Login ใหม่หลังแก้ไข provider configuration
+3. ยืนยันว่า Supabase Authentication > Users มี LINE user ปรากฏ
+4. ยืนยันว่า YudNing ได้ active session และ Header เปลี่ยนเป็นสถานะ logged in
+5. ทดสอบ logout/login ซ้ำ
+6. เมื่อผ่านทั้งหมดจึงเปลี่ยน LINE Login เป็น Complete
+
+**Content:**
+- **ข้อมูลจริง:** ทยอยเพิ่มข้อมูลวิดีโอจริงจากช่อง "ธรรมะ โฆษก" และเปลี่ยนสถานะเป็น `verified`
 
 ---
 
 ## Blockers
 
 1. **ข้อมูลจริง:** Topics 5/15 เป็น `draft`, 10/15 เป็น `placeholder` — ยังไม่มี topic ที่ `verified` เลย
-2. **[LINE Login]** ต้องสร้าง LINE Login Channel บน LINE Developers Console ก่อน Implement
+2. **[LINE Login — ACTIVE]** Error หลัง LINE OAuth callback:
+   - `error=server_error`, `error_code=unexpected_failure`
+   - `error_description=Error getting user profile from external provider`
+   - Root cause ที่สงสัย: Supabase Custom Provider ถูก config เป็น OIDC (ต้องการ Issuer/JWKS) แต่ LINE endpoint เป็น OAuth2
+   - แนวทางถัดไป: ลอง create provider ผ่าน Supabase Admin API ด้วย `type: oauth2`
 
 ---
 
@@ -123,7 +196,7 @@
 | Font (Thai) | Noto Sans Thai |
 | Font (Heading/EN) | Inter |
 | **Auth & Database** | **Supabase Auth + Supabase PostgreSQL** |
-| Auth Methods | Google OAuth, Email/Password (LINE — planned) |
+| Auth Methods | Google OAuth, Email/Password, LINE (IN PROGRESS — OAuth callback/profile retrieval issue) |
 
 ---
 
@@ -224,10 +297,14 @@ YudNing/
     │   ├── category.ts     [DONE]
     │   └── auth.ts         [NEW] User, Session, AuthContextValue types
     ├── utils/
-    │   ├── youtube.ts      [DONE]
+    │   ├── search.ts      [DONE]
+    │   ├── formatDuration.ts [DONE]
     │   └── slugify.ts      [DONE]
     └── styles/
-        └── global.css      [DONE]
+        ├── global.css      [DONE]
+        └── variables.css   [DONE]
+└── database/               <- [NEW] Directory สำหรับจัดเก็บ SQL scripts
+    └── 01_member_personalization.sql <- [NEW] Session 21 Schema + RLS + Session 22 Table Grants
 ```
 
 ### Components ที่ระบุใน spec แต่ยังไม่ได้สร้าง
@@ -351,6 +428,62 @@ YudNing/
 - [x] Design Tokens ใน `src/styles/global.css` และ `tailwind.config.js` ตรงกันแล้ว
 - [x] `YudNing.md` และ `PROJECT_STATUS.md` ได้รับการอัปเดตให้ตรงกับ Theme ปัจจุบัน
 - [x] `npm run build` ผ่าน — 0 TypeScript errors, 0 build errors (Session 18)
+
+**Session 19 — LINE Login Integration (IN PROGRESS):**
+
+> **สถานะ:** IN PROGRESS — OAuth callback/profile retrieval issue
+> ยังไม่ถือว่าสำเร็จ จนกว่าจะผ่าน Manual Verification ครบถ้วน
+
+_LINE Login Channel & Supabase Provider Setup:_
+- [x] สร้าง LINE Login Channel ชื่อ YudNing บน LINE Developers Console
+  - Region: Thailand, Web app enabled
+  - Channel Status: Developing
+- [x] สร้าง Supabase Custom Auth Provider
+  - Provider Identifier: `custom:line`
+  - Scopes: `openid profile`
+  - Allow users without email: เปิดใช้งาน
+  - Callback URL ฝั่ง LINE: ตั้งเป็น Supabase Auth callback URL
+  - Client ID / Client Secret: ตั้งค่าผ่าน Supabase Dashboard (ห้ามบันทึกค่าจริงในเอกสาร)
+- [x] LINE OIDC/OAuth endpoints ที่ยืนยันแล้ว:
+  - Authorization: `https://access.line.me/oauth2/v2.1/authorize`
+  - Token: `https://api.line.me/oauth2/v2.1/token`
+  - UserInfo: `https://api.line.me/oauth2/v2.1/userinfo`
+
+_Frontend Code Changes (Build ผ่าน ✅):_
+- [x] เพิ่ม `signInWithLine` ใน `src/types/auth.ts` (`AuthActions` interface)
+- [x] เพิ่มฟังก์ชัน `signInWithLine()` ใน `src/contexts/AuthContext.tsx`
+  - ใช้ `supabase.auth.signInWithOAuth({ provider: 'custom:line' })`
+  - `'custom:line'` เป็น type-safe literal ตาม `Provider = ... | \`custom:\${string}\`` ใน auth-js v2.x
+  - `redirectTo`: `${window.location.origin}${window.location.pathname}`
+- [x] เพิ่มปุ่ม "เข้าสู่ระบบด้วย LINE" ใน `src/pages/LoginPage.tsx`
+  - LINE green button (`#06C755`) พร้อม inline SVG logo
+  - `isLineLoading` state แยกเป็นอิสระจาก Google
+  - Error handling ผ่าน `getErrorMessage()` และ `errorMsg` state เดิม
+- [x] User แก้ไข Google icon เป็น Google G SVG แบบ Multicolor
+- [x] `npm run build` ผ่าน — 0 TypeScript errors, 0 build errors
+  - Vite v5.4.21, 1657 modules transformed
+  - chunk size warning (>500 kB) ไม่ถือเป็น blocker (เป็น warning เดิม)
+
+_Manual Verification Results:_
+- [x] YudNing → Supabase → LINE Login page: **PASS**
+- [x] LINE authentication (กด Authorize): **PASS**
+- [x] Redirect กลับจาก LINE: **เกิดขึ้น แต่มี error**
+- [ ] Supabase session creation: **NOT CONFIRMED / FAILED**
+- [ ] Header แสดงสถานะ Logged In: **ไม่เกิด** (ตก NotFoundPage)
+- [ ] Supabase Authentication > Users มี LINE user: **ยังไม่ยืนยัน**
+
+_Error ที่พบ:_
+```
+error=server_error
+error_code=unexpected_failure
+error_description=Error getting user profile from external provider
+URL: http://localhost:5173/YudNing/?error=server_error&error_code=unexpected_failure...
+```
+
+_สถานการณ์ปัจจุบัน:_
+- Supabase Dashboard UI แสดง/บังคับ Issuer URL และ JWKS URI (ลักษณะ OIDC)
+- LINE OAuth2 UserInfo endpoint อาจไม่ตรงกับที่ Supabase OIDC Provider คาดหวัง
+- การสร้าง provider แบบ `oauth2` ผ่าน Supabase Admin API เป็นแนวทาง investigation ถัดไป
 
 ---
 
@@ -582,4 +715,4 @@ npm run deploy
 
 ---
 
-*เอกสารนี้สร้างเมื่อ 2026-07-15 Session 1 | อัพเดทล่าสุด Session 18 (2026-08-13)*
+*เอกสารนี้สร้างเมื่อ 2026-07-15 Session 1 | อัพเดทล่าสุด Session 22 (2026-08-18)*

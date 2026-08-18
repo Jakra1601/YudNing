@@ -2,6 +2,7 @@ import { Link } from 'react-router-dom';
 import type { Topic } from '../../types/topic';
 import { StatusBadge } from '../common/StatusBadge';
 import { ChevronRight, BookOpen } from 'lucide-react';
+import { SaveButton } from '../common/SaveButton';
 
 const levelLabel: Record<string, string> = {
   beginner: 'ผู้เริ่มต้น',
@@ -25,7 +26,10 @@ export function TopicCard({ topic }: TopicCardProps) {
         <span className="text-xs font-medium text-[var(--color-text-muted)] bg-gray-100 px-2 py-0.5 rounded">
           {levelLabel[topic.level] ?? topic.level}
         </span>
-        <StatusBadge status={topic.status} />
+        <div className="flex items-center gap-2">
+          <SaveButton contentId={topic.id} contentType="topic" />
+          <StatusBadge status={topic.status} />
+        </div>
       </div>
 
       {/* Title */}

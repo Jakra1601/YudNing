@@ -6,11 +6,10 @@
  *
  * Supported methods:
  * - Google OAuth (signInWithGoogle)
+ * - LINE OAuth / OIDC (signInWithLine) — Supabase Custom Provider: custom:line
  * - Email / Password Sign In (signInWithEmail)
  * - Email / Password Sign Up (signUpWithEmail)
  * - Sign Out (signOut)
- *
- * LINE Login: ยังไม่ implement — จะเพิ่มใน Session ถัดไป
  */
 
 import { createContext, useContext, useEffect, useState, type ReactNode } from 'react';
@@ -71,6 +70,23 @@ export function AuthProvider({ children }: AuthProviderProps) {
   }
 
   /**
+   * Login ด้วย LINE ผ่าน Supabase Custom OIDC Provider
+   * Provider Identifier ใน Supabase Dashboard: custom:line
+   * Supabase จัดการ redirect flow ทั้งหมด — redirect กลับมาที่ origin + pathname หลัง login
+   *
+   * หมายเหตุ: 'custom:line' เป็น literal ที่ถูกต้องตาม Provider type (`custom:${string}`)
+   * ใน @supabase/auth-js ตั้งแต่ v2.x — ไม่ต้อง cast
+   */
+  async function signInWithLine(): Promise<void> {
+    const redirectTo = `${window.location.origin}${window.location.pathname}`;
+    const { error } = await supabase.auth.signInWithOAuth({
+      provider: 'custom:line',
+      options: { redirectTo },
+    });
+    if (error) throw error;
+  }
+
+  /**
    * Login ด้วย Email + Password
    */
   async function signInWithEmail(email: string, password: string): Promise<void> {
@@ -116,6 +132,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
     user,
     isLoading,
     signInWithGoogle,
+    signInWithLine,
     signInWithEmail,
     signUpWithEmail,
     signOut,

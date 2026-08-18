@@ -1,6 +1,7 @@
 import { ExternalLink, Clock, Check } from 'lucide-react';
 import { createYouTubeTimestampUrl } from '../../utils/youtube';
 import type { Video } from '../../types/video';
+import { SaveButton } from '../common/SaveButton';
 
 interface VideoCardProps {
   video: Video;
@@ -86,7 +87,12 @@ export function VideoCard({ video, isSelected, onSelect, highlightTimestampId }:
 
       {/* Content */}
       <div className="p-4">
-        <p className="text-xs text-[var(--color-text-muted)] mb-1">{video.channelName}</p>
+        <div className="flex items-start justify-between gap-2 mb-1">
+          <p className="text-xs text-[var(--color-text-muted)]">{video.channelName}</p>
+          {!isPlaceholder && (
+            <SaveButton contentId={video.id} contentType="video" className="-mt-1" />
+          )}
+        </div>
         <h4 className="font-semibold text-[var(--color-text-main)] leading-snug mb-2">
           {video.title}
         </h4>

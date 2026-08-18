@@ -26,6 +26,8 @@ export interface AuthState {
 export interface AuthActions {
   /** Login ด้วย Google OAuth — redirect ไป Google แล้วกลับมาที่ origin */
   signInWithGoogle: () => Promise<void>;
+  /** Login ด้วย LINE — ใช้ Supabase Custom OIDC Provider (custom:line) */
+  signInWithLine: () => Promise<void>;
   /** Login ด้วย Email + Password */
   signInWithEmail: (email: string, password: string) => Promise<void>;
   /** สมัครบัญชีด้วย Email + Password */

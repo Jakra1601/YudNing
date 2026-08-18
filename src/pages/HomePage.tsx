@@ -4,6 +4,7 @@ import { Search, ArrowRight, BookOpen, Sprout, ChevronRight } from 'lucide-react
 import { topics } from '../data/topics';
 import { categories } from '../data/categories';
 import { TopicCard } from '../components/topics/TopicCard';
+import { ContinueLearningSection } from '../components/learning/ContinueLearningSection';
 import { usePageSEO } from '../hooks/usePageSEO';
 
 const FEATURED_TOPIC_IDS = [
@@ -127,6 +128,9 @@ export function HomePage() {
           </div>
         </div>
       </section>
+
+      {/* ─── Continue Learning ────────────────────────────────────── */}
+      <ContinueLearningSection />
 
       {/* ─── Featured Topics ──────────────────────────────────────── */}
       <section aria-labelledby="featured-heading" className="py-14">

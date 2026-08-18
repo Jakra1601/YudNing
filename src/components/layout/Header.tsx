@@ -10,7 +10,7 @@
 
 import { useState, useEffect, useRef } from 'react';
 import { Link, NavLink, useNavigate, useLocation } from 'react-router-dom';
-import { Search, Menu, X, LogIn, LogOut, ChevronDown } from 'lucide-react';
+import { Search, Menu, X, LogIn, LogOut, ChevronDown, Bookmark, History, Calendar } from 'lucide-react';
 import { useAuth } from '../../contexts/AuthContext';
 import yudningLogo from '../../assets/branding/yudning-logo-main.png';
 
@@ -104,6 +104,32 @@ function UserMenu({ onClose }: UserMenuProps) {
       </div>
 
       {/* Actions */}
+      <div className="py-1 border-b border-[var(--color-border)]">
+        <Link
+          to="/practice"
+          onClick={onClose}
+          className="w-full flex items-center gap-2.5 px-4 py-2.5 text-sm text-[var(--color-text-main)] hover:bg-[var(--color-background)] transition-colors duration-200"
+        >
+          <Calendar size={15} aria-hidden="true" className="text-[var(--color-text-muted)]" />
+          บันทึกการปฏิบัติ
+        </Link>
+        <Link
+          to="/history"
+          onClick={onClose}
+          className="w-full flex items-center gap-2.5 px-4 py-2.5 text-sm text-[var(--color-text-main)] hover:bg-[var(--color-background)] transition-colors duration-200"
+        >
+          <History size={15} aria-hidden="true" className="text-[var(--color-text-muted)]" />
+          ประวัติการเรียนรู้
+        </Link>
+        <Link
+          to="/saved"
+          onClick={onClose}
+          className="w-full flex items-center gap-2.5 px-4 py-2.5 text-sm text-[var(--color-text-main)] hover:bg-[var(--color-background)] transition-colors duration-200"
+        >
+          <Bookmark size={15} aria-hidden="true" className="text-[var(--color-text-muted)]" />
+          เนื้อหาที่บันทึกไว้
+        </Link>
+      </div>
       <div className="py-1">
         <button
           id="header-btn-signout"
@@ -220,6 +246,30 @@ export function Header() {
                 )}
               </div>
             </div>
+            <Link
+              to="/practice"
+              onClick={() => setMenuOpen(false)}
+              className="w-full flex items-center gap-2.5 px-4 py-2.5 text-sm text-[var(--color-text-main)] hover:bg-gray-50 transition-colors rounded-[var(--radius-btn)]"
+            >
+              <Calendar size={15} aria-hidden="true" className="text-[var(--color-text-muted)]" />
+              บันทึกการปฏิบัติ
+            </Link>
+            <Link
+              to="/history"
+              onClick={() => setMenuOpen(false)}
+              className="w-full flex items-center gap-2.5 px-4 py-2.5 text-sm text-[var(--color-text-main)] hover:bg-gray-50 transition-colors rounded-[var(--radius-btn)]"
+            >
+              <History size={15} aria-hidden="true" className="text-[var(--color-text-muted)]" />
+              ประวัติการเรียนรู้
+            </Link>
+            <Link
+              to="/saved"
+              onClick={() => setMenuOpen(false)}
+              className="w-full flex items-center gap-2.5 px-4 py-2.5 text-sm text-[var(--color-text-main)] hover:bg-gray-50 transition-colors rounded-[var(--radius-btn)]"
+            >
+              <Bookmark size={15} aria-hidden="true" className="text-[var(--color-text-muted)]" />
+              เนื้อหาที่บันทึกไว้
+            </Link>
             <button
               id="header-mobile-signout"
               onClick={async () => {

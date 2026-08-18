@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { topics } from '../data/topics';
 import { categories } from '../data/categories';
@@ -10,10 +10,10 @@ import { VideoPlayer } from '../components/videos/VideoPlayer';
 import { TimestampList } from '../components/videos/TimestampList';
 import { TopicCard } from '../components/topics/TopicCard';
 import { usePageSEO } from '../hooks/usePageSEO';
-import {
-  ChevronRight, Home, BookOpen, AlertTriangle,
-  ListChecks, HelpCircle, ArrowRight, ChevronDown, ChevronUp,
-} from 'lucide-react';
+import { ChevronRight, Home, BookOpen, AlertTriangle, ListChecks, HelpCircle, ArrowRight, ChevronDown, ChevronUp } from 'lucide-react';
+import { SaveButton } from '../components/common/SaveButton';
+import { useAuth } from '../contexts/AuthContext';
+import { trackActivity } from '../services/learningActivity';
 
 const levelLabel: Record<string, string> = {
   beginner: 'ผู้เริ่มต้น',
@@ -76,6 +76,7 @@ function RelatedVideosSection({ videos: relatedVideos, topicId }: { videos: Vide
       <div id="video-player-section" className="mb-4">
         <VideoPlayer
           key={`${selectedVideo.id}-${startSeconds}`}
+          videoId={selectedVideo.id}
           youtubeId={selectedVideo.youtubeId}
           title={selectedVideo.title}
           startSeconds={startSeconds}
@@ -132,6 +133,7 @@ function RelatedVideosSection({ videos: relatedVideos, topicId }: { videos: Vide
 export function TopicDetailPage() {
   const { slug } = useParams<{ slug: string }>();
   const topic = topics.find((t) => t.slug === slug);
+  const { user } = useAuth();
 
   usePageSEO({
     title: topic ? topic.title : 'ไม่พบหัวข้อ',
@@ -139,6 +141,12 @@ export function TopicDetailPage() {
       ? `เรียนรู้เรื่อง “${topic.title}” — ${topic.shortAnswer} จากช่อง YouTube ธรรมะ โฆษก`
       : undefined,
   });
+
+  useEffect(() => {
+    if (topic && user) {
+      trackActivity(user.id, topic.id, 'topic').catch(console.error);
+    }
+  }, [topic?.id, user?.id]);
 
   if (!topic) {
     return (
@@ -213,19 +221,22 @@ export function TopicDetailPage() {
         )}
 
         <div className="mb-8">
-          <div className="flex flex-wrap items-center gap-2 mb-3">
-            <span className="text-xs font-medium text-[var(--color-text-muted)] bg-gray-100 px-2 py-0.5 rounded">
-              {levelLabel[topic.level] ?? topic.level}
-            </span>
-            <StatusBadge status={topic.status} />
-            {topic.tags.map((tag) => (
-              <span
-                key={tag}
-                className="text-xs text-[var(--color-text-muted)] bg-[var(--color-background)] border border-[var(--color-border)] px-2 py-0.5 rounded"
-              >
-                {tag}
+          <div className="flex flex-wrap items-center justify-between gap-4 mb-3">
+            <div className="flex flex-wrap items-center gap-2">
+              <span className="text-xs font-medium text-[var(--color-text-muted)] bg-gray-100 px-2 py-0.5 rounded">
+                {levelLabel[topic.level] ?? topic.level}
               </span>
-            ))}
+              <StatusBadge status={topic.status} />
+              {topic.tags.map((tag) => (
+                <span
+                  key={tag}
+                  className="text-xs text-[var(--color-text-muted)] bg-[var(--color-background)] border border-[var(--color-border)] px-2 py-0.5 rounded"
+                >
+                  {tag}
+                </span>
+              ))}
+            </div>
+            <SaveButton contentId={topic.id} contentType="topic" showLabel className="bg-white border border-[var(--color-border)] px-3 py-1.5 shadow-sm hover:shadow" />
           </div>
           <h1 className="text-2xl sm:text-3xl font-bold text-[var(--color-text-main)] leading-tight">
             {topic.title}

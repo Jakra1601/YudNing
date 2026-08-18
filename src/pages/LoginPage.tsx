@@ -14,7 +14,7 @@
 
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Mail, Lock, Eye, EyeOff, AlertCircle, Loader2, Chrome } from 'lucide-react';
+import { Mail, Lock, Eye, EyeOff, AlertCircle, Loader2 } from 'lucide-react';
 import { useAuth } from '../contexts/AuthContext';
 import { usePageSEO } from '../hooks/usePageSEO';
 import logoMain from '../assets/branding/yudning-logo-main.png';
@@ -59,7 +59,7 @@ export function LoginPage() {
     description: 'เข้าสู่ระบบ YudNing เพื่อเข้าถึงฟีเจอร์ส่วนตัวของคุณ',
   });
 
-  const { user, isLoading: authLoading, signInWithGoogle, signInWithEmail, signUpWithEmail } = useAuth();
+  const { user, isLoading: authLoading, signInWithGoogle, signInWithLine, signInWithEmail, signUpWithEmail } = useAuth();
   const navigate = useNavigate();
 
   const [mode, setMode] = useState<AuthMode>('signin');
@@ -68,6 +68,7 @@ export function LoginPage() {
   const [showPassword, setShowPassword] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isGoogleLoading, setIsGoogleLoading] = useState(false);
+  const [isLineLoading, setIsLineLoading] = useState(false);
   const [errorMsg, setErrorMsg] = useState('');
   const [successMsg, setSuccessMsg] = useState('');
 
@@ -98,6 +99,20 @@ export function LoginPage() {
     } catch (err) {
       setErrorMsg(getErrorMessage(err));
       setIsGoogleLoading(false);
+    }
+  }
+
+  // ─── LINE OAuth ─────────────────────────────────────────────────────
+
+  async function handleLineSignIn() {
+    setErrorMsg('');
+    setIsLineLoading(true);
+    try {
+      await signInWithLine();
+      // Supabase จะ redirect ออกไป — ไม่ต้อง navigate เอง
+    } catch (err) {
+      setErrorMsg(getErrorMessage(err));
+      setIsLineLoading(false);
     }
   }
 
@@ -144,7 +159,7 @@ export function LoginPage() {
     );
   }
 
-  const isAnyLoading = isSubmitting || isGoogleLoading;
+  const isAnyLoading = isSubmitting || isGoogleLoading || isLineLoading;
 
   return (
     <div className="min-h-screen flex flex-col items-center justify-center bg-[var(--color-background)] px-4 py-12">
@@ -225,16 +240,67 @@ export function LoginPage() {
             disabled={isAnyLoading}
             className="w-full flex items-center justify-center gap-3 px-4 py-2.5 rounded-[var(--radius-btn)] border border-[var(--color-border)] bg-white text-sm font-medium text-[var(--color-text-main)] hover:bg-[var(--color-background)] transition-colors duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-focus-ring)] disabled:opacity-60 disabled:cursor-not-allowed"
           >
-            {isGoogleLoading ? (
+           {isGoogleLoading ? (
               <Loader2 size={16} className="animate-spin" aria-hidden="true" />
             ) : (
-              <Chrome size={16} aria-hidden="true" />
+              <svg
+                width="18"
+                height="18"
+                viewBox="0 0 18 18"
+                aria-hidden="true"
+                className="shrink-0"
+              >
+                <path
+                  fill="#4285F4"
+                  d="M17.64 9.205c0-.638-.057-1.252-.164-1.841H9v3.482h4.844a4.14 4.14 0 0 1-1.797 2.716v2.258h2.909c1.702-1.567 2.684-3.878 2.684-6.615Z"
+                />
+                <path
+                  fill="#34A853"
+                  d="M9 18c2.43 0 4.467-.806 5.956-2.18l-2.909-2.258c-.806.54-1.835.858-3.047.858-2.344 0-4.328-1.585-5.037-3.715H.956v2.333A9 9 0 0 0 9 18Z"
+                />
+                <path
+                  fill="#FBBC05"
+                  d="M3.963 10.705A5.41 5.41 0 0 1 3.682 9c0-.592.102-1.167.281-1.705V4.962H.956A9 9 0 0 0 0 9c0 1.451.347 2.825.956 4.038l3.007-2.333Z"
+                />
+                <path
+                  fill="#EA4335"
+                  d="M9 3.58c1.321 0 2.507.454 3.44 1.345l2.582-2.582C13.463.891 11.426 0 9 0A9 9 0 0 0 .956 4.962l3.007 2.333C4.672 5.165 6.656 3.58 9 3.58Z"
+                />
+              </svg>
             )}
             {isGoogleLoading
               ? 'กำลังเชื่อมต่อ...'
               : mode === 'signin'
               ? 'เข้าสู่ระบบด้วย Google'
               : 'สมัครด้วย Google'}
+          </button>
+
+          {/* ─── LINE OAuth Button ─────────────────────────── */}
+          <button
+            id="login-btn-line"
+            type="button"
+            onClick={handleLineSignIn}
+            disabled={isAnyLoading}
+            className="w-full flex items-center justify-center gap-3 px-4 py-2.5 rounded-[var(--radius-btn)] border border-transparent bg-[#06C755] text-sm font-medium text-white hover:bg-[#05b34c] transition-colors duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#06C755] focus-visible:ring-offset-2 disabled:opacity-60 disabled:cursor-not-allowed"
+          >
+            {isLineLoading ? (
+              <Loader2 size={16} className="animate-spin" aria-hidden="true" />
+            ) : (
+              <svg
+                width="18"
+                height="18"
+                viewBox="0 0 24 24"
+                fill="currentColor"
+                aria-hidden="true"
+              >
+                <path d="M12 2C6.477 2 2 6.065 2 11.135c0 4.562 3.617 8.374 8.51 9.065.331.071.782.218.896.502.102.258.067.663.033.924l-.145.87c-.044.258-.204 1.01.888.551 1.092-.459 5.888-3.467 8.034-5.935C21.614 15.4 22 13.325 22 11.135 22 6.065 17.523 2 12 2zm-3.5 13.25h-2a.75.75 0 0 1-.75-.75V9a.75.75 0 0 1 1.5 0v4.75H8.5a.75.75 0 0 1 0 1.5zm2.5 0a.75.75 0 0 1-.75-.75V9a.75.75 0 0 1 1.5 0v5.5a.75.75 0 0 1-.75.75zm5.5 0h-2a.75.75 0 0 1-.75-.75V9a.75.75 0 0 1 1.5 0v4.75H16.5v-1.25a.75.75 0 0 1 1.5 0v2a.75.75 0 0 1-.75.75h-.25zm2.75-.75a.75.75 0 0 1-.75.75H18a.75.75 0 0 1 0-1.5h.25V9.75H18a.75.75 0 0 1 0-1.5h.5a.75.75 0 0 1 .75.75v5.5z" />
+              </svg>
+            )}
+            {isLineLoading
+              ? 'กำลังเชื่อมต่อ...'
+              : mode === 'signin'
+              ? 'เข้าสู่ระบบด้วย LINE'
+              : 'สมัครด้วย LINE'}
           </button>
 
           {/* ─── Divider ─────────────────────────────────────── */}
