@@ -63,7 +63,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
       provider: 'google',
       options: {
         // redirect กลับมาที่หน้าแรกหลัง OAuth flow เสร็จ
-        redirectTo: window.location.origin,
+        redirectTo: `${window.location.origin}${window.location.pathname}`,
       },
     });
     if (error) throw error;

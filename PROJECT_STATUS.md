@@ -9,12 +9,12 @@
 
 | รายการ | ค่า |
 |--------|-----|
-| วันที่อัพเดทล่าสุด | **2026-08-18 (Session 25 — Member Personalization Integration Verification)** |
+| วันที่อัพเดทล่าสุด | **2026-08-19 (Production Verification — Google OAuth fix)** |
 | Phase ปัจจุบัน | **Phase 7 — Authentication (Version 1.2)** |
 | Phase ที่เสร็จแล้ว | Phase 1–6 ✅ |
-| สถานะ Deploy (Frontend) | ✅ Deploy สำเร็จแล้ว (GitHub Pages) |
+| สถานะ Deploy (Frontend) | ✅ Deploy สำเร็จแล้ว (GitHub Pages) — **Member Personalization V1 deployed 2026-08-18** |
 | สถานะ Deploy (LINE OA Backend) | ✅ Deploy สำเร็จแล้ว (Vercel) |
-| สถานะ Production Build | ✅ `npm run build` ผ่านแล้ว (0 TypeScript errors, 0 build errors) — ยืนยัน Session 18 |
+| สถานะ Production Build | ✅ `npm run build` ผ่านแล้ว (0 TypeScript errors, 0 build errors) — ยืนยัน Sessions 21–25 |
 | สถานะ Dev Server | ✅ ทำงานได้ด้วย `npm run dev` |
 | Git Repository | ✅ `git remote` เชื่อมกับ `https://github.com/Jakra1601/YudNing.git` |
 
@@ -23,6 +23,16 @@
 ## Current Task
 
 > **Session 13 (Supabase Auth Foundation)** เสร็จสมบูรณ์แล้ว — ดูรายละเอียดในส่วน **Phase 7** ด้านล่าง
+
+**Production Deployment — Member Personalization V1 (2026-08-18):**
+- ✅ **Production Deployed / Verified (2026-08-19)**
+- ✅ Commit: `c9dfd12` — feat: Member Personalization V1 (Sessions 21–25)
+- ✅ Production URL: https://jakra1601.github.io/YudNing/
+- ✅ Production Smoke Test ผ่านครบ: Home, Topic, Library, Login, Protected Routes
+- ✅ **Google Login Production: VERIFIED / WORKING**
+  - Root Cause: `redirectTo` เดิมใช้ `window.location.origin` เพียวทำให้ redirect ไปที่ `https://jakra1601.github.io/` (root) แทนที่ project path ทำให้เกิด 404
+  - Fix: เปลี่ยนเป็น `` `${window.location.origin}${window.location.pathname}` `` เพื่อรักษา `/YudNing/` path หลัง OAuth callback
+  - Verified: Google OAuth redirect กลับมาที่ `/YudNing/` ถูกต้อง, สร้าง/restore authenticated session สำเร็จบน Production
 
 **Session 25 (Member Personalization Integration Verification):**
 - ✅ **Completed / Manually Verified**
