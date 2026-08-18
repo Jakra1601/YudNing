@@ -25,13 +25,13 @@
 > **Session 13 (Supabase Auth Foundation)** เสร็จสมบูรณ์แล้ว — ดูรายละเอียดในส่วน **Phase 7** ด้านล่าง
 
 **Production Deployment — Member Personalization V1 + Google OAuth Fix (2026-08-19):**
-- ✅ **Production Deployed / Pending Manual Google OAuth Verification**
+- ✅ **Production Deployed / Verified**
 - ✅ Commit deployed to gh-pages: build `index-B2EtVo6d.js` (contains OAuth fix)
 - ✅ Production URL: https://jakra1601.github.io/YudNing/
 - ✅ Production Smoke Test ผ่านครบ: Home, Topic, Library, Login, Protected Routes
-- 🔄 **Google Login Production: Pending Manual Verification**
-  - OAuth fix deployed: `redirectTo: \`${window.location.origin}${window.location.pathname}\`` รักษา `/YudNing/` path หลัง callback
-  - รอผู้ใช้ทดสอบ Google Login จริงบน https://jakra1601.github.io/YudNing/ เพื่อยืนยัน
+- ✅ **Google Login Production: VERIFIED / WORKING**
+  - Fix: `redirectTo: \`${window.location.origin}${window.location.pathname}\`` รักษา `/YudNing/` path หลัง OAuth callback
+  - Manual Verified: OAuth redirect ถูกต้อง, Supabase session สร้าง/restore สำเร็จ, Header แสดง authenticated user ถูกต้อง
 
 
 **Session 25 (Member Personalization Integration Verification):**
