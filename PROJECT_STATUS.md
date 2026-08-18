@@ -24,15 +24,15 @@
 
 > **Session 13 (Supabase Auth Foundation)** เสร็จสมบูรณ์แล้ว — ดูรายละเอียดในส่วน **Phase 7** ด้านล่าง
 
-**Production Deployment — Member Personalization V1 (2026-08-18):**
-- ✅ **Production Deployed / Verified (2026-08-19)**
-- ✅ Commit: `c9dfd12` — feat: Member Personalization V1 (Sessions 21–25)
+**Production Deployment — Member Personalization V1 + Google OAuth Fix (2026-08-19):**
+- ✅ **Production Deployed / Pending Manual Google OAuth Verification**
+- ✅ Commit deployed to gh-pages: build `index-B2EtVo6d.js` (contains OAuth fix)
 - ✅ Production URL: https://jakra1601.github.io/YudNing/
 - ✅ Production Smoke Test ผ่านครบ: Home, Topic, Library, Login, Protected Routes
-- ✅ **Google Login Production: VERIFIED / WORKING**
-  - Root Cause: `redirectTo` เดิมใช้ `window.location.origin` เพียวทำให้ redirect ไปที่ `https://jakra1601.github.io/` (root) แทนที่ project path ทำให้เกิด 404
-  - Fix: เปลี่ยนเป็น `` `${window.location.origin}${window.location.pathname}` `` เพื่อรักษา `/YudNing/` path หลัง OAuth callback
-  - Verified: Google OAuth redirect กลับมาที่ `/YudNing/` ถูกต้อง, สร้าง/restore authenticated session สำเร็จบน Production
+- 🔄 **Google Login Production: Pending Manual Verification**
+  - OAuth fix deployed: `redirectTo: \`${window.location.origin}${window.location.pathname}\`` รักษา `/YudNing/` path หลัง callback
+  - รอผู้ใช้ทดสอบ Google Login จริงบน https://jakra1601.github.io/YudNing/ เพื่อยืนยัน
+
 
 **Session 25 (Member Personalization Integration Verification):**
 - ✅ **Completed / Manually Verified**
