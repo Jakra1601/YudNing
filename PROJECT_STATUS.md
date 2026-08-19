@@ -24,6 +24,32 @@
 
 > **Session 13 (Supabase Auth Foundation)** เสร็จสมบูรณ์แล้ว — ดูรายละเอียดในส่วน **Phase 7** ด้านล่าง
 
+**Session 31 (Part 3: Final Verification & Close Session):**
+- ✅ **Completed / Pending Production Manual Verification**
+- ✅ อัปเดตสถานะของ Topic จำนวน 10 รายการ (`topic-02`, `03`, `04`, `05`, `15`, `16`, `17`, `18`, `19`, `20`) เป็น `verified` เรียบร้อยแล้ว
+- ✅ บันทึกว่า `vid-02` ผ่านการ Manual Verification แล้ว (Video schema ปัจจุบันไม่มีฟิลด์ `status` จึงเก็บสถานะผ่านเอกสารนี้แทน)
+- ✅ ยืนยันความถูกต้องของ Bidirectional Mapping (Video <-> Topic) ของ `vid-02` และ Topic ทั้งหมดเรียบร้อยแล้ว ไม่พบความผิดปกติ
+- ✅ นำส่วน `practicalSteps` ออกจาก UI อย่างสมบูรณ์ แต่ยังคง Data Layer ไว้
+- ✅ รัน `npm run build` สำเร็จ 100% ไม่มีข้อผิดพลาด
+- ✅ Commit และ Push เข้าสู่ `main` แล้ว
+- ✅ Deploy ขึ้น Production เรียบร้อยแล้ว รอการตรวจสอบจากผู้ใช้ในขั้นสุดท้าย
+- 🚧 Next Action: ผู้ใช้ตรวจสอบ Production URL และหากเรียบร้อย สามารถเริ่มทำงานใน Session ใหม่เพื่อเพิ่มวิดีโอรายการถัดไปได้
+
+**Session 31 (Part 2: UI Fix & Mapping RCA):**
+- ✅ **Completed / Ready for User Verification**
+- ✅ แก้ไขคำผิดใน `topic-02` (แจ่มชื่น -> แช่มชื่น)
+- ✅ ปรับ UI ใน `TopicDetailPage.tsx` เพื่อซ่อนส่วน `practicalSteps` ชั่วคราว โดยคง Data Layer ไว้
+- ✅ สรุปผล RCA ของ `topic-15`: สาเหตุเกิดจากก่อนหน้านี้มีการ map `vid-02` ผิดพลาดใน `topic-15.relatedVideoIds` (ซึ่งปัจจุบันในโค้ดถูกเอาออกไปเรียบร้อยแล้ว) รวมกับการที่ UI แสดงทั้ง VideoPlayer และ VideoCard สำหรับ 1 วิดีโอ ทำให้ผู้ใช้อาจสับสน ปัจจุบันข้อมูลถูกต้องและอ้างอิงเฉพาะ Source จริงแล้ว
+
+**Session 31 (Content Enrichment — Source-Supported Topics):**
+- ✅ **Completed / Ready for User Verification**
+- ✅ ทำ Content Enrichment ให้กับ 5 Topics ได้แก่ `topic-02`, `topic-03`, `topic-04`, `topic-05`, และ `topic-15`
+- ✅ อัปเดตฟิลด์ `shortAnswer`, `description`, `keyPoints`, และ `practicalSteps` โดยใช้เฉพาะข้อมูลจากวิดีโอ (vid-01 และ vid-02) ตามที่ตรวจสอบจาก Source Audit
+- ✅ คงสถานะของ Topic ทั้ง 5 ไว้เป็น `draft` เพื่อรอ Manual Verification จากผู้ใช้
+- ✅ ยืนยันว่าไม่ได้แก้ไข Topic อื่นๆ (โดยเฉพาะ `topic-09`) และไม่ได้แก้ไข Mapping / Timestamps
+- ✅ `npm run build` ผ่านสมบูรณ์ (0 errors)
+- 🚧 Pending Manual Verification: ให้ผู้ใช้เข้าตรวจสอบ Topic ทั้ง 5 บนหน้าเว็บไซต์ ทั้งในส่วนคำตอบสั้นๆ, คำอธิบาย, สาระสำคัญ, และขั้นตอนปฏิบัติ ว่าตรงกับวิดีโอต้นฉบับหรือไม่
+
 **Production Deployment — Member Personalization V1 + Google OAuth Fix (2026-08-19):**
 - ✅ **Production Deployed / Verified**
 - ✅ Commit deployed to gh-pages: build `index-B2EtVo6d.js` (contains OAuth fix)
@@ -33,6 +59,34 @@
   - Fix: `redirectTo: \`${window.location.origin}${window.location.pathname}\`` รักษา `/YudNing/` path หลัง OAuth callback
   - Manual Verified: OAuth redirect ถูกต้อง, Supabase session สร้าง/restore สำเร็จ, Header แสดง authenticated user ถูกต้อง
 
+
+**Session 29 (Create Approved Candidate Topics from vid-02):**
+- ✅ **Completed / Ready for User Verification**
+- ✅ ผู้ใช้อนุมัติ Candidate Topics จำนวน 5 Topic จาก Source `vid-02`
+- ✅ สร้าง Topic ใหม่ทั้ง 5 ลงใน Data Layer เรียบร้อย: `topic-16` ถึง `topic-20`
+- ✅ Topic ทั้ง 5 มีสถานะเป็น `draft` (ยังไม่เป็น `verified`)
+- ✅ ทำการเชื่อม Bidirectional Mapping ระหว่าง Topic ทั้ง 5 และ `vid-02.timestamps[].topicIds` สำเร็จแล้ว
+- ✅ ปรับแก้ลำดับคำใน summary ของ `ts-02-05` (ใน `videos.ts`) ให้ถูกต้องตามหลักคือ "พุทธรัตนะ ธรรมรัตนะ และสังฆรัตนะ"
+- ✅ `npm run build` ผ่านสมบูรณ์ (0 errors)
+- 🚧 Pending Manual Verification: ให้ผู้ใช้เข้าตรวจสอบ Topic ใหม่ทั้ง 5 บนหน้าเว็บไซต์ รวมถึงทดสอบลิงก์ที่แสดงความสัมพันธ์กับวิดีโอ ก่อนที่จะปรับแก้สถานะเป็น `verified` ต่อไป
+
+**Session 28 (Fix Topic Mapping UI Issue for vid-02):**
+- ✅ **Completed / Ready for User Verification**
+- ✅ ตรวจสอบและรายงานสาเหตุที่ Topic Mapping ของ `vid-02` ไม่แสดงผล (เกิดจากโครงสร้างเป็น Bidirectional แต่ใน Session 27 มีการอัปเดตแค่ฝั่ง `videos.ts`)
+- ✅ แก้ไขโค้ด `src/data/topics.ts` เพื่อเพิ่ม `vid-02` ลงใน `relatedVideoIds` ของ `topic-03`, `topic-04`, `topic-05`, และ `topic-09` 
+- ✅ ตอนนี้ Existing Topic Mapping ของ `vid-02` ถูกทำให้ Bidirectional สมบูรณ์แล้ว
+- 🚧 สถานะของ `vid-02` ยังคงเป็น draft และยังรอให้ผู้ใช้ตรวจความถูกต้องของ Transcript และ Timestamp ตามรายงาน Session 27 ก่อนจะเปลี่ยนเป็น verified
+
+**Session 27 (Content Analysis of vid-02):**
+- ✅ **Completed / Ready for User Verification**
+- ✅ ทำ Content Analysis สำหรับ `vid-02` (ธรรมะเป็นสิ่งที่ทุกคนเข้าถึงได้) โดยใช้ Transcript จาก YouTube
+- ✅ เพิ่ม 8 Timestamps และทำ Topic Mapping ตามเนื้อหาจริงที่มีหลักฐานในวิดีโอ
+- ✅ รัน `npm run build` ผ่านแล้ว (0 TypeScript errors)
+- 🚧 Next Action: ผู้ใช้ตรวจสอบความผิดพลาดของ Transcript และเนื้อหา Timestamp ก่อนจะทำการแก้ไขต่อไป
+
+**Session 26 (Add Video: ธรรมะเป็นสิ่งที่ทุกคนเข้าถึงได้):**
+- ✅ รัน `npm run build` ผ่านแล้ว (0 TypeScript errors)
+- 🚧 Next Action: ผู้ใช้ตรวจสอบวิดีโอนี้บนเว็บไซต์ หรือเพิ่มวิดีโอถัดไปตามคำสั่ง
 
 **Session 25 (Member Personalization Integration Verification):**
 - ✅ **Completed / Manually Verified**
@@ -558,7 +612,9 @@ _สถานการณ์ปัจจุบัน:_
 **สรุป:** 5 draft, 10 placeholder, 0 verified
 
 ### Videos
-- **สถานะ:** มีวิดีโอจริง 1 รายการ (`vid-01`): "ฝึกหยุดใจให้ได้ทุกสภาพอากาศ" — YouTube ID: `5MG92_nCOd4`, มี 5 timestamps, สถานะ: `draft`
+- **สถานะ:** มีวิดีโอจริง 2 รายการ
+  - `vid-01`: "ฝึกหยุดใจให้ได้ทุกสภาพอากาศ" — YouTube ID: `5MG92_nCOd4`, มี 5 timestamps, สถานะ: `draft`
+  - `vid-02`: "ธรรมะเป็นสิ่งที่ทุกคนเข้าถึงได้ : นำนั่งสมาธิ หลวงพ่อธัมมชโย" — YouTube ID: `HLchMorP4To`, มี 8 timestamps, สถานะ: `draft`
 - `LibraryPage.tsx` แสดง empty state เมื่อไม่มีวิดีโอ
 
 ### Learning Paths (3 เส้นทาง ใน `data/faq.ts`)

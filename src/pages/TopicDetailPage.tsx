@@ -284,23 +284,7 @@ export function TopicDetailPage() {
           </section>
         )}
 
-        {topic.practicalSteps.length > 0 && topic.practicalSteps[0] !== 'ข้อมูลตัวอย่าง — รอการตรวจสอบจากวิดีโอต้นฉบับ' && (
-          <section aria-labelledby="steps-heading" className="mb-8">
-            <h2 id="steps-heading" className="text-lg font-semibold text-[var(--color-text-main)] mb-3">
-              สิ่งที่ลองทำได้
-            </h2>
-            <ol className="space-y-2">
-              {topic.practicalSteps.map((step, idx) => (
-                <li key={idx} className="flex items-start gap-3 text-sm text-[var(--color-text-muted)]">
-                  <span className="w-6 h-6 rounded-full border-2 border-[var(--color-primary)] text-[var(--color-primary)] text-xs font-bold flex items-center justify-center shrink-0 mt-0.5">
-                    {idx + 1}
-                  </span>
-                  {step}
-                </li>
-              ))}
-            </ol>
-          </section>
-        )}
+
 
         {relatedVideos.length > 0 && (
           <RelatedVideosSection videos={relatedVideos} topicId={topic.id} />
