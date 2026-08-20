@@ -249,7 +249,7 @@ export function Header() {
             <Link
               to="/practice"
               onClick={() => setMenuOpen(false)}
-              className="w-full flex items-center gap-2.5 px-4 py-2.5 text-sm text-[var(--color-text-main)] hover:bg-gray-50 transition-colors rounded-[var(--radius-btn)]"
+              className="w-full flex items-center gap-2.5 px-4 py-3 text-sm text-[var(--color-text-main)] hover:bg-gray-50 transition-colors rounded-[var(--radius-btn)]"
             >
               <Calendar size={15} aria-hidden="true" className="text-[var(--color-text-muted)]" />
               บันทึกการปฏิบัติ
@@ -257,7 +257,7 @@ export function Header() {
             <Link
               to="/history"
               onClick={() => setMenuOpen(false)}
-              className="w-full flex items-center gap-2.5 px-4 py-2.5 text-sm text-[var(--color-text-main)] hover:bg-gray-50 transition-colors rounded-[var(--radius-btn)]"
+              className="w-full flex items-center gap-2.5 px-4 py-3 text-sm text-[var(--color-text-main)] hover:bg-gray-50 transition-colors rounded-[var(--radius-btn)]"
             >
               <History size={15} aria-hidden="true" className="text-[var(--color-text-muted)]" />
               ประวัติการเรียนรู้
@@ -265,7 +265,7 @@ export function Header() {
             <Link
               to="/saved"
               onClick={() => setMenuOpen(false)}
-              className="w-full flex items-center gap-2.5 px-4 py-2.5 text-sm text-[var(--color-text-main)] hover:bg-gray-50 transition-colors rounded-[var(--radius-btn)]"
+              className="w-full flex items-center gap-2.5 px-4 py-3 text-sm text-[var(--color-text-main)] hover:bg-gray-50 transition-colors rounded-[var(--radius-btn)]"
             >
               <Bookmark size={15} aria-hidden="true" className="text-[var(--color-text-muted)]" />
               เนื้อหาที่บันทึกไว้
@@ -279,7 +279,7 @@ export function Header() {
                 setMenuOpen(false);
                 navigate('/');
               }}
-              className="w-full flex items-center gap-2.5 px-4 py-2.5 text-sm text-[var(--color-text-main)] hover:bg-gray-50 transition-colors rounded-[var(--radius-btn)]"
+              className="w-full flex items-center gap-2.5 px-4 py-3 text-sm text-[var(--color-text-main)] hover:bg-gray-50 transition-colors rounded-[var(--radius-btn)]"
             >
               <LogOut size={15} aria-hidden="true" className="text-[var(--color-text-muted)]" />
               ออกจากระบบ
@@ -324,7 +324,7 @@ export function Header() {
           <NavLink
             to="/login"
             onClick={() => setMenuOpen(false)}
-            className="flex items-center gap-2.5 px-4 py-2.5 text-sm font-medium text-[var(--color-primary)] hover:bg-[var(--color-primary-soft)] rounded-[var(--radius-btn)] transition-colors duration-200"
+            className="flex items-center gap-2.5 px-4 py-3 text-sm font-medium text-[var(--color-primary)] hover:bg-[var(--color-primary-soft)] rounded-[var(--radius-btn)] transition-colors duration-200"
           >
             <LogIn size={15} aria-hidden="true" />
             เข้าสู่ระบบ
@@ -467,7 +467,7 @@ export function Header() {
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
                   placeholder="ค้นหาหัวข้อสมาธิ..."
-                  className="w-full pl-9 pr-3 py-2.5 text-sm bg-[var(--color-background)] border border-[var(--color-border)] rounded-[var(--radius-btn)] text-[var(--color-text-main)] placeholder:text-[var(--color-text-muted)] focus:outline-none focus:border-[var(--color-primary)] focus:ring-2 focus:ring-[var(--color-primary-soft)] transition-colors duration-200"
+                  className="w-full pl-9 pr-3 py-3 text-sm bg-[var(--color-background)] border border-[var(--color-border)] rounded-[var(--radius-btn)] text-[var(--color-text-main)] placeholder:text-[var(--color-text-muted)] focus:outline-none focus:border-[var(--color-primary)] focus:ring-2 focus:ring-[var(--color-primary-soft)] transition-colors duration-200"
                 />
               </div>
             </form>
@@ -478,7 +478,7 @@ export function Header() {
                 to={link.to}
                 onClick={() => setMenuOpen(false)}
                 className={({ isActive }) =>
-                  `px-4 py-2.5 rounded-[var(--radius-btn)] text-sm font-medium transition-colors duration-200 ${
+                  `px-4 py-3 rounded-[var(--radius-btn)] text-sm font-medium transition-colors duration-200 ${
                     isActive
                       ? 'bg-[var(--color-primary-soft)] text-[var(--color-primary)]'
                       : 'text-[var(--color-text-main)] hover:bg-gray-50'
@@ -493,7 +493,7 @@ export function Header() {
               to="/about"
               onClick={() => setMenuOpen(false)}
               className={({ isActive }) =>
-                `px-4 py-2.5 rounded-[var(--radius-btn)] text-sm font-medium transition-colors duration-200 mt-1 border-t border-[var(--color-border)] pt-3 ${
+                `px-4 py-3 rounded-[var(--radius-btn)] text-sm font-medium transition-colors duration-200 mt-1 border-t border-[var(--color-border)] pt-3 ${
                   isActive
                     ? 'text-[var(--color-primary)]'
                     : 'text-[var(--color-text-muted)] hover:text-[var(--color-text-main)]'

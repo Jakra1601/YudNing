@@ -18,7 +18,7 @@ export function TopicCard({ topic }: TopicCardProps) {
   return (
     <Link
       to={`/topics/${topic.slug}`}
-      className="group block bg-white rounded-[var(--radius-card)] border border-[var(--color-border)] p-5 shadow-[var(--shadow-card)] hover:shadow-[var(--shadow-card-hover)] hover:-translate-y-0.5 transition-all duration-200 focus-visible:ring-2 focus-visible:ring-[var(--color-focus-ring)] focus-visible:outline-none"
+      className="group block bg-white rounded-[var(--radius-card)] border border-[var(--color-border)] p-4 sm:p-5 shadow-[var(--shadow-card)] hover:shadow-[var(--shadow-card-hover)] hover:-translate-y-0.5 transition-all duration-200 focus-visible:ring-2 focus-visible:ring-[var(--color-focus-ring)] focus-visible:outline-none"
       aria-label={`อ่านเรื่อง ${topic.title}`}
     >
       {/* Header row */}
@@ -33,12 +33,12 @@ export function TopicCard({ topic }: TopicCardProps) {
       </div>
 
       {/* Title */}
-      <h3 className="font-semibold text-[var(--color-text-main)] leading-snug mb-2 group-hover:text-[var(--color-primary)] transition-colors duration-200">
+      <h3 className="text-[15px] sm:text-base font-semibold text-[var(--color-text-main)] leading-snug mb-2 group-hover:text-[var(--color-primary)] transition-colors duration-200">
         {topic.title}
       </h3>
 
       {/* Short Answer */}
-      <p className="text-sm text-[var(--color-text-muted)] leading-relaxed line-clamp-2 mb-3">
+      <p className="text-[13px] sm:text-sm text-[var(--color-text-muted)] leading-relaxed line-clamp-2 mb-3">
         {topic.shortAnswer}
       </p>
 

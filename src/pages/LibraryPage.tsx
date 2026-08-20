@@ -43,7 +43,7 @@ export function LibraryPage() {
         </div>
 
         {/* Tabs */}
-        <div className="flex gap-2 mb-6 border-b border-[var(--color-border)]">
+        <div className="flex gap-2 mb-6 border-b border-[var(--color-border)] overflow-x-auto whitespace-nowrap hide-scrollbar">
           {[
             { key: 'topics', label: `หัวข้อ (${topics.length})` },
             { key: 'videos', label: `วิดีโอ (${videos.filter(v => v.youtubeId !== 'PLACEHOLDER_ID').length})` },
@@ -53,7 +53,7 @@ export function LibraryPage() {
               onClick={() => setTab(t.key as 'topics' | 'videos')}
               aria-selected={tab === t.key}
               role="tab"
-              className={`px-4 py-2.5 text-sm font-medium border-b-2 transition-colors duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-focus-ring)] ${
+              className={`shrink-0 px-4 py-2.5 text-sm font-medium border-b-2 transition-colors duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-focus-ring)] ${
                 tab === t.key
                   ? 'border-[var(--color-primary)] text-[var(--color-primary)]'
                   : 'border-transparent text-[var(--color-text-muted)] hover:text-[var(--color-text-main)]'

@@ -78,14 +78,14 @@ export function StartHerePage() {
           {steps.map((step, idx) => (
             <article
               key={step.number}
-              className="bg-white rounded-[var(--radius-card)] border border-[var(--color-border)] p-6 shadow-[var(--shadow-card)] animate-fade-in-up"
+              className="bg-white rounded-[var(--radius-card)] border border-[var(--color-border)] p-4 sm:p-6 shadow-[var(--shadow-card)] animate-fade-in-up"
               style={{ animationDelay: `${idx * 80}ms` }}
               aria-labelledby={`step-${step.number}-title`}
             >
               {/* Step Number */}
-              <div className="flex items-start gap-4">
+              <div className="flex items-start gap-3 sm:gap-4">
                 <span
-                  className="w-10 h-10 rounded-full bg-[var(--color-primary)] text-white flex items-center justify-center font-bold text-sm shrink-0"
+                  className="w-8 h-8 sm:w-10 sm:h-10 rounded-full bg-[var(--color-primary)] text-white flex items-center justify-center font-bold text-xs sm:text-sm shrink-0 mt-0.5 sm:mt-0"
                   aria-label={`ขั้นตอนที่ ${step.number}`}
                 >
                   {step.number}
@@ -93,11 +93,11 @@ export function StartHerePage() {
                 <div className="flex-1">
                   <h2
                     id={`step-${step.number}-title`}
-                    className="text-lg font-semibold text-[var(--color-text-main)] mb-1.5"
+                    className="text-base sm:text-lg font-semibold text-[var(--color-text-main)] mb-1.5"
                   >
                     {step.title}
                   </h2>
-                  <p className="text-sm text-[var(--color-text-muted)] leading-relaxed mb-4">
+                  <p className="text-[13px] sm:text-sm text-[var(--color-text-muted)] leading-relaxed mb-4">
                     {step.description}
                   </p>
 
@@ -107,7 +107,7 @@ export function StartHerePage() {
                       <Link
                         key={topic.slug}
                         to={`/topics/${topic.slug}`}
-                        className="flex items-center gap-2 text-sm text-[var(--color-primary)] hover:text-[var(--color-primary-hover)] group focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-focus-ring)] rounded"
+                        className="flex items-center gap-2 text-[13px] sm:text-sm text-[var(--color-primary)] hover:text-[var(--color-primary-hover)] group focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-focus-ring)] rounded"
                       >
                         <CheckCircle
                           size={15}
@@ -139,7 +139,7 @@ export function StartHerePage() {
           </p>
           <Link
             to="/learn"
-            className="inline-flex items-center gap-2 bg-[var(--color-primary)] hover:bg-[var(--color-primary-hover)] text-white px-6 py-3 rounded-[var(--radius-btn)] font-medium transition-colors duration-200"
+            className="inline-flex items-center gap-2 bg-[var(--color-primary)] hover:bg-[var(--color-primary-hover)] text-white px-5 sm:px-6 py-3 rounded-[var(--radius-btn)] font-medium transition-colors duration-200 whitespace-nowrap text-[15px] sm:text-base"
           >
             สำรวจเส้นทางการเรียนรู้
             <ChevronRight size={16} />

@@ -19,10 +19,12 @@ import { LearningHistoryPage } from './pages/LearningHistoryPage';
 import { PracticeLogPage } from './pages/PracticeLogPage';
 import { ErrorBoundary } from './components/common/ErrorBoundary';
 import { ProtectedRoute } from './components/common/ProtectedRoute';
+import { ScrollToTop } from './components/common/ScrollToTop';
 
 export default function App() {
   return (
     <div className="min-h-screen flex flex-col bg-[var(--color-background)]">
+      <ScrollToTop />
       {/* Skip to main content (Accessibility) */}
       <a
         href="#main-content"

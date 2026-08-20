@@ -267,6 +267,37 @@ YudNing เชื่อว่าการออกแบบเว็บไซต
 
 ---
 
+## Permanent Project Requirements
+
+### 1. Mobile Responsive Experience
+
+*   เว็บไซต์ต้องรองรับ Smartphone, Tablet และ Desktop
+*   ใช้แนวทาง Mobile-first โดยรักษา Desktop Experience เดิม
+*   Mobile UI ต้องได้รับการออกแบบอย่างเหมาะสม ไม่ใช่เพียงย่อ Desktop Layout
+*   ให้ความสำคัญกับ readability, spacing, typography, touch targets, navigation, cards, forms, video player และ responsive content
+*   ห้ามเกิด horizontal overflow หรือ content clipping
+*   Layout ต้องรองรับข้อความทั้งภาษาไทยและภาษาอังกฤษ
+*   ต้องรักษา Visual Identity ของ YudNing
+
+**Mobile Responsive Audit Report (Summary):**
+*   ไม่พบ P0 issue
+*   พบ P1 ที่ Home Search input
+*   พบ P2 ที่ Library Tabs, Topic Detail Breadcrumb และ Mobile Header touch target
+*   Existing responsive architecture โดยรวมรองรับ Mobile ได้ดีอยู่แล้ว
+
+### 2. Multilingual / English Support
+
+*   เว็บไซต์ต้องรองรับภาษาไทยและภาษาอังกฤษ (TH / EN)
+*   ผู้ใช้สามารถสลับภาษาได้
+*   Architecture ต้องรองรับทั้ง UI text และ Content เช่น Topic และ Video
+*   ภาษาไทยเป็น Source Language หลักของเนื้อหาต้นฉบับ
+*   Translation ของเนื้อหาธรรมะต้องรักษาความหมายของ Source ต้นฉบับ
+*   ห้ามแปล ตีความ หรือเพิ่มเติมคำสอนจนความหมายเปลี่ยน
+*   Architecture ควรรองรับการเพิ่มภาษาโดยไม่ต้องรื้อ Data Layer ใหม่
+*   Responsive UI ต้องรองรับความยาวข้อความที่แตกต่างกันระหว่างภาษา
+
+---
+
 ## Main Website Structure
 
 เมนูหลักของเว็บไซต์ประกอบด้วย:

@@ -19,7 +19,16 @@ function FAQItem({ faq }: FAQItemProps) {
         aria-controls={`faq-answer-${faq.id}`}
         className="w-full flex items-center justify-between gap-3 p-5 text-left bg-white hover:bg-gray-50 transition-colors duration-200 focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-[var(--color-focus-ring)] focus-visible:outline-none"
       >
-        <span className="font-medium text-[var(--color-text-main)] leading-snug">{faq.question}</span>
+        <span className="font-medium text-[var(--color-text-main)] leading-snug">
+          {faq.question === 'ทำไมบางวันใจสงบแต่บางวันไม่สงบ' ? (
+            <>
+              <span className="block sm:inline">ทำไมบางวันใจสงบ</span>{' '}
+              <span className="block sm:inline">แต่บางวันไม่สงบ</span>
+            </>
+          ) : (
+            faq.question
+          )}
+        </span>
         {open
           ? <ChevronUp size={18} className="text-[var(--color-primary)] shrink-0" />
           : <ChevronDown size={18} className="text-[var(--color-text-muted)] shrink-0" />}
@@ -80,7 +89,8 @@ export function FAQPage() {
             ยังมีคำถามอื่น?
           </h2>
           <p className="text-sm text-[var(--color-text-muted)] mb-4">
-            ลองค้นหาจากหัวข้อทั้งหมดหรือใช้ระบบค้นหา
+            <span className="block sm:inline">ลองค้นหาจากหัวข้อทั้งหมด</span>{' '}
+            <span className="block sm:inline">หรือใช้ระบบค้นหา</span>
           </p>
           <div className="flex flex-wrap justify-center gap-3">
             <Link

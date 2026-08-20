@@ -199,7 +199,7 @@ export function TopicDetailPage() {
             </>
           )}
           <ChevronRight size={13} aria-hidden="true" />
-          <span className="text-[var(--color-text-main)] truncate max-w-[180px]" aria-current="page">
+          <span className="text-[var(--color-text-main)] truncate flex-1 min-w-0" aria-current="page">
             {topic.title}
           </span>
         </nav>

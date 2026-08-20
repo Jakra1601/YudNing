@@ -24,6 +24,25 @@
 
 > **Session 13 (Supabase Auth Foundation)** เสร็จสมบูรณ์แล้ว — ดูรายละเอียดในส่วน **Phase 7** ด้านล่าง
 
+**Session 33 (Global Navigation Scroll-to-Top Fix):**
+- ✅ **Completed / Manual Verified**
+- ✅ ทำการ Audit ระบบและพบว่า HashRouter ของ React Router ขาดระบบ Scroll Restoration ตั้งต้น
+- ✅ สร้าง `ScrollToTop` component แบบ Route-aware โดยดักจับ `pathname` และ `navType`
+- ✅ นำ `ScrollToTop` ไปติดตั้งใน `App.tsx` ภายใต้ HashRouter 
+- ✅ รับประกันว่าจะไม่ทำลาย Back/Forward behavior เดิมของ Browser เนื่องจาก Component เช็คเงื่อนไข `navType !== 'POP'` ก่อนทำงาน
+- ✅ ยืนยันว่าไม่แตะ Data / Content / Auth / Mobile styling ใดๆ
+- ✅ รัน `npm run build` ผ่านสมบูรณ์ (0 errors)
+
+**Session 32 (Topic Relationship Enrichment & Text Correction):**
+- ✅ **Completed / Manual Verified**
+- ✅ ทำการประเมินโครงสร้าง Relationship (อ้างอิง `relatedQuestions` และ `relatedTopicIds` ใน Data Layer ตามที่ `TopicDetailPage` นำไปแสดงผลจริง)
+- ✅ เพิ่ม Relationship Enrichment ให้ `topic-16` ถึง `topic-20` ตามโครงสร้างเดิม โดยอิงตามเนื้อหาที่ผ่านการ Manual Verification
+  - 📝 **หมายเหตุ:** `topic-18` และ `topic-19` ตั้งใจไม่มี “หัวข้อที่ควรศึกษาต่อ” เนื่องจากยังไม่มี Topic ที่เกี่ยวข้องโดยตรงใน Data Layer ปัจจุบัน ผู้ใช้ Manual Verify แล้วและยืนยันว่าพฤติกรรมถูกต้อง
+- ✅ แก้ไข spacing ของข้อความ "นึกภาพได้หรือไม่ได้ ไม่ได้วัดว่าปฏิบัติถูกหรือผิด"
+- ✅ คง Topic ที่ความสัมพันธ์ไม่ชัดเจนไว้เป็น array ว่างตามกฎอย่างเคร่งครัด
+- ✅ ยืนยันว่าไม่ได้แก้ Content, Status หรือ Mapping อื่นนอกเหนือ Scope
+- ✅ รัน `npm run build` ผ่านสมบูรณ์ (0 errors)
+
 **Session 31 (Part 3: Final Verification & Close Session):**
 - ✅ **Completed / Pending Production Manual Verification**
 - ✅ อัปเดตสถานะของ Topic จำนวน 10 รายการ (`topic-02`, `03`, `04`, `05`, `15`, `16`, `17`, `18`, `19`, `20`) เป็น `verified` เรียบร้อยแล้ว
@@ -208,6 +227,19 @@
 ---
 
 ## Next Action
+
+**Mobile Responsive & Internationalization (Planned Work / Roadmap):**
+1. Mobile Responsive Audit — COMPLETED
+2. Mobile Responsive Implementation Phase 1 — COMPLETED / Manual Verified
+3. Mobile Responsive Implementation Phase 2 (Small-Screen Visual Polish) — COMPLETED / Manual Verified
+   - **CTA Wrapping:** เพิ่ม `whitespace-nowrap` และปรับ responsive padding/font-size ป้องกันคำขาด (orphan word)
+   - **Learning Cards Layout:** ปรับ responsive Padding, Gap, และขนาดย่อ Number Badge ลงในหน้าจอ 320px เพื่อเพิ่มพื้นที่ข้อความ
+   - **Mobile Typography:** ปรับขนาด Font (`text-[15px]`, `text-[26px]`, `text-[13px]`) ให้สมดุลและอ่านง่ายขึ้นบนหน้าจอขนาดเล็ก
+   - **Vertical Spacing:** ปรับลด Spacing (`py`) ระหว่าง Section ต่างๆ ของ HomePage เฉพาะจอเล็ก เพื่อให้ดูไม่หลวมจนเกินไป
+   - **Text Wrapping Fine-tuning:** จัดระเบียบการตัดบรรทัดเฉพาะ Mobile ด้วย `span class="block sm:inline"` ในหน้า FAQ เพื่อความสวยงามโดยไม่กระทบ Desktop
+4. TH/EN Internationalization Architecture Audit — PLANNED
+5. TH/EN Implementation — PLANNED
+6. TH/EN Manual Verification — PLANNED
 
 **Member Personalization Implementation:**
 1. ✅ นำไฟล์ `database/01_member_personalization.sql` ไปรันและตรวจสอบผล (Session 21 เสร็จสมบูรณ์)

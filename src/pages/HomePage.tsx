@@ -45,7 +45,7 @@ export function HomePage() {
       {/* ─── Hero Section ─────────────────────────────────────────── */}
       <section
         aria-labelledby="hero-heading"
-        className="bg-gradient-to-b from-[var(--color-primary-soft)] to-[var(--color-background)] py-12 sm:py-24"
+        className="bg-gradient-to-b from-[var(--color-primary-soft)] to-[var(--color-background)] py-8 sm:py-24"
       >
         <div className="container-content text-center">
           <p className="text-sm font-medium text-[var(--color-primary)] tracking-widest mb-3 uppercase">
@@ -53,11 +53,11 @@ export function HomePage() {
           </p>
           <h1
             id="hero-heading"
-            className="text-3xl sm:text-4xl lg:text-5xl font-bold text-[var(--color-text-main)] leading-tight mb-4"
+            className="text-[26px] sm:text-4xl lg:text-5xl font-bold text-[var(--color-text-main)] leading-[1.3] sm:leading-tight mb-3 sm:mb-4"
           >
             หยุดนิ่ง เริ่มต้นได้จากตรงนี้
           </h1>
-          <p className="text-base sm:text-lg text-[var(--color-text-muted)] mb-8 max-w-xl mx-auto leading-relaxed">
+          <p className="text-[15px] sm:text-lg text-[var(--color-text-muted)] mb-6 sm:mb-8 max-w-xl mx-auto leading-relaxed">
             เรียนรู้การนั่งสมาธิอย่างเป็นขั้นตอน ค้นหาคำตอบ และกลับไปดูวิดีโอต้นฉบับจากช่อง{' '}
             <strong className="text-[var(--color-text-main)]">ธรรมะ โฆษก</strong>{' '}
             ได้ทุกหัวข้อ
@@ -66,7 +66,7 @@ export function HomePage() {
           {/* Search Box */}
           <form
             onSubmit={handleSearch}
-            className="max-w-xl mx-auto mb-6"
+            className="max-w-xl mx-auto mb-5 sm:mb-6"
             role="search"
             aria-label="ค้นหาหัวข้อสมาธิ"
           >
@@ -85,7 +85,7 @@ export function HomePage() {
                 value={query}
                 onChange={(e) => setQuery(e.target.value)}
                 placeholder="วันนี้คุณอยากเรียนรู้เรื่องอะไร?"
-                className="w-full pl-12 pr-4 py-4 text-base bg-white border-2 border-[var(--color-border)] rounded-[var(--radius-card)] text-[var(--color-text-main)] placeholder:text-[var(--color-text-muted)] shadow-[var(--shadow-card)] focus:outline-none focus:border-[var(--color-primary)] focus:ring-4 focus:ring-[var(--color-primary-soft)] transition-all duration-200"
+                className="w-full pl-12 pr-24 py-4 text-base bg-white border-2 border-[var(--color-border)] rounded-[var(--radius-card)] text-[var(--color-text-main)] placeholder:text-[var(--color-text-muted)] shadow-[var(--shadow-card)] focus:outline-none focus:border-[var(--color-primary)] focus:ring-4 focus:ring-[var(--color-primary-soft)] transition-all duration-200"
               />
               <button
                 type="submit"
@@ -97,7 +97,7 @@ export function HomePage() {
           </form>
 
           {/* Example queries */}
-          <div className="flex flex-wrap justify-center gap-2 mb-10" aria-label="ตัวอย่างคำค้นหา">
+          <div className="flex flex-wrap justify-center gap-2 mb-8 sm:mb-10" aria-label="ตัวอย่างคำค้นหา">
             {EXAMPLE_QUERIES.map((q) => (
               <button
                 key={q}
@@ -113,14 +113,14 @@ export function HomePage() {
           <div className="flex flex-wrap justify-center gap-3">
             <Link
               to="/start"
-              className="inline-flex items-center gap-2 bg-[var(--color-primary)] hover:bg-[var(--color-primary-hover)] text-white px-5 py-3 sm:px-6 rounded-[var(--radius-btn)] font-medium transition-colors duration-200 shadow-sm focus-visible:ring-2 focus-visible:ring-[var(--color-focus-ring)] focus-visible:outline-none"
+              className="inline-flex items-center gap-2 bg-[var(--color-primary)] hover:bg-[var(--color-primary-hover)] text-white px-5 py-3 sm:px-6 rounded-[var(--radius-btn)] font-medium transition-colors duration-200 shadow-sm focus-visible:ring-2 focus-visible:ring-[var(--color-focus-ring)] focus-visible:outline-none whitespace-nowrap text-[15px] sm:text-base"
             >
               <Sprout size={18} />
               เริ่มต้นนั่งสมาธิ
             </Link>
             <Link
               to="/topics"
-              className="inline-flex items-center gap-2 bg-white hover:bg-gray-50 text-[var(--color-text-main)] px-5 py-3 sm:px-6 rounded-[var(--radius-btn)] font-medium border border-[var(--color-border)] transition-colors duration-200 shadow-sm focus-visible:ring-2 focus-visible:ring-[var(--color-focus-ring)] focus-visible:outline-none"
+              className="inline-flex items-center gap-2 bg-white hover:bg-gray-50 text-[var(--color-text-main)] px-5 py-3 sm:px-6 rounded-[var(--radius-btn)] font-medium border border-[var(--color-border)] transition-colors duration-200 shadow-sm focus-visible:ring-2 focus-visible:ring-[var(--color-focus-ring)] focus-visible:outline-none whitespace-nowrap text-[15px] sm:text-base"
             >
               <BookOpen size={18} />
               สำรวจหัวข้อทั้งหมด
@@ -133,13 +133,13 @@ export function HomePage() {
       <ContinueLearningSection />
 
       {/* ─── Featured Topics ──────────────────────────────────────── */}
-      <section aria-labelledby="featured-heading" className="py-14">
+      <section aria-labelledby="featured-heading" className="py-10 sm:py-14">
         <div className="container-wide">
-          <div className="flex items-center justify-between mb-6">
+          <div className="flex items-center justify-between mb-5 sm:mb-6">
             <div>
               <h2
                 id="featured-heading"
-                className="text-xl sm:text-2xl font-bold text-[var(--color-text-main)]"
+                className="text-[19px] sm:text-2xl font-bold text-[var(--color-text-main)]"
               >
                 หัวข้อยอดนิยม
               </h2>
@@ -176,23 +176,23 @@ export function HomePage() {
       {/* ─── Beginner Section ────────────────────────────────────── */}
       <section
         aria-labelledby="beginner-heading"
-        className="py-14 bg-white border-y border-[var(--color-border)]"
+        className="py-10 sm:py-14 bg-white border-y border-[var(--color-border)]"
       >
         <div className="container-content text-center">
           <span className="inline-block text-3xl mb-4" aria-hidden="true">🌱</span>
           <h2
             id="beginner-heading"
-            className="text-xl sm:text-2xl font-bold text-[var(--color-text-main)] mb-3"
+            className="text-[19px] sm:text-2xl font-bold text-[var(--color-text-main)] mb-3"
           >
             ไม่เคยนั่งสมาธิมาก่อน?
           </h2>
-          <p className="text-[var(--color-text-muted)] mb-6 max-w-md mx-auto leading-relaxed">
+          <p className="text-[15px] sm:text-base text-[var(--color-text-muted)] mb-6 max-w-md mx-auto leading-relaxed px-4 sm:px-0">
             ไม่เป็นไร เราจะเริ่มไปด้วยกันทีละขั้น ตั้งแต่ความหมายของสมาธิ
             จนถึงการฝึกใจในชีวิตประจำวัน
           </p>
           <Link
             to="/start"
-            className="inline-flex items-center gap-2 bg-[var(--color-primary)] hover:bg-[var(--color-primary-hover)] text-white px-6 py-3 rounded-[var(--radius-btn)] font-medium transition-colors duration-200 shadow-sm"
+            className="inline-flex items-center gap-2 bg-[var(--color-primary)] hover:bg-[var(--color-primary-hover)] text-white px-5 sm:px-6 py-3 rounded-[var(--radius-btn)] font-medium transition-colors duration-200 shadow-sm whitespace-nowrap text-[15px] sm:text-base"
           >
             เริ่มต้นที่นี่
             <ArrowRight size={16} />
@@ -201,11 +201,11 @@ export function HomePage() {
       </section>
 
       {/* ─── Categories ──────────────────────────────────────────── */}
-      <section aria-labelledby="categories-heading" className="py-14">
+      <section aria-labelledby="categories-heading" className="py-10 sm:py-14">
         <div className="container-wide">
           <h2
             id="categories-heading"
-            className="text-xl sm:text-2xl font-bold text-[var(--color-text-main)] mb-6"
+            className="text-[19px] sm:text-2xl font-bold text-[var(--color-text-main)] mb-5 sm:mb-6"
           >
             หมวดหมู่
           </h2>
@@ -239,7 +239,7 @@ export function HomePage() {
       {/* ─── Daily Practice ──────────────────────────────────────── */}
       <section
         aria-labelledby="daily-heading"
-        className="py-10 bg-[var(--color-primary-soft)] border-t border-[#C8DDD9]"
+        className="py-8 sm:py-10 bg-[var(--color-primary-soft)] border-t border-[#C8DDD9]"
       >
         <div className="container-content text-center">
           <h2
