@@ -6,10 +6,22 @@ import { faqsEn } from '../data/i18n/en/faq';
 import { videosEn } from '../data/i18n/en/videos';
 
 export function getLocalizedTopic(topic: Topic, locale: string): Topic {
-  if (locale !== 'en') return topic;
+  if (locale !== 'en') {
+    return {
+      ...topic,
+      sourceStatus: topic.status,
+      isFallback: false
+    };
+  }
   
   const translation = topicsEn[topic.id];
-  if (!translation) return topic;
+  if (!translation) {
+    return {
+      ...topic,
+      sourceStatus: topic.status,
+      isFallback: true
+    };
+  }
 
   return {
     ...topic,
@@ -19,7 +31,10 @@ export function getLocalizedTopic(topic: Topic, locale: string): Topic {
     keyPoints: translation.keyPoints && translation.keyPoints.length > 0 ? translation.keyPoints : topic.keyPoints,
     practicalSteps: translation.practicalSteps && translation.practicalSteps.length > 0 ? translation.practicalSteps : topic.practicalSteps,
     relatedQuestions: translation.relatedQuestions && translation.relatedQuestions.length > 0 ? translation.relatedQuestions : topic.relatedQuestions,
-    status: translation.status || 'draft',
+    status: topic.status,
+    sourceStatus: topic.status,
+    translationStatus: translation.status || 'draft',
+    isFallback: false,
   };
 }
 

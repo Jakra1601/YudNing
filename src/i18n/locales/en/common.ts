@@ -40,7 +40,15 @@ export const commonEn = {
     categories: "Categories",
     dailyAdviceTitle: "Daily Advice",
     dailyAdviceMain: "Try to be still for 5 minutes today",
-    dailyAdviceSub: "It doesn't have to be perfect, just start"
+    dailyAdviceSub: "It doesn't have to be perfect, just start",
+    exampleQueries: [
+      "Sleepy while meditating",
+      "Restless mind",
+      "Where to place the mind",
+      "How many minutes to sit",
+      "Leg pain while sitting",
+      "Can't visualize"
+    ]
   },
   footer: {
     brandDesc: "A meditation knowledge base, compiled and organized from the <0>ธรรมะ โฆษก</0> YouTube channel.",
@@ -88,6 +96,7 @@ export const commonEn = {
     alertPlaceholder: "Placeholder data — Not yet verified against original video",
     alertUnverified: "This content is currently being verified against the original video",
     alertCaution: "Do not cite until verified by the \"ธรรมะ โฆษก\" YouTube channel.",
+    alertTranslationUnverified: "This translation is currently under review",
     shortAnswer: "Short Answer",
     explanation: "Explanation",
     keyPoints: "Key Points",
@@ -111,6 +120,90 @@ export const commonEn = {
   },
   common: {
     save: "Save",
-    saved: "Saved"
+    saved: "Saved",
+    saveAction: "Save content",
+    unsaveAction: "Remove from saved",
+    loginRequiredToSave: "You must log in to save content. Do you want to log in now?",
+    saveError: "Failed to save content. Please try again."
+  },
+  topicsPage: {
+    seoTitle: "All Topics",
+    seoDescription: "Explore all meditation topics categorized by problems and experiences — compiled from the ธรรมะ โฆษก YouTube channel",
+    title: "All Topics",
+    subtitle: "{{count}} Topics · Compiled from the ธรรมะ โฆษก YouTube channel",
+    allCategories: "All",
+    emptyTitle: "No topics in this category yet",
+    emptyDesc: "Try selecting a different category or view all topics",
+    filterLabel: "Filter by category"
+  },
+  savedContentPage: {
+    seoTitle: "Saved Content | YudNing",
+    seoDescription: "Your saved meditation topics and videos",
+    title: "Saved Content",
+    subtitle: "Your bookmarked meditation topics and videos",
+    viewGrid: "Grid view",
+    viewList: "List view",
+    loading: "Loading data...",
+    emptyTitle: "No saved content yet",
+    emptyDesc: "When you find an interesting article or video, click the bookmark icon to save it here for later.",
+    exploreTopics: "Explore All Topics",
+    exploreLibrary: "Explore Library"
+  },
+  status: {
+    placeholder: "⚠ Sample content",
+    draft: "📝 Reviewing source",
+    verified: "✓ Source verified",
+    translationDraft: "📝 Translation under review",
+    translationVerified: "✓ Translation verified"
+  },
+  category: {
+    beginner: "Beginner",
+    problems: "Common Problems",
+    mind: "Mind Placement",
+    experience: "Inner Experience",
+    after: "After Meditation"
+  },
+  tags: {
+    "สมาธิ": "Meditation",
+    "ผู้เริ่มต้น": "Beginner",
+    "พื้นฐาน": "Basics",
+    "วิธีนั่ง": "How to Sit",
+    "เตรียมตัว": "Preparation",
+    "ท่านั่ง": "Posture",
+    "ร่างกาย": "Body",
+    "ผ่อนคลาย": "Relaxation",
+    "วางใจ": "Mind Placement",
+    "ใจ": "Mind",
+    "เบื้องต้น": "Fundamentals",
+    "ง่วง": "Sleepiness",
+    "ปัญหา": "Problems",
+    "ฟุ้งซ่าน": "Restless Mind",
+    "ความคิด": "Thoughts",
+    "ปวดขา": "Leg Pain",
+    "นึกภาพ": "Visualization",
+    "เวลา": "Time",
+    "ระยะเวลา": "Duration",
+    "ก่อนนอน": "Before Sleep",
+    "ความคาดหวัง": "Expectations",
+    "ทัศนคติ": "Attitude",
+    "ความสม่ำเสมอ": "Consistency",
+    "นิสัย": "Habits",
+    "ชีวิตประจำวัน": "Daily Life",
+    "รักษาใจ": "Guarding the Mind",
+    "หลังนั่ง": "After Meditation",
+    "ประสบการณ์": "Experience",
+    "แสง": "Light",
+    "ภายใน": "Internal",
+    "ธรรมะ": "Dhamma",
+    "ศูนย์กลางกาย": "Center of Body",
+    "ฐานที่ 7": "7th Base",
+    "พระรัตนตรัย": "Triple Gem",
+    "ที่พึ่ง": "Refuge",
+    "บูชาข้าวพระ": "Offering Food to the Buddha",
+    "บุญ": "Merit",
+    "อานิสงส์": "Benefits",
+    "พิสูจน์": "Prove It",
+    "ปฏิบัติ": "Practice",
+    "วิทยาศาสตร์": "Science"
   }
 };

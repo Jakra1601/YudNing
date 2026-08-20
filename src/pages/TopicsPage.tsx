@@ -6,12 +6,14 @@ import { TopicCard } from '../components/topics/TopicCard';
 import { BookOpen } from 'lucide-react';
 import { usePageSEO } from '../hooks/usePageSEO';
 import { EmptyState } from '../components/common/EmptyState';
+import { useTranslation } from 'react-i18next';
 
 export function TopicsPage() {
+  const { t } = useTranslation();
+
   usePageSEO({
-    title: 'หัวข้อทั้งหมด',
-    description:
-      'สำรวจหัวข้อสมาธิทั้งหมด จัดหมวดหมู่ตามปัญหาและประสบการณ์ — เรียบเรียงจากช่อง YouTube ธรรมะ โฆษก',
+    title: t('topicsPage.seoTitle', 'หัวข้อทั้งหมด'),
+    description: t('topicsPage.seoDescription', 'สำรวจหัวข้อสมาธิทั้งหมด จัดหมวดหมู่ตามปัญหาและประสบการณ์ — เรียบเรียงจากช่อง YouTube ธรรมะ โฆษก'),
   });
   const [searchParams, setSearchParams] = useSearchParams();
   const activeCategory = searchParams.get('category') ?? 'all';
@@ -38,10 +40,10 @@ export function TopicsPage() {
         {/* Header */}
         <div className="mb-8">
           <h1 className="text-2xl sm:text-3xl font-bold text-[var(--color-text-main)] mb-2">
-            หัวข้อทั้งหมด
+            {t('topicsPage.title', 'หัวข้อทั้งหมด')}
           </h1>
           <p className="text-[var(--color-text-muted)]">
-            {topics.length} หัวข้อ · เรียบเรียงจากช่อง YouTube ธรรมะ โฆษก
+            {t('topicsPage.subtitle', { count: topics.length, defaultValue: `${topics.length} หัวข้อ · เรียบเรียงจากช่อง YouTube ธรรมะ โฆษก` })}
           </p>
         </div>
 
@@ -49,7 +51,7 @@ export function TopicsPage() {
         <div
           className="flex flex-wrap gap-2 mb-8"
           role="tablist"
-          aria-label="กรองตามหมวดหมู่"
+          aria-label={t('topicsPage.filterLabel', 'กรองตามหมวดหมู่')}
         >
           <button
             role="tab"
@@ -61,7 +63,7 @@ export function TopicsPage() {
                 : 'bg-white text-[var(--color-text-muted)] border border-[var(--color-border)] hover:border-[var(--color-primary)] hover:text-[var(--color-primary)]'
             }`}
           >
-            ทั้งหมด ({topics.length})
+            {t('topicsPage.allCategories', 'ทั้งหมด')} ({topics.length})
           </button>
           {categories.map((cat) => {
             const count = topics.filter((t) => t.categoryId === cat.id).length;
@@ -77,7 +79,7 @@ export function TopicsPage() {
                     : 'bg-white text-[var(--color-text-muted)] border border-[var(--color-border)] hover:border-[var(--color-primary)] hover:text-[var(--color-primary)]'
                 }`}
               >
-                {cat.name} ({count})
+                {t(`category.${cat.slug}`, cat.name)} ({count})
               </button>
             );
           })}
@@ -93,8 +95,8 @@ export function TopicsPage() {
         ) : (
           <EmptyState
             icon={<BookOpen size={40} />}
-            title="ยังไม่มีหัวข้อในหมวดนี้"
-            description="ลองเลือกหมวดหมู่อื่น หรือดูหัวข้อทั้งหมด"
+            title={t('topicsPage.emptyTitle', 'ยังไม่มีหัวข้อในหมวดนี้')}
+            description={t('topicsPage.emptyDesc', 'ลองเลือกหมวดหมู่อื่น หรือดูหัวข้อทั้งหมด')}
           />
         )}
       </div>

@@ -27,4 +27,9 @@ export interface Topic {
   published: boolean;
   createdAt: string;
   updatedAt: string;
+  
+  // Metadata fields for i18n resolver
+  sourceStatus?: TopicStatus;
+  translationStatus?: TopicStatus;
+  isFallback?: boolean;
 }

@@ -298,11 +298,16 @@ YudNing เชื่อว่าการออกแบบเว็บไซต
 *   เว็บไซต์ต้องรองรับภาษาไทยและภาษาอังกฤษ (TH / EN)
 *   ผู้ใช้สามารถสลับภาษาได้
 *   Architecture ต้องรองรับทั้ง UI text และ Content เช่น Topic และ Video
-*   ภาษาไทยเป็น Source Language หลักของเนื้อหาต้นฉบับ
-*   Translation ของเนื้อหาธรรมะต้องรักษาความหมายของ Source ต้นฉบับ
-*   ห้ามแปล ตีความ หรือเพิ่มเติมคำสอนจนความหมายเปลี่ยน
 *   Architecture ควรรองรับการเพิ่มภาษาโดยไม่ต้องรื้อ Data Layer ใหม่
 *   Responsive UI ต้องรองรับความยาวข้อความที่แตกต่างกันระหว่างภาษา
+
+**Knowledge Translation Policy:**
+*   **Thai Knowledge Content = Source of Truth:** เนื้อหาภาษาไทยคือต้นฉบับหลักเสมอ
+*   **English translation must preserve meaning:** การแปลต้องรักษาความหมายเดิม ห้ามแปลแบบอักษรต่ออักษร (literal) หากเสียความเป็นธรรมชาติ แต่ห้ามเสียความหมายหลัก
+*   **No doctrinal additions:** ห้ามแต่งเติมคำสอน เพิ่มการตีความ หรือนำความรู้ภายนอกมาปะปน
+*   **Proper names preserved:** ชื่อเฉพาะ (เช่น "ธรรมะ โฆษก") ต้องรักษาไว้ตามต้นฉบับ
+*   **Consistent Terminology:** คำศัพท์เฉพาะต้องแปลหรือทับศัพท์ให้สอดคล้องกันทุกจุด (เช่น "ใจหยุดนิ่ง" → "allow the mind to become still")
+*   **English verification separate from Thai:** สถานะการตรวจสอบความถูกต้องของภาษาอังกฤษแยกต่างหากจากภาษาไทย (เช่น สถานะ `draft`)
 
 ---
 

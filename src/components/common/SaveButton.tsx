@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { Bookmark, Loader2 } from 'lucide-react';
 import { useAuth } from '../../contexts/AuthContext';
 import { useSavedContent } from '../../contexts/SavedContentContext';
+import { useTranslation } from 'react-i18next';
 
 interface SaveButtonProps {
   contentId: string;
@@ -16,16 +17,16 @@ export function SaveButton({ contentId, contentType, className = '', showLabel =
   const { isContentSaved, toggleSave } = useSavedContent();
   const navigate = useNavigate();
   const [isToggling, setIsToggling] = useState(false);
+  const { t } = useTranslation();
 
   const saved = isContentSaved(contentId, contentType);
 
   const handleClick = async (e: React.MouseEvent) => {
-    e.preventDefault(); // ป้องกันลิงก์ของ Card ทำงาน (ถ้าปุ่มอยู่ใน Card ที่เป็น Link)
-    e.stopPropagation(); // หยุดอีเวนต์ไม่ให้ทะลุไป Card (ถ้าใช้ onClick ที่ Card)
+    e.preventDefault();
+    e.stopPropagation();
 
     if (!user) {
-      // ถ้าเป็น Guest ให้เตือนและไปหน้า login
-      const confirmLogin = window.confirm('คุณต้องเข้าสู่ระบบก่อนจึงจะสามารถบันทึกเนื้อหาได้ ต้องการเข้าสู่ระบบตอนนี้หรือไม่?');
+      const confirmLogin = window.confirm(t('common.loginRequiredToSave', 'คุณต้องเข้าสู่ระบบก่อนจึงจะสามารถบันทึกเนื้อหาได้ ต้องการเข้าสู่ระบบตอนนี้หรือไม่?'));
       if (confirmLogin) {
         navigate('/login');
       }
@@ -39,7 +40,7 @@ export function SaveButton({ contentId, contentType, className = '', showLabel =
       await toggleSave(contentId, contentType);
     } catch (error) {
       console.error('[YudNing] Save action failed', error);
-      alert('เกิดข้อผิดพลาดในการบันทึกเนื้อหา กรุณาลองใหม่อีกครั้ง');
+      alert(t('common.saveError', 'เกิดข้อผิดพลาดในการบันทึกเนื้อหา กรุณาลองใหม่อีกครั้ง'));
     } finally {
       setIsToggling(false);
     }
@@ -55,9 +56,9 @@ export function SaveButton({ contentId, contentType, className = '', showLabel =
       type="button"
       onClick={handleClick}
       disabled={isToggling}
-      aria-label={saved ? 'ยกเลิกการบันทึก' : 'บันทึกเนื้อหา'}
+      aria-label={saved ? t('common.unsaveAction', 'ยกเลิกการบันทึก') : t('common.saveAction', 'บันทึกเนื้อหา')}
       className={`${baseClasses} ${colorClasses}`}
-      title={saved ? 'บันทึกแล้ว' : 'บันทึกเนื้อหา'}
+      title={saved ? t('common.saved') : t('common.saveAction', 'บันทึกเนื้อหา')}
     >
       {isToggling ? (
         <Loader2 size={16} className="animate-spin" aria-hidden="true" />
@@ -70,7 +71,7 @@ export function SaveButton({ contentId, contentType, className = '', showLabel =
       )}
       {showLabel && (
         <span className="text-sm font-medium">
-          {saved ? 'บันทึกแล้ว' : 'บันทึก'}
+          {saved ? t('common.saved') : t('common.save')}
         </span>
       )}
     </button>

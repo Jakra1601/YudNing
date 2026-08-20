@@ -6,34 +6,28 @@ import { SaveButton } from '../common/SaveButton';
 import { useTranslation } from 'react-i18next';
 import { getLocalizedTopic } from '../../i18n/contentResolver';
 
-const levelLabel: Record<string, string> = {
-  beginner: 'ผู้เริ่มต้น',
-  intermediate: 'ระดับกลาง',
-  advanced: 'ขั้นสูง',
-};
-
 interface TopicCardProps {
   topic: Topic;
 }
 
 export function TopicCard({ topic: sourceTopic }: TopicCardProps) {
-  const { i18n } = useTranslation();
+  const { t, i18n } = useTranslation();
   const topic = getLocalizedTopic(sourceTopic, i18n.language);
 
   return (
     <Link
       to={`/topics/${topic.slug}`}
       className="group block bg-white rounded-[var(--radius-card)] border border-[var(--color-border)] p-4 sm:p-5 shadow-[var(--shadow-card)] hover:shadow-[var(--shadow-card-hover)] hover:-translate-y-0.5 transition-all duration-200 focus-visible:ring-2 focus-visible:ring-[var(--color-focus-ring)] focus-visible:outline-none"
-      aria-label={`อ่านเรื่อง ${topic.title}`}
+      aria-label={t('common.readMoreAbout', { title: topic.title, defaultValue: `อ่านเรื่อง ${topic.title}` })}
     >
       {/* Header row */}
       <div className="flex items-start justify-between gap-2 mb-2">
         <span className="text-xs font-medium text-[var(--color-text-muted)] bg-gray-100 px-2 py-0.5 rounded">
-          {levelLabel[topic.level] ?? topic.level}
+          {t(`level.${topic.level}`, topic.level)}
         </span>
         <div className="flex items-center gap-2">
           <SaveButton contentId={topic.id} contentType="topic" />
-          <StatusBadge status={topic.status} />
+          <StatusBadge topic={topic} />
         </div>
       </div>
 
@@ -55,7 +49,7 @@ export function TopicCard({ topic: sourceTopic }: TopicCardProps) {
               key={tag}
               className="text-xs text-[var(--color-text-muted)] bg-[var(--color-background)] px-2 py-0.5 rounded border border-[var(--color-border)]"
             >
-              {tag}
+              {t(`tags.${tag}`, tag)}
             </span>
           ))}
         </div>
@@ -64,7 +58,7 @@ export function TopicCard({ topic: sourceTopic }: TopicCardProps) {
       {/* Read more */}
       <div className="flex items-center gap-1 text-sm text-[var(--color-primary)] font-medium">
         <BookOpen size={14} />
-        <span>อ่านเพิ่มเติม</span>
+        <span>{t('faq.readMore', 'อ่านรายละเอียดเพิ่มเติม')}</span>
         <ChevronRight size={14} className="group-hover:translate-x-0.5 transition-transform duration-200" />
       </div>
     </Link>

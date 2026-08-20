@@ -1,36 +1,59 @@
-import type { TopicStatus } from '../../types/topic';
+import { useTranslation } from 'react-i18next';
+import type { Topic } from '../../types/topic';
 
 interface StatusBadgeProps {
-  status: TopicStatus;
+  topic: Topic;
   className?: string;
 }
-
-const statusConfig: Record<TopicStatus, { label: string; className: string }> = {
-  placeholder: {
-    label: '⚠ ข้อมูลตัวอย่าง',
-    className: 'bg-amber-50 text-amber-700 border border-amber-200',
-  },
-  draft: {
-    label: '📝 กำลังตรวจสอบ',
-    className: 'bg-blue-50 text-blue-700 border border-blue-200',
-  },
-  verified: {
-    label: '✓ ตรวจสอบแล้ว',
-    className: 'bg-[var(--color-primary-soft)] text-[var(--color-primary)] border border-[#C8DDD9]',
-  },
-};
 
 /**
  * StatusBadge — แสดงสถานะการตรวจสอบข้อมูล
  * ใช้ใน TopicCard และ TopicDetailPage เพื่อความโปร่งใส
  */
-export function StatusBadge({ status, className = '' }: StatusBadgeProps) {
-  const config = statusConfig[status];
+export function StatusBadge({ topic, className = '' }: StatusBadgeProps) {
+  const { t, i18n } = useTranslation();
+  const isEn = i18n.language === 'en';
+  
+  const sourceStatus = topic.sourceStatus ?? topic.status;
+  const isFallback = topic.isFallback ?? false;
+  const translationStatus = topic.translationStatus;
+
+  let labelKey = '';
+  let badgeClass = '';
+
+  if (!isEn || isFallback) {
+    if (sourceStatus === 'placeholder') {
+      labelKey = 'status.placeholder';
+      badgeClass = 'bg-amber-50 text-amber-700 border border-amber-200';
+    } else if (sourceStatus === 'draft') {
+      labelKey = 'status.draft';
+      badgeClass = 'bg-blue-50 text-blue-700 border border-blue-200';
+    } else {
+      labelKey = 'status.verified';
+      badgeClass = 'bg-[var(--color-primary-soft)] text-[var(--color-primary)] border border-[#C8DDD9]';
+    }
+  } else {
+    // English UI with translation
+    if (sourceStatus === 'placeholder') {
+      labelKey = 'status.placeholder';
+      badgeClass = 'bg-amber-50 text-amber-700 border border-amber-200';
+    } else if (translationStatus === 'draft') {
+      labelKey = 'status.translationDraft';
+      badgeClass = 'bg-blue-50 text-blue-700 border border-blue-200';
+    } else if (translationStatus === 'verified') {
+      labelKey = 'status.translationVerified';
+      badgeClass = 'bg-[var(--color-primary-soft)] text-[var(--color-primary)] border border-[#C8DDD9]';
+    } else {
+      labelKey = 'status.translationDraft';
+      badgeClass = 'bg-blue-50 text-blue-700 border border-blue-200';
+    }
+  }
+
   return (
     <span
-      className={`inline-flex items-center px-2 py-0.5 rounded text-xs font-medium ${config.className} ${className}`}
+      className={`inline-flex items-center px-2 py-0.5 rounded text-xs font-medium ${badgeClass} ${className}`}
     >
-      {config.label}
+      {t(labelKey)}
     </span>
   );
 }

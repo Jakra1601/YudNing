@@ -158,8 +158,8 @@ export function HomePage() {
           </form>
 
           {/* Example queries */}
-          <div className="flex flex-wrap justify-center gap-2 mb-8 sm:mb-10" aria-label="ตัวอย่างคำค้นหา">
-            {EXAMPLE_QUERIES.map((q) => (
+          <div className="flex flex-wrap justify-center gap-2 mb-8 sm:mb-10" aria-label={t('home.exampleQueriesAria', 'ตัวอย่างคำค้นหา')}>
+            {(Array.isArray(t('home.exampleQueries', { returnObjects: true })) ? (t('home.exampleQueries', { returnObjects: true }) as string[]) : EXAMPLE_QUERIES).map((q) => (
               <button
                 key={q}
                 onClick={() => navigate(`/search?q=${encodeURIComponent(q)}`)}

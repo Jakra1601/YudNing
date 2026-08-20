@@ -82,6 +82,33 @@
 - ✅ รัน `npm run build` ผ่านสมบูรณ์ (0 errors)
 - 🚧 **Next Action:** User Manual Verification — Phase 2 Infrastructure (สลับภาษาแล้วเนื้อหาต้อง fallback เป็นภาษาไทย โดยไม่พัง)
 
+**TH/EN Multilingual Support — Phase 3A: Translation Policy + Pilot Topics 01–03:**
+- ⏳ **IMPLEMENTED / Pending User Manual Verification**
+- ✅ Pilot translations (topic-01, topic-02, topic-03) were refined after user translation review.
+- ✅ Approved terminology baseline was established (e.g. "allow the mind to become still" over literal "standstill", "the center of the body").
+- ✅ Status architecture refinement: Resolved English topics now safely distinguish `sourceStatus` from `translationStatus`.
+- ✅ Thai UI now correctly shows Thai source verification status. English UI correctly shows "Sample content" for unverified sources, and "Translation under review" for draft translations.
+- ✅ Thai Source of Truth remains completely unchanged.
+- ✅ Topic-04 through topic-20 remain untranslated (fallback to Thai).
+- ✅ English Main Search gap resolved.
+- ✅ Mobile UI แสดงผลข้อความภาษาอังกฤษได้ปกติ ไม่ดัน Viewport
+- ✅ Build Result: รัน `npm run build` ผ่าน 100% (0 errors)
+
+**EN UI / Metadata Cleanup Pass:**
+- ✅ **COMPLETED / MANUAL VERIFIED**
+- ✅ Localized `SaveButton`, tags, levels, and categories.
+- ✅ Replaced remaining Thai hardcoded UI text in `TopicCard`, `TopicDetailPage`, `TopicsPage`, `SavedContentPage`, and `HomePage` with i18n variables.
+- ✅ Validated UI integrity across both English and Thai Locales.
+
+**English Main Search Localization Fix:**
+- ✅ **COMPLETED / MANUAL VERIFIED**
+- ✅ Fixed `useSearch` to index localized EN topic content when active locale is EN.
+- ✅ Ensured fallback untranslated topics remain searchable through their Thai representations in EN locale.
+- ✅ Maintained Topic identity (`id`, `slug`, `relatedTopics`).
+- ✅ Search Autocomplete remains perfectly aligned and functional without regression.
+- ✅ URL `?q=` routing, rendering, and localized `TopicCard` rendering all preserved.
+- ✅ Build Result: รัน `npm run build` ผ่าน 100% (0 errors)
+
 > **Session 13 (Supabase Auth Foundation)** เสร็จสมบูรณ์แล้ว — ดูรายละเอียดในส่วน **Phase 7** ด้านล่าง
 
 **Session 33 (Global Navigation Scroll-to-Top Fix):**

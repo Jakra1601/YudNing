@@ -200,7 +200,7 @@ export function TopicDetailPage() {
                 to={`/topics?category=${category.slug}`}
                 className="hover:text-[var(--color-primary)] transition-colors duration-200"
               >
-                {category.name}
+                {t(`category.${category.slug}`, category.name)}
               </Link>
             </>
           )}
@@ -210,21 +210,46 @@ export function TopicDetailPage() {
           </span>
         </nav>
 
-        {topic.status !== 'verified' && (
-          <div className="flex items-start gap-3 bg-amber-50 border border-amber-200 rounded-[var(--radius-card)] p-4 mb-6" role="alert">
-            <AlertTriangle size={18} className="text-amber-600 shrink-0 mt-0.5" />
-            <div>
-              <p className="text-sm font-medium text-amber-800">
-                {topic.status === 'placeholder'
-                  ? t('topicDetail.alertPlaceholder')
-                  : t('topicDetail.alertUnverified')}
-              </p>
-              <p className="text-xs text-amber-700 mt-0.5">
-                {t('topicDetail.alertCaution')}
-              </p>
+        {(() => {
+          const isEn = i18n.language === 'en';
+          const sourceStatus = topic.sourceStatus ?? topic.status;
+          const isFallback = topic.isFallback ?? false;
+          
+          let showAlert = false;
+          let alertTitleKey = '';
+          const alertDescKey = 'topicDetail.alertCaution';
+          
+          if (!isEn || isFallback) {
+             if (sourceStatus !== 'verified') {
+               showAlert = true;
+               alertTitleKey = sourceStatus === 'placeholder' ? 'topicDetail.alertPlaceholder' : 'topicDetail.alertUnverified';
+             }
+          } else {
+             if (sourceStatus === 'placeholder') {
+               showAlert = true;
+               alertTitleKey = 'topicDetail.alertPlaceholder';
+             } else if (topic.translationStatus === 'draft') {
+               showAlert = true;
+               alertTitleKey = 'topicDetail.alertTranslationUnverified';
+             }
+          }
+
+          if (!showAlert) return null;
+
+          return (
+            <div className="flex items-start gap-3 bg-amber-50 border border-amber-200 rounded-[var(--radius-card)] p-4 mb-6" role="alert">
+              <AlertTriangle size={18} className="text-amber-600 shrink-0 mt-0.5" />
+              <div>
+                <p className="text-sm font-medium text-amber-800">
+                  {t(alertTitleKey)}
+                </p>
+                <p className="text-xs text-amber-700 mt-0.5">
+                  {t(alertDescKey)}
+                </p>
+              </div>
             </div>
-          </div>
-        )}
+          );
+        })()}
 
         <div className="mb-8">
           <div className="flex flex-wrap items-center justify-between gap-4 mb-3">
@@ -232,13 +257,13 @@ export function TopicDetailPage() {
               <span className="text-xs font-medium text-[var(--color-text-muted)] bg-gray-100 px-2 py-0.5 rounded">
                 {t(`level.${topic.level}`)}
               </span>
-              <StatusBadge status={topic.status} />
+              <StatusBadge topic={topic} />
               {topic.tags.map((tag) => (
                 <span
                   key={tag}
                   className="text-xs text-[var(--color-text-muted)] bg-[var(--color-background)] border border-[var(--color-border)] px-2 py-0.5 rounded"
                 >
-                  {tag}
+                  {t(`tags.${tag}`, tag)}
                 </span>
               ))}
             </div>

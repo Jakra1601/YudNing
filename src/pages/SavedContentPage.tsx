@@ -9,15 +9,18 @@ import { VideoCard } from '../components/videos/VideoCard';
 import { usePageSEO } from '../hooks/usePageSEO';
 import type { Topic } from '../types/topic';
 import type { Video } from '../types/video';
+import { useTranslation } from 'react-i18next';
 
 type SavedItem =
   | { type: 'topic'; data: Topic; savedAt: string }
   | { type: 'video'; data: Video; savedAt: string };
 
 export function SavedContentPage() {
+  const { t } = useTranslation();
+
   usePageSEO({
-    title: 'เนื้อหาที่บันทึกไว้ | YudNing',
-    description: 'เนื้อหาสมาธิที่ถูกบันทึกไว้เป็นรายการโปรดของคุณ',
+    title: t('savedContentPage.seoTitle', 'เนื้อหาที่บันทึกไว้ | YudNing'),
+    description: t('savedContentPage.seoDescription', 'เนื้อหาสมาธิที่ถูกบันทึกไว้เป็นรายการโปรดของคุณ'),
   });
 
   const { savedItems, isLoading } = useSavedContent();
@@ -54,10 +57,10 @@ export function SavedContentPage() {
           <div>
             <h1 className="text-2xl sm:text-3xl font-bold text-[var(--color-text-main)] leading-tight mb-1 flex items-center gap-2">
               <Bookmark size={24} className="text-[var(--color-primary)]" />
-              เนื้อหาที่บันทึกไว้
+              {t('savedContentPage.title', 'เนื้อหาที่บันทึกไว้')}
             </h1>
             <p className="text-[var(--color-text-muted)]">
-              รายการหัวข้อสมาธิและวิดีโอที่คุณบันทึกไว้
+              {t('savedContentPage.subtitle', 'รายการหัวข้อสมาธิและวิดีโอที่คุณบันทึกไว้')}
             </p>
           </div>
 
@@ -69,7 +72,7 @@ export function SavedContentPage() {
                   ? 'bg-white shadow-sm text-[var(--color-primary)]'
                   : 'text-[var(--color-text-muted)] hover:text-[var(--color-text-main)]'
               }`}
-              aria-label="แสดงแบบกริด"
+              aria-label={t('savedContentPage.viewGrid', 'แสดงแบบกริด')}
             >
               <LayoutGrid size={18} />
             </button>
@@ -80,7 +83,7 @@ export function SavedContentPage() {
                   ? 'bg-white shadow-sm text-[var(--color-primary)]'
                   : 'text-[var(--color-text-muted)] hover:text-[var(--color-text-main)]'
               }`}
-              aria-label="แสดงแบบรายการ"
+              aria-label={t('savedContentPage.viewList', 'แสดงแบบรายการ')}
             >
               <List size={18} />
             </button>
@@ -92,7 +95,7 @@ export function SavedContentPage() {
           <div className="py-20 flex flex-col items-center justify-center text-[var(--color-text-muted)]">
             <div className="animate-pulse flex flex-col items-center gap-4">
               <div className="w-10 h-10 border-4 border-[var(--color-border)] border-t-[var(--color-primary)] rounded-full animate-spin"></div>
-              <p>กำลังโหลดข้อมูล...</p>
+              <p>{t('savedContentPage.loading', 'กำลังโหลดข้อมูล...')}</p>
             </div>
           </div>
         ) : resolvedItems.length === 0 ? (
@@ -100,23 +103,23 @@ export function SavedContentPage() {
           <div className="py-16 bg-white border border-[var(--color-border)] rounded-[var(--radius-card)] text-center shadow-sm">
             <Bookmark size={48} className="mx-auto text-gray-200 mb-4" />
             <h3 className="text-lg font-semibold text-[var(--color-text-main)] mb-2">
-              ยังไม่มีเนื้อหาที่บันทึกไว้
+              {t('savedContentPage.emptyTitle', 'ยังไม่มีเนื้อหาที่บันทึกไว้')}
             </h3>
             <p className="text-[var(--color-text-muted)] mb-6 max-w-sm mx-auto">
-              คุณสามารถกดไอคอนบันทึกที่หัวข้อหรือวิดีโอ เพื่อเก็บไว้อ่านหรือดูในภายหลังได้ที่นี่
+              {t('savedContentPage.emptyDesc', 'คุณสามารถกดไอคอนบันทึกที่หัวข้อหรือวิดีโอ เพื่อเก็บไว้อ่านหรือดูในภายหลังได้ที่นี่')}
             </p>
             <div className="flex justify-center gap-3">
               <Link
                 to="/topics"
                 className="px-4 py-2 rounded-[var(--radius-btn)] bg-[var(--color-primary)] text-white text-sm font-medium hover:bg-[var(--color-primary-hover)] transition-colors"
               >
-                ดูหัวข้อทั้งหมด
+                {t('savedContentPage.exploreTopics', 'ดูหัวข้อทั้งหมด')}
               </Link>
               <Link
                 to="/library"
                 className="px-4 py-2 rounded-[var(--radius-btn)] bg-gray-100 text-[var(--color-text-main)] text-sm font-medium hover:bg-gray-200 transition-colors"
               >
-                ดูคลังสมาธิ
+                {t('savedContentPage.exploreLibrary', 'ดูคลังสมาธิ')}
               </Link>
             </div>
           </div>

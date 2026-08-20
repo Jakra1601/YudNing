@@ -1,6 +1,8 @@
 import { useMemo, useState } from 'react';
 import Fuse from 'fuse.js';
 import type { Topic } from '../types/topic';
+import { useTranslation } from 'react-i18next';
+import { getLocalizedTopic } from '../i18n/contentResolver';
 
 interface SearchResult {
   item: Topic;
@@ -9,14 +11,19 @@ interface SearchResult {
 
 /**
  * useSearch — Custom hook สำหรับค้นหา Topics ด้วย Fuse.js
- * รองรับการค้นหาภาษาไทยด้วย keyword matching
+ * รองรับการค้นหาภาษาไทยและภาษาอื่นๆ ด้วย keyword matching
  */
 export function useSearch(topics: Topic[]) {
   const [query, setQuery] = useState('');
+  const { i18n } = useTranslation();
+
+  const localizedTopics = useMemo(() => {
+    return topics.map(t => getLocalizedTopic(t, i18n.language));
+  }, [topics, i18n.language]);
 
   const fuse = useMemo(
     () =>
-      new Fuse(topics, {
+      new Fuse(localizedTopics, {
         keys: [
           { name: 'title', weight: 2 },
           { name: 'shortAnswer', weight: 1.5 },
@@ -30,7 +37,7 @@ export function useSearch(topics: Topic[]) {
         includeScore: true,
         minMatchCharLength: 1,
       }),
-    [topics]
+    [localizedTopics]
   );
 
   const results = useMemo((): SearchResult[] => {
