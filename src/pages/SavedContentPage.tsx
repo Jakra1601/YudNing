@@ -130,7 +130,7 @@ export function SavedContentPage() {
               if (item.type === 'topic') {
                 return <TopicCard key={key} topic={item.data as Topic} />;
               } else {
-                return <VideoCard key={key} video={item.data as Video} />;
+                return <VideoCard key={key} video={item.data as Video} showTimestamps={false} />;
               }
             })}
           </div>

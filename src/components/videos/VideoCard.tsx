@@ -2,6 +2,8 @@ import { ExternalLink, Clock, Check } from 'lucide-react';
 import { createYouTubeTimestampUrl } from '../../utils/youtube';
 import type { Video } from '../../types/video';
 import { SaveButton } from '../common/SaveButton';
+import { useTranslation } from 'react-i18next';
+import { getLocalizedVideo } from '../../i18n/contentResolver';
 
 interface VideoCardProps {
   video: Video;
@@ -11,6 +13,8 @@ interface VideoCardProps {
   onSelect?: () => void;
   /** Highlight Timestamp ID ที่ต้องการเน้น */
   highlightTimestampId?: string;
+  /** แสดงรายการช่วงเวลาที่เกี่ยวข้องหรือไม่ (ค่าเริ่มต้น: true) */
+  showTimestamps?: boolean;
 }
 
 /**
@@ -19,7 +23,10 @@ interface VideoCardProps {
  * รองรับทั้งโหมดปกติ และโหมด selectable (ใช้ใน RelatedVideosSection)
  * เมื่อ `onSelect` ถูกส่งเข้ามา การ์ดจะกลายเป็น interactive element
  */
-export function VideoCard({ video, isSelected, onSelect, highlightTimestampId }: VideoCardProps) {
+export function VideoCard({ video: sourceVideo, isSelected, onSelect, highlightTimestampId, showTimestamps = true }: VideoCardProps) {
+  const { i18n } = useTranslation();
+  const video = getLocalizedVideo(sourceVideo, i18n.language);
+
   const thumbnailUrl = video.thumbnailUrl ||
     `https://img.youtube.com/vi/${video.youtubeId}/mqdefault.jpg`;
 
@@ -104,7 +111,7 @@ export function VideoCard({ video, isSelected, onSelect, highlightTimestampId }:
           )}
 
         {/* Timestamps */}
-        {video.timestamps.length > 0 && (
+        {showTimestamps && video.timestamps.length > 0 && (
           <div className="mb-3">
             <p className="text-xs font-medium text-[var(--color-text-muted)] mb-2">
               ช่วงเวลาที่เกี่ยวข้อง:

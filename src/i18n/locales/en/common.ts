@@ -22,10 +22,10 @@ export const commonEn = {
   },
   home: {
     seoTitle: "Home",
-    seoDescription: "YudNing — Learn meditation step-by-step, find answers, and watch original videos from Dhamma Kosok YouTube channel.",
+    seoDescription: "YudNing — Learn meditation step-by-step, find answers, and watch original videos from ธรรมะ โฆษก.",
     eyebrow: "YudNing · Stillness",
     heroTitle: "Stillness Starts Here",
-    heroSubtitle: "Learn meditation step-by-step, find answers, and watch original videos from <0>Dhamma Kosok</0> channel.",
+    heroSubtitle: "Learn meditation step-by-step, find answers, and watch original videos from <0>ธรรมะ โฆษก</0>.",
     searchLabel: "What do you want to learn today?",
     searchPlaceholder: "What do you want to learn today?",
     searchButton: "Search",
@@ -43,16 +43,16 @@ export const commonEn = {
     dailyAdviceSub: "It doesn't have to be perfect, just start"
   },
   footer: {
-    brandDesc: "A meditation knowledge base, compiled and organized from the <0>Dhamma Kosok</0> YouTube channel.",
+    brandDesc: "A meditation knowledge base, compiled and organized from the <0>ธรรมะ โฆษก</0> YouTube channel.",
     youtubeLink: "Original YouTube Channel",
     explore: "Explore",
     info: "Information",
-    disclaimer: "<0>Disclaimer:</0> This website was created to compile and improve access to the content. The original content and video rights belong to the Dhamma Kosok YouTube channel. YudNing is not an official website of the channel.",
+    disclaimer: "<0>Disclaimer:</0> This website was created to compile and improve access to the content. The original content and video rights belong to the ธรรมะ โฆษก YouTube channel. YudNing is not an official website of the channel.",
     copyright: "© {{year}} YudNing — Some content is currently being verified against original videos."
   },
   start: {
     seoTitle: "Start Here",
-    seoDescription: "New to meditation? Start here — A 5-step meditation guide for beginners from the Dhamma Kosok YouTube channel.",
+    seoDescription: "New to meditation? Start here — A 5-step meditation guide for beginners from the ธรรมะ โฆษก YouTube channel.",
     eyebrow: "For Beginners",
     title: "Start Here",
     subtitle: "Not sure where to begin? No worries, we've organized the content into simple steps. Read and practice one step at a time.",
@@ -63,7 +63,7 @@ export const commonEn = {
   },
   faq: {
     seoTitle: "FAQ",
-    seoDescription: "Frequently asked questions about meditation — Answers to common questions like how long to meditate, how to handle a restless mind, or sleepiness, from the Dhamma Kosok YouTube channel.",
+    seoDescription: "Frequently asked questions about meditation — Answers to common questions like how long to meditate, how to handle a restless mind, or sleepiness, from the ธรรมะ โฆษก YouTube channel.",
     readMore: "Read more details",
     title: "Frequently Asked Questions",
     subtitle: "Common questions among meditators, both beginners and regular practitioners.",
@@ -87,7 +87,7 @@ export const commonEn = {
     allTopics: "All Topics",
     alertPlaceholder: "Placeholder data — Not yet verified against original video",
     alertUnverified: "This content is currently being verified against the original video",
-    alertCaution: "Do not cite until verified by the \"Dhamma Kosok\" YouTube channel.",
+    alertCaution: "Do not cite until verified by the \"ธรรมะ โฆษก\" YouTube channel.",
     shortAnswer: "Short Answer",
     explanation: "Explanation",
     keyPoints: "Key Points",
@@ -105,7 +105,9 @@ export const commonEn = {
     noResults: "No results found for \"{{query}}\"",
     tryDifferent: "Try different keywords, or select from the examples below",
     exampleQueries: "Example queries",
-    orExploreAll: "Or explore all topics"
+    orExploreAll: "Or explore all topics",
+    typeTopic: "Topic",
+    typeFAQ: "Question"
   },
   common: {
     save: "Save",

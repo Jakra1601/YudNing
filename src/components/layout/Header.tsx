@@ -15,6 +15,8 @@ import { useAuth } from '../../contexts/AuthContext';
 import { useTranslation } from 'react-i18next';
 import { LanguageSwitcher } from '../common/LanguageSwitcher';
 import yudningLogo from '../../assets/branding/yudning-logo-main.png';
+import { useSearchSuggestions } from '../../hooks/useSearchSuggestions';
+import { SearchAutocompleteDropdown } from '../search/SearchAutocompleteDropdown';
 
 // navLinks moved inside component for translation
 
@@ -188,8 +190,45 @@ export function Header() {
   const [menuOpen, setMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
+  const [dropdownVisible, setDropdownVisible] = useState(false);
+  const [selectedIndex, setSelectedIndex] = useState(-1);
   const [userMenuOpen, setUserMenuOpen] = useState(false);
   const navigate = useNavigate();
+  
+  const suggestions = useSearchSuggestions(searchQuery);
+
+  useEffect(() => {
+    setSelectedIndex(-1);
+    if (searchQuery.trim().length > 0) {
+      setDropdownVisible(true);
+    } else {
+      setDropdownVisible(false);
+    }
+  }, [searchQuery]);
+
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (!dropdownVisible || suggestions.length === 0) return;
+    if (e.key === 'ArrowDown') {
+      e.preventDefault();
+      setSelectedIndex((prev) => (prev < suggestions.length - 1 ? prev + 1 : prev));
+    } else if (e.key === 'ArrowUp') {
+      e.preventDefault();
+      setSelectedIndex((prev) => (prev > 0 ? prev - 1 : -1));
+    } else if (e.key === 'Enter') {
+      if (selectedIndex >= 0) {
+        e.preventDefault();
+        const suggestion = suggestions[selectedIndex];
+        if (suggestion.targetId) {
+          navigate(`/topics/${suggestion.targetId}`);
+        } else {
+          navigate(`/faq`);
+        }
+        setDropdownVisible(false);
+      }
+    } else if (e.key === 'Escape') {
+      setDropdownVisible(false);
+    }
+  };
   const location = useLocation();
   const { user, isLoading: authLoading, signOut } = useAuth();
   const { t } = useTranslation();
@@ -422,8 +461,30 @@ export function Header() {
                 type="search"
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
+                onKeyDown={handleKeyDown}
+                onFocus={() => {
+                  if (searchQuery.trim().length > 0) setDropdownVisible(true);
+                }}
                 placeholder={t('header.searchPlaceholder')}
                 className="w-full pl-9 pr-3 py-1.5 text-sm bg-[var(--color-background)] border border-[var(--color-border)] rounded-[var(--radius-btn)] text-[var(--color-text-main)] placeholder:text-[var(--color-text-muted)] focus:outline-none focus:border-[var(--color-primary)] focus:ring-2 focus:ring-[var(--color-primary-soft)] transition-colors duration-200"
+                autoComplete="off"
+                role="combobox"
+                aria-expanded={dropdownVisible}
+                aria-controls="search-dropdown-desktop"
+                aria-autocomplete="list"
+              />
+              <SearchAutocompleteDropdown
+                id="search-dropdown-desktop"
+                suggestions={suggestions}
+                isVisible={dropdownVisible}
+                onClose={() => setDropdownVisible(false)}
+                onSelect={() => {
+                  setDropdownVisible(false);
+                  setSearchQuery('');
+                  setMenuOpen(false);
+                }}
+                selectedIndex={selectedIndex}
+                className="right-0 w-full md:w-[420px] md:right-0 md:left-auto"
               />
             </div>
           </form>
@@ -473,8 +534,29 @@ export function Header() {
                   type="search"
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
+                  onKeyDown={handleKeyDown}
+                  onFocus={() => {
+                    if (searchQuery.trim().length > 0) setDropdownVisible(true);
+                  }}
                   placeholder={t('header.searchPlaceholder')}
                   className="w-full pl-9 pr-3 py-3 text-sm bg-[var(--color-background)] border border-[var(--color-border)] rounded-[var(--radius-btn)] text-[var(--color-text-main)] placeholder:text-[var(--color-text-muted)] focus:outline-none focus:border-[var(--color-primary)] focus:ring-2 focus:ring-[var(--color-primary-soft)] transition-colors duration-200"
+                  autoComplete="off"
+                  role="combobox"
+                  aria-expanded={dropdownVisible}
+                  aria-controls="search-dropdown-mobile"
+                  aria-autocomplete="list"
+                />
+                <SearchAutocompleteDropdown
+                  id="search-dropdown-mobile"
+                  suggestions={suggestions}
+                  isVisible={dropdownVisible}
+                  onClose={() => setDropdownVisible(false)}
+                  onSelect={() => {
+                    setDropdownVisible(false);
+                    setSearchQuery('');
+                    setMenuOpen(false);
+                  }}
+                  selectedIndex={selectedIndex}
                 />
               </div>
             </form>

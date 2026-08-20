@@ -1,11 +1,13 @@
-import { useSearchParams, Link } from 'react-router-dom';
-import { useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { useSearch } from '../hooks/useSearch';
 import { topics } from '../data/topics';
 import { TopicCard } from '../components/topics/TopicCard';
 import { Search, ArrowRight } from 'lucide-react';
 import { useTranslation, Trans } from 'react-i18next';
 import { usePageSEO } from '../hooks/usePageSEO';
+import { useSearchSuggestions } from '../hooks/useSearchSuggestions';
+import { SearchAutocompleteDropdown } from '../components/search/SearchAutocompleteDropdown';
+import { useNavigate, useSearchParams, Link } from 'react-router-dom';
 
 const EXAMPLE_QUERIES = [
   'ง่วง', 'ฟุ้งซ่าน', 'ปวดขา', 'วางใจ', 'นึกภาพไม่ออก', 'สมาธิ',
@@ -26,6 +28,44 @@ export function SearchPage() {
   useEffect(() => {
     if (urlQuery) setQuery(urlQuery);
   }, [urlQuery, setQuery]);
+
+  const [dropdownVisible, setDropdownVisible] = useState(false);
+  const [selectedIndex, setSelectedIndex] = useState(-1);
+  const navigate = useNavigate();
+  const suggestions = useSearchSuggestions(query);
+
+  useEffect(() => {
+    setSelectedIndex(-1);
+    if (query.trim().length > 0) {
+      setDropdownVisible(true);
+    } else {
+      setDropdownVisible(false);
+    }
+  }, [query]);
+
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (!dropdownVisible || suggestions.length === 0) return;
+    if (e.key === 'ArrowDown') {
+      e.preventDefault();
+      setSelectedIndex((prev) => (prev < suggestions.length - 1 ? prev + 1 : prev));
+    } else if (e.key === 'ArrowUp') {
+      e.preventDefault();
+      setSelectedIndex((prev) => (prev > 0 ? prev - 1 : -1));
+    } else if (e.key === 'Enter') {
+      if (selectedIndex >= 0) {
+        e.preventDefault();
+        const suggestion = suggestions[selectedIndex];
+        if (suggestion.targetId) {
+          navigate(`/topics/${suggestion.targetId}`);
+        } else {
+          navigate(`/faq`);
+        }
+        setDropdownVisible(false);
+      }
+    } else if (e.key === 'Escape') {
+      setDropdownVisible(false);
+    }
+  };
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -63,9 +103,28 @@ export function SearchPage() {
               type="search"
               value={query}
               onChange={(e) => setQuery(e.target.value)}
+              onKeyDown={handleKeyDown}
+              onFocus={() => {
+                if (query.trim().length > 0) setDropdownVisible(true);
+              }}
               placeholder={t('searchPage.placeholder')}
               className="w-full pl-12 pr-4 py-4 text-base bg-white border-2 border-[var(--color-border)] rounded-[var(--radius-card)] text-[var(--color-text-main)] placeholder:text-[var(--color-text-muted)] shadow-[var(--shadow-card)] focus:outline-none focus:border-[var(--color-primary)] focus:ring-4 focus:ring-[var(--color-primary-soft)] transition-all duration-200"
               autoFocus
+              autoComplete="off"
+              role="combobox"
+              aria-expanded={dropdownVisible}
+              aria-controls="search-dropdown-page"
+              aria-autocomplete="list"
+            />
+            <SearchAutocompleteDropdown
+              id="search-dropdown-page"
+              suggestions={suggestions}
+              isVisible={dropdownVisible}
+              onClose={() => setDropdownVisible(false)}
+              onSelect={() => {
+                setDropdownVisible(false);
+              }}
+              selectedIndex={selectedIndex}
             />
           </div>
         </form>

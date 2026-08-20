@@ -128,13 +128,16 @@ function RelatedVideosSection({ videos: relatedVideos, topicId }: { videos: Vide
   );
 }
 
+import { getLocalizedTopic, getLocalizedVideo } from '../i18n/contentResolver';
+
 /* ─── TopicDetailPage ────────────────────────────────────────────────────── */
 
 export function TopicDetailPage() {
   const { slug } = useParams<{ slug: string }>();
-  const topic = topics.find((t) => t.slug === slug);
+  const sourceTopic = topics.find((t) => t.slug === slug);
   const { user } = useAuth();
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
+  const topic = sourceTopic ? getLocalizedTopic(sourceTopic, i18n.language) : undefined;
 
   usePageSEO({
     title: topic ? topic.title : t('topicDetail.notFoundTitle'),
@@ -173,7 +176,9 @@ export function TopicDetailPage() {
   }
 
   const category = categories.find((c) => c.id === topic.categoryId);
-  const relatedVideos = videos.filter((v) => topic.relatedVideoIds.includes(v.id));
+  const relatedVideos = videos
+    .filter((v) => topic.relatedVideoIds.includes(v.id))
+    .map((v) => getLocalizedVideo(v, i18n.language));
   const relatedTopics = topics.filter((t) => topic.relatedTopicIds.includes(t.id));
 
   return (

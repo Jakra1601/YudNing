@@ -241,6 +241,14 @@ YudNing เชื่อว่าการออกแบบเว็บไซต
 
 > Stillness begins with thoughtful design.
 
+## Search Experience
+
+* Search must support discoverability through autocomplete / suggestions where appropriate.
+* Suggestions must be derived from verified/existing YudNing Knowledge Content, not generated externally.
+* Search must remain compatible with TH/EN localization.
+* Stable IDs must be used for navigation and identity.
+* Search UX must remain mobile responsive.
+
 ## Content Source Policy
 
 ข้อมูลทั้งหมดในเว็บไซต์ต้องอ้างอิงจากช่อง YouTube:

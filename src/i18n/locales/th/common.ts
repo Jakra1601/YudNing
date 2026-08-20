@@ -105,7 +105,9 @@ export const commonTh = {
     noResults: "ไม่พบผลลัพธ์สำหรับ \"{{query}}\"",
     tryDifferent: "ลองใช้คำอื่น หรือเลือกจากตัวอย่างด้านล่าง",
     exampleQueries: "ตัวอย่างคำค้นหา",
-    orExploreAll: "หรือสำรวจหัวข้อทั้งหมด"
+    orExploreAll: "หรือสำรวจหัวข้อทั้งหมด",
+    typeTopic: "หัวข้อ",
+    typeFAQ: "คำถาม"
   },
   common: {
     save: "บันทึก",

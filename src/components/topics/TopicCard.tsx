@@ -3,6 +3,8 @@ import type { Topic } from '../../types/topic';
 import { StatusBadge } from '../common/StatusBadge';
 import { ChevronRight, BookOpen } from 'lucide-react';
 import { SaveButton } from '../common/SaveButton';
+import { useTranslation } from 'react-i18next';
+import { getLocalizedTopic } from '../../i18n/contentResolver';
 
 const levelLabel: Record<string, string> = {
   beginner: 'ผู้เริ่มต้น',
@@ -14,7 +16,10 @@ interface TopicCardProps {
   topic: Topic;
 }
 
-export function TopicCard({ topic }: TopicCardProps) {
+export function TopicCard({ topic: sourceTopic }: TopicCardProps) {
+  const { i18n } = useTranslation();
+  const topic = getLocalizedTopic(sourceTopic, i18n.language);
+
   return (
     <Link
       to={`/topics/${topic.slug}`}

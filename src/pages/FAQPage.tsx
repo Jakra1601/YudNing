@@ -5,13 +5,20 @@ import { ChevronDown, ChevronUp, ArrowRight } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import { usePageSEO } from '../hooks/usePageSEO';
 
+import { getLocalizedFAQ } from '../i18n/contentResolver';
+
+import { topics } from '../data/topics';
+
 interface FAQItemProps {
   faq: typeof faqs[0];
 }
 
-function FAQItem({ faq }: FAQItemProps) {
+function FAQItem({ faq: sourceFAQ }: FAQItemProps) {
   const [open, setOpen] = useState(false);
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
+  const faq = getLocalizedFAQ(sourceFAQ, i18n.language);
+  const relatedTopic = faq.relatedTopicId ? topics.find(t => t.id === faq.relatedTopicId) : null;
+  const targetSlug = relatedTopic?.slug;
 
   return (
     <div className="border border-[var(--color-border)] rounded-[var(--radius-card)] overflow-hidden">
@@ -44,9 +51,9 @@ function FAQItem({ faq }: FAQItemProps) {
           <p className="text-[var(--color-text-muted)] text-sm leading-relaxed mt-3 mb-3">
             {faq.shortAnswer}
           </p>
-          {faq.relatedTopicId && (
+          {targetSlug && (
             <Link
-              to={`/topics/${faqs.find((f) => f.id === faq.id)?.relatedTopicId ?? ''}`}
+              to={`/topics/${targetSlug}`}
               className="inline-flex items-center gap-1 text-sm font-medium text-[var(--color-primary)] hover:text-[var(--color-primary-hover)] transition-colors duration-200"
             >
               {t('faq.readMore')}

@@ -36,9 +36,51 @@
 - ✅ จัดการ Knowledge Content (Topic labels/titles) โดยเว้นไว้ไม่แปล เพื่อรักษาความถูกต้องตาม Requirement หลัก
 - ✅ รัน `npm run build` ผ่านสมบูรณ์ (0 errors)
 
-> **หมายเหตุ:** User Manual Verification ผ่านแล้วสำหรับ TH / EN Switching, Locale Persistence, Saved Content, Learning History, Practice Log, Authentication, Navigation / Scroll Behavior, และ Mobile / Desktop UI. Knowledge Content ยังเป็นภาษาไทย และ Phase 2 ยังไม่ได้เริ่ม
+**Search UX Enhancement — Autocomplete / Search Suggestions:**
+- ✅ **COMPLETED / MANUAL VERIFIED (Bug Fix & UX Consistency Pass)**
+- ✅ Desktop Dropdown width fix: แก้ไขขนาด Dropdown บน Desktop Header ให้แสดงผลกว้างเพียงพอสำหรับอ่านชื่อหัวข้อ โดยไม่กระทบ Mobile behavior (Mobile behavior preserved)
+- ✅ FAQ navigation fix (Autocomplete & FAQ Page): แก้บั๊ก “ไม่พบหัวข้อนี้” โดยเพิ่ม logic ดึง slug จริงจาก relatedTopicId หากไม่พบหรือเกิดข้อผิดพลาด จะ fallback กลับไปที่ `/faq` หรือซ่อนปุ่มตามพฤติกรรมดั้งเดิม
+- ✅ Home Hero Autocomplete integration: เพิ่มระบบ Autocomplete เข้ากับช่องค้นหาหลักบน HomePage โดยใช้ shared logic เดิมสมบูรณ์ 100% พร้อมรองรับ Keyboard navigation ครบถ้วน
+- ✅ Suggestion architecture: ใช้ `useSearchSuggestions` hook ดึงข้อมูลจาก Data Layer ตรงๆ และครอบด้วย `contentResolver` เพื่อรองรับ i18n
+- ✅ i18n fallback behavior: หากไม่มีฉบับแปลภาษาอังกฤษ, Suggestions จะ fallback เป็นภาษาไทย ซึ่งถูกต้องตาม Requirement ของ Phase 2
+- ✅ Build Result: รัน `npm run build` ผ่าน 100% (0 TypeScript errors)
 
-> **Next Major Task:** TH/EN Multilingual Support Phase 2 — Knowledge Content Infrastructure
+**Source Proper Name Policy / UI Text Correction:**
+- ✅ **COMPLETED / MANUAL VERIFIED**
+- ✅ กำหนดให้ถือเป็น Permanent i18n Rule: "Source proper names / official channel names must preserve their original name. 'ธรรมะ โฆษก' must remain 'ธรรมะ โฆษก' in both TH and EN locales unless an official English name is explicitly verified in the future."
+- ✅ ค้นหาและแทนที่คำว่า "Dhamma Kosok" ด้วย "ธรรมะ โฆษก" ทั้งหมดในฝั่ง UI ของภาษาอังกฤษ (`src/i18n/locales/en/common.ts`) 
+- ✅ ปรับปรุงประโยคภาษาอังกฤษบน Hero (Subtitle) เป็น: "Learn meditation step-by-step, find answers, and watch original videos from <0>ธรรมะ โฆษก</0>." เพื่อความเป็นธรรมชาติ
+- ✅ ไม่มีการแตะต้อง `src/data/*` หรือ Knowledge Content
+- ✅ รัน `npm run build` ผ่านสมบูรณ์ (0 errors)
+
+**Saved Content — Compact Video Card:**
+- ✅ **COMPLETED / MANUAL VERIFIED**
+- ✅ ปรับปรุง `VideoCard` โดยเพิ่ม prop `showTimestamps?: boolean` (ค่าเริ่มต้น `true`)
+- ✅ ปรับให้แสดงผลแบบ Compact ในหน้า `SavedContentPage.tsx` โดยส่ง `showTimestamps={false}` เพื่อซ่อนส่วน Timestamp เพื่อความสมดุลกับ Topic Card
+- ✅ ยืนยันว่า Timestamp Data ยังคงอยู่ครบใน Data Layer (`videos.ts`)
+- ✅ หน้าอื่นที่เรียกใช้ `VideoCard` (เช่น `TopicDetailPage` และอื่นๆ) ยังคงแสดง Timestamp ตาม behavior เดิม
+- ✅ ไม่มีการแก้ไข Knowledge Content และไม่กระทบ i18n
+- ✅ รัน `npm run build` ผ่านสมบูรณ์ (0 errors)
+
+**Session 36 (TH/EN Multilingual Support Phase 2 — Knowledge Content Infrastructure):**
+- ✅ **IMPLEMENTED / Pending User Manual Verification**
+- ✅ ทำการ Pre-implementation Audit ยืนยันว่า Data / Codebase เข้ากันได้กับ Architecture
+- ✅ สร้าง `src/types/content-i18n.ts` ระบุ Translation Types (เฉพาะ Localizable fields) แบบ Optional ป้องกัน Array หาย
+- ✅ สร้าง English Translation Layer `src/data/i18n/en/topics.ts`, `faq.ts`, `videos.ts` โดยให้ว่างไว้ (Empty Layer)
+- ✅ พัฒนา Knowledge Content Resolver (`src/i18n/contentResolver.ts`) สร้างฟังก์ชัน:
+  - `getLocalizedTopic`
+  - `getLocalizedFAQ`
+  - `getLocalizedVideo`
+- ✅ Implement Field-level fallback: หาก English field ว่าง ระบบจะดึงข้อมูลจาก Thai field แทน
+- ✅ Implement Array fallback: หาก Array ในส่วน English ไม่มีหรือไม่กำหนด จะใช้ Array ภาษาไทยต้นฉบับ
+- ✅ Per-locale verification status: ยืนยันให้ Status แยกตามภาษา (`draft` เป็นค่าเริ่มต้นหากไม่มี translation)
+- ✅ นำฟังก์ชัน Resolver ไปหุ้ม Source Data ใน Components ได้แก่ `TopicCard.tsx`, `TopicDetailPage.tsx`, `FAQPage.tsx`, `VideoCard.tsx` 
+- ✅ รับประกัน Relationship safety: ไม่มีผลกระทบต่อ `relatedTopicIds`, `relatedVideoIds` 
+- ✅ Search regression safety: `SearchPage.tsx` ยังคงใช้ index ภาษาไทยและไม่ได้รับผลกระทบ
+- ✅ รับประกันความปลอดภัยต่อ Authentication, Router, Saved Content และ Learning History
+- ✅ ยืนยันไม่มี Fake English Knowledge Content ถูกเพิ่มเข้าไป
+- ✅ รัน `npm run build` ผ่านสมบูรณ์ (0 errors)
+- 🚧 **Next Action:** User Manual Verification — Phase 2 Infrastructure (สลับภาษาแล้วเนื้อหาต้อง fallback เป็นภาษาไทย โดยไม่พัง)
 
 > **Session 13 (Supabase Auth Foundation)** เสร็จสมบูรณ์แล้ว — ดูรายละเอียดในส่วน **Phase 7** ด้านล่าง
 
