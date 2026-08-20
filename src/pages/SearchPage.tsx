@@ -4,6 +4,7 @@ import { useSearch } from '../hooks/useSearch';
 import { topics } from '../data/topics';
 import { TopicCard } from '../components/topics/TopicCard';
 import { Search, ArrowRight } from 'lucide-react';
+import { useTranslation, Trans } from 'react-i18next';
 import { usePageSEO } from '../hooks/usePageSEO';
 
 const EXAMPLE_QUERIES = [
@@ -11,10 +12,11 @@ const EXAMPLE_QUERIES = [
 ];
 
 export function SearchPage() {
+  const { t } = useTranslation();
+
   usePageSEO({
-    title: 'ค้นหา',
-    description:
-      'ค้นหาหัวข้อสมาธิด้วยภาษาธรรมชาติ เช่น นั่งแล้วง่วงทำอย่างไร ใจฟุ้งซ่าน วางใจอย่างไร — YudNing',
+    title: t('searchPage.seoTitle'),
+    description: t('searchPage.seoDescription'),
   });
   const [searchParams, setSearchParams] = useSearchParams();
   const urlQuery = searchParams.get('q') ?? '';
@@ -38,17 +40,17 @@ export function SearchPage() {
         {/* Header */}
         <div className="mb-8">
           <h1 className="text-2xl sm:text-3xl font-bold text-[var(--color-text-main)] mb-2">
-            ค้นหา
+            {t('searchPage.title')}
           </h1>
           <p className="text-[var(--color-text-muted)] text-sm">
-            ค้นหาด้วยภาษาธรรมชาติ เช่น "นั่งแล้วง่วงทำอย่างไร" หรือ "วิธีวางใจ"
+            {t('searchPage.subtitle')}
           </p>
         </div>
 
         {/* Search Form */}
         <form onSubmit={handleSubmit} className="mb-8" role="search">
           <label htmlFor="search-input" className="sr-only">
-            ค้นหาหัวข้อสมาธิ
+            {t('searchPage.searchLabel')}
           </label>
           <div className="relative">
             <Search
@@ -61,7 +63,7 @@ export function SearchPage() {
               type="search"
               value={query}
               onChange={(e) => setQuery(e.target.value)}
-              placeholder="พิมพ์คำถามหรือปัญหาที่กำลังเจอ..."
+              placeholder={t('searchPage.placeholder')}
               className="w-full pl-12 pr-4 py-4 text-base bg-white border-2 border-[var(--color-border)] rounded-[var(--radius-card)] text-[var(--color-text-main)] placeholder:text-[var(--color-text-muted)] shadow-[var(--shadow-card)] focus:outline-none focus:border-[var(--color-primary)] focus:ring-4 focus:ring-[var(--color-primary-soft)] transition-all duration-200"
               autoFocus
             />
@@ -73,8 +75,11 @@ export function SearchPage() {
           results.length > 0 ? (
             <div>
               <p className="text-sm text-[var(--color-text-muted)] mb-4">
-                พบ <strong>{results.length}</strong> ผลลัพธ์สำหรับ "
-                <strong className="text-[var(--color-text-main)]">{query}</strong>"
+                <Trans 
+                  i18nKey="searchPage.foundResults" 
+                  values={{ count: results.length, query }}
+                  components={[<strong key="0" />, <strong className="text-[var(--color-text-main)]" key="1" />]} 
+                />
               </p>
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 {results.map(({ item }) => (
@@ -86,10 +91,10 @@ export function SearchPage() {
             <div className="text-center py-12">
               <p className="text-4xl mb-3" aria-hidden="true">🔍</p>
               <p className="font-medium text-[var(--color-text-main)] mb-1">
-                ไม่พบผลลัพธ์สำหรับ "{query}"
+                {t('searchPage.noResults', { query })}
               </p>
               <p className="text-sm text-[var(--color-text-muted)] mb-6">
-                ลองใช้คำอื่น หรือเลือกจากตัวอย่างด้านล่าง
+                {t('searchPage.tryDifferent')}
               </p>
               <div className="flex flex-wrap justify-center gap-2">
                 {EXAMPLE_QUERIES.map((q) => (
@@ -109,7 +114,7 @@ export function SearchPage() {
             {/* Example queries */}
             <div className="mb-8">
               <h2 className="text-sm font-semibold text-[var(--color-text-muted)] uppercase tracking-wide mb-3">
-                ตัวอย่างคำค้นหา
+                {t('searchPage.exampleQueries')}
               </h2>
               <div className="flex flex-wrap gap-2">
                 {EXAMPLE_QUERIES.map((q) => (
@@ -130,7 +135,7 @@ export function SearchPage() {
                 to="/topics"
                 className="inline-flex items-center gap-2 text-sm font-medium text-[var(--color-primary)] hover:text-[var(--color-primary-hover)] transition-colors duration-200"
               >
-                หรือสำรวจหัวข้อทั้งหมด
+                {t('searchPage.orExploreAll')}
                 <ArrowRight size={14} />
               </Link>
             </div>

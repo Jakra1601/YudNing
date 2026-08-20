@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { Search, ArrowRight, BookOpen, Sprout, ChevronRight } from 'lucide-react';
+import { useTranslation, Trans } from 'react-i18next';
 import { topics } from '../data/topics';
 import { categories } from '../data/categories';
 import { TopicCard } from '../components/topics/TopicCard';
@@ -21,10 +22,11 @@ const EXAMPLE_QUERIES = [
 ];
 
 export function HomePage() {
+  const { t } = useTranslation();
+  
   usePageSEO({
-    title: 'หน้าแรก',
-    description:
-      'YudNing — เรียนรู้การนั่งสมาธิอย่างเป็นขั้นตอน ค้นหาคำตอบ และกลับไปดูวิดีโอต้นฉบับจากช่อง YouTube ธรรมะ โฆษก ได้ทุกหัวข้อ',
+    title: t('home.seoTitle'),
+    description: t('home.seoDescription'),
   });
   const [query, setQuery] = useState('');
   const navigate = useNavigate();
@@ -49,18 +51,16 @@ export function HomePage() {
       >
         <div className="container-content text-center">
           <p className="text-sm font-medium text-[var(--color-primary)] tracking-widest mb-3 uppercase">
-            YudNing · หยุดนิ่ง
+            {t('home.eyebrow')}
           </p>
           <h1
             id="hero-heading"
             className="text-[26px] sm:text-4xl lg:text-5xl font-bold text-[var(--color-text-main)] leading-[1.3] sm:leading-tight mb-3 sm:mb-4"
           >
-            หยุดนิ่ง เริ่มต้นได้จากตรงนี้
+            {t('home.heroTitle')}
           </h1>
           <p className="text-[15px] sm:text-lg text-[var(--color-text-muted)] mb-6 sm:mb-8 max-w-xl mx-auto leading-relaxed">
-            เรียนรู้การนั่งสมาธิอย่างเป็นขั้นตอน ค้นหาคำตอบ และกลับไปดูวิดีโอต้นฉบับจากช่อง{' '}
-            <strong className="text-[var(--color-text-main)]">ธรรมะ โฆษก</strong>{' '}
-            ได้ทุกหัวข้อ
+            <Trans i18nKey="home.heroSubtitle" components={[<strong className="text-[var(--color-text-main)]" key="0" />]} />
           </p>
 
           {/* Search Box */}
@@ -71,7 +71,7 @@ export function HomePage() {
             aria-label="ค้นหาหัวข้อสมาธิ"
           >
             <label htmlFor="hero-search" className="sr-only">
-              วันนี้คุณอยากเรียนรู้เรื่องอะไร?
+              {t('home.searchLabel')}
             </label>
             <div className="relative">
               <Search
@@ -84,14 +84,14 @@ export function HomePage() {
                 type="search"
                 value={query}
                 onChange={(e) => setQuery(e.target.value)}
-                placeholder="วันนี้คุณอยากเรียนรู้เรื่องอะไร?"
+                placeholder={t('home.searchPlaceholder')}
                 className="w-full pl-12 pr-24 py-4 text-base bg-white border-2 border-[var(--color-border)] rounded-[var(--radius-card)] text-[var(--color-text-main)] placeholder:text-[var(--color-text-muted)] shadow-[var(--shadow-card)] focus:outline-none focus:border-[var(--color-primary)] focus:ring-4 focus:ring-[var(--color-primary-soft)] transition-all duration-200"
               />
               <button
                 type="submit"
                 className="absolute right-2 top-1/2 -translate-y-1/2 bg-[var(--color-primary)] hover:bg-[var(--color-primary-hover)] text-white px-4 py-2 rounded-[var(--radius-btn)] text-sm font-medium transition-colors duration-200 focus-visible:ring-2 focus-visible:ring-[var(--color-focus-ring)]"
               >
-                ค้นหา
+                {t('home.searchButton')}
               </button>
             </div>
           </form>
@@ -116,14 +116,14 @@ export function HomePage() {
               className="inline-flex items-center gap-2 bg-[var(--color-primary)] hover:bg-[var(--color-primary-hover)] text-white px-5 py-3 sm:px-6 rounded-[var(--radius-btn)] font-medium transition-colors duration-200 shadow-sm focus-visible:ring-2 focus-visible:ring-[var(--color-focus-ring)] focus-visible:outline-none whitespace-nowrap text-[15px] sm:text-base"
             >
               <Sprout size={18} />
-              เริ่มต้นนั่งสมาธิ
+              {t('home.startMeditating')}
             </Link>
             <Link
               to="/topics"
               className="inline-flex items-center gap-2 bg-white hover:bg-gray-50 text-[var(--color-text-main)] px-5 py-3 sm:px-6 rounded-[var(--radius-btn)] font-medium border border-[var(--color-border)] transition-colors duration-200 shadow-sm focus-visible:ring-2 focus-visible:ring-[var(--color-focus-ring)] focus-visible:outline-none whitespace-nowrap text-[15px] sm:text-base"
             >
               <BookOpen size={18} />
-              สำรวจหัวข้อทั้งหมด
+              {t('home.exploreAllTopics')}
             </Link>
           </div>
         </div>
@@ -141,17 +141,17 @@ export function HomePage() {
                 id="featured-heading"
                 className="text-[19px] sm:text-2xl font-bold text-[var(--color-text-main)]"
               >
-                หัวข้อยอดนิยม
+                {t('home.featuredTopics')}
               </h2>
               <p className="text-sm text-[var(--color-text-muted)] mt-0.5">
-                หัวข้อที่พบบ่อยในหมู่ผู้ฝึกสมาธิ
+                {t('home.featuredDesc')}
               </p>
             </div>
             <Link
               to="/topics"
               className="hidden sm:inline-flex items-center gap-1 text-sm font-medium text-[var(--color-primary)] hover:text-[var(--color-primary-hover)] transition-colors duration-200"
             >
-              ดูทั้งหมด
+              {t('home.viewAll')}
               <ChevronRight size={16} />
             </Link>
           </div>
@@ -167,7 +167,7 @@ export function HomePage() {
               to="/topics"
               className="inline-flex items-center gap-1 text-sm font-medium text-[var(--color-primary)]"
             >
-              ดูหัวข้อทั้งหมด <ArrowRight size={15} />
+              {t('home.viewAllTopics')} <ArrowRight size={15} />
             </Link>
           </div>
         </div>
@@ -184,17 +184,16 @@ export function HomePage() {
             id="beginner-heading"
             className="text-[19px] sm:text-2xl font-bold text-[var(--color-text-main)] mb-3"
           >
-            ไม่เคยนั่งสมาธิมาก่อน?
+            {t('home.newToMeditation')}
           </h2>
           <p className="text-[15px] sm:text-base text-[var(--color-text-muted)] mb-6 max-w-md mx-auto leading-relaxed px-4 sm:px-0">
-            ไม่เป็นไร เราจะเริ่มไปด้วยกันทีละขั้น ตั้งแต่ความหมายของสมาธิ
-            จนถึงการฝึกใจในชีวิตประจำวัน
+            {t('home.newToMeditationDesc')}
           </p>
           <Link
             to="/start"
             className="inline-flex items-center gap-2 bg-[var(--color-primary)] hover:bg-[var(--color-primary-hover)] text-white px-5 sm:px-6 py-3 rounded-[var(--radius-btn)] font-medium transition-colors duration-200 shadow-sm whitespace-nowrap text-[15px] sm:text-base"
           >
-            เริ่มต้นที่นี่
+            {t('nav.startHere')}
             <ArrowRight size={16} />
           </Link>
         </div>
@@ -207,7 +206,7 @@ export function HomePage() {
             id="categories-heading"
             className="text-[19px] sm:text-2xl font-bold text-[var(--color-text-main)] mb-5 sm:mb-6"
           >
-            หมวดหมู่
+            {t('home.categories')}
           </h2>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
             {categories.map((cat) => (
@@ -246,13 +245,13 @@ export function HomePage() {
             id="daily-heading"
             className="text-base font-semibold text-[var(--color-primary)] mb-2"
           >
-            คำแนะนำประจำวัน
+            {t('home.dailyAdviceTitle')}
           </h2>
           <p className="text-[var(--color-text-main)] text-lg">
-            วันนี้ลองหยุดนิ่งกับตัวเองสัก 5 นาที
+            {t('home.dailyAdviceMain')}
           </p>
           <p className="text-sm text-[var(--color-text-muted)] mt-1">
-            ไม่ต้องสมบูรณ์แบบ เพียงแค่เริ่ม
+            {t('home.dailyAdviceSub')}
           </p>
         </div>
       </section>

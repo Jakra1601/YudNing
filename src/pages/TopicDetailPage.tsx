@@ -11,15 +11,13 @@ import { TimestampList } from '../components/videos/TimestampList';
 import { TopicCard } from '../components/topics/TopicCard';
 import { usePageSEO } from '../hooks/usePageSEO';
 import { ChevronRight, Home, BookOpen, AlertTriangle, ListChecks, HelpCircle, ArrowRight, ChevronDown, ChevronUp } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
 import { SaveButton } from '../components/common/SaveButton';
 import { useAuth } from '../contexts/AuthContext';
 import { trackActivity } from '../services/learningActivity';
 
-const levelLabel: Record<string, string> = {
-  beginner: 'ผู้เริ่มต้น',
-  intermediate: 'ระดับกลาง',
-  advanced: 'ขั้นสูง',
-};
+// Level label mapping is now handled via i18n t(`level.${topic.level}`)
+// Keep this comment for context or future use.
 
 /* ─── RelatedVideosSection ───────────────────────────────────────────────── */
 
@@ -51,10 +49,12 @@ function RelatedVideosSection({ videos: relatedVideos, topicId }: { videos: Vide
     }
   };
 
+  const { t } = useTranslation();
+
   return (
     <section aria-labelledby="videos-heading" className="mb-8">
       <h2 id="videos-heading" className="text-lg font-semibold text-[var(--color-text-main)] mb-4">
-        วิดีโอที่เกี่ยวข้อง
+        {t('topicDetail.relatedVideos')}
       </h2>
 
       {relatedVideos.length > 1 && (
@@ -99,7 +99,7 @@ function RelatedVideosSection({ videos: relatedVideos, topicId }: { videos: Vide
             aria-controls="timestamps-panel"
           >
             <span className="text-sm font-medium text-[var(--color-text-main)]">
-              ช่วงเวลาที่เกี่ยวข้องในวิดีโอนี้ ({topicTimestamps.length} ช่วง)
+              {t('topicDetail.timestamps', { count: topicTimestamps.length })}
             </span>
             <span className="text-[var(--color-text-muted)] group-hover:text-[var(--color-primary)] transition-colors duration-200">
               {isTimestampsOpen ? <ChevronUp size={16} /> : <ChevronDown size={16} />}
@@ -134,9 +134,10 @@ export function TopicDetailPage() {
   const { slug } = useParams<{ slug: string }>();
   const topic = topics.find((t) => t.slug === slug);
   const { user } = useAuth();
+  const { t } = useTranslation();
 
   usePageSEO({
-    title: topic ? topic.title : 'ไม่พบหัวข้อ',
+    title: topic ? topic.title : t('topicDetail.notFoundTitle'),
     description: topic
       ? `เรียนรู้เรื่อง “${topic.title}” — ${topic.shortAnswer} จากช่อง YouTube ธรรมะ โฆษก`
       : undefined,
@@ -154,17 +155,17 @@ export function TopicDetailPage() {
         <div className="container-content text-center">
           <p className="text-4xl mb-4" aria-hidden="true">🔍</p>
           <h1 className="text-xl font-bold text-[var(--color-text-main)] mb-2">
-            ไม่พบหัวข้อนี้
+            {t('topicDetail.notFoundTitle')}
           </h1>
           <p className="text-[var(--color-text-muted)] mb-6">
-            หัวข้อที่คุณกำลังมองหาอาจยังไม่ถูกเพิ่มเข้ามา หรือ URL อาจไม่ถูกต้อง
+            {t('topicDetail.notFoundDesc')}
           </p>
           <Link
             to="/topics"
             className="inline-flex items-center gap-2 bg-[var(--color-primary)] text-white px-5 py-2.5 rounded-[var(--radius-btn)] text-sm font-medium hover:bg-[var(--color-primary-hover)] transition-colors duration-200"
           >
             <BookOpen size={15} />
-            ดูหัวข้อทั้งหมด
+            {t('topicDetail.viewAllTopics')}
           </Link>
         </div>
       </main>
@@ -178,14 +179,14 @@ export function TopicDetailPage() {
   return (
     <main id="main-content" className="py-8 sm:py-12">
       <div className="container-content">
-        <nav aria-label="เส้นทางหน้า" className="flex items-center gap-1.5 text-sm text-[var(--color-text-muted)] mb-6 flex-wrap">
+        <nav aria-label={t('topicDetail.breadcrumbAria')} className="flex items-center gap-1.5 text-sm text-[var(--color-text-muted)] mb-6 flex-wrap">
           <Link to="/" className="hover:text-[var(--color-primary)] transition-colors duration-200 flex items-center gap-1">
             <Home size={13} />
-            หน้าแรก
+            {t('topicDetail.home')}
           </Link>
           <ChevronRight size={13} aria-hidden="true" />
           <Link to="/topics" className="hover:text-[var(--color-primary)] transition-colors duration-200">
-            หัวข้อทั้งหมด
+            {t('topicDetail.allTopics')}
           </Link>
           {category && (
             <>
@@ -210,11 +211,11 @@ export function TopicDetailPage() {
             <div>
               <p className="text-sm font-medium text-amber-800">
                 {topic.status === 'placeholder'
-                  ? 'ข้อมูลตัวอย่าง — ยังไม่ผ่านการตรวจสอบจากวิดีโอต้นฉบับ'
-                  : 'เนื้อหานี้อยู่ระหว่างการตรวจสอบกับวิดีโอต้นฉบับ'}
+                  ? t('topicDetail.alertPlaceholder')
+                  : t('topicDetail.alertUnverified')}
               </p>
               <p className="text-xs text-amber-700 mt-0.5">
-                ห้ามนำไปอ้างอิงจนกว่าจะผ่านการตรวจสอบจากช่อง YouTube "ธรรมะ โฆษก"
+                {t('topicDetail.alertCaution')}
               </p>
             </div>
           </div>
@@ -224,7 +225,7 @@ export function TopicDetailPage() {
           <div className="flex flex-wrap items-center justify-between gap-4 mb-3">
             <div className="flex flex-wrap items-center gap-2">
               <span className="text-xs font-medium text-[var(--color-text-muted)] bg-gray-100 px-2 py-0.5 rounded">
-                {levelLabel[topic.level] ?? topic.level}
+                {t(`level.${topic.level}`)}
               </span>
               <StatusBadge status={topic.status} />
               {topic.tags.map((tag) => (
@@ -246,7 +247,7 @@ export function TopicDetailPage() {
         <section aria-labelledby="short-answer-heading" className="mb-8">
           <div className="bg-[var(--color-primary-soft)] border border-[#C8DDD9] rounded-[var(--radius-card)] p-5">
             <h2 id="short-answer-heading" className="text-xs font-semibold text-[var(--color-primary)] uppercase tracking-wide mb-2">
-              คำตอบสั้น ๆ
+              {t('topicDetail.shortAnswer')}
             </h2>
             <p className="text-[var(--color-text-main)] font-medium leading-relaxed">
               {topic.shortAnswer}
@@ -257,7 +258,7 @@ export function TopicDetailPage() {
         {topic.description && topic.description !== 'ข้อมูลตัวอย่าง — รอการตรวจสอบจากวิดีโอต้นฉบับ' && (
           <section aria-labelledby="explanation-heading" className="mb-8">
             <h2 id="explanation-heading" className="text-lg font-semibold text-[var(--color-text-main)] mb-3">
-              คำอธิบาย
+              {t('topicDetail.explanation')}
             </h2>
             <div className="prose text-[var(--color-text-muted)] leading-relaxed">
               <p>{topic.description}</p>
@@ -269,7 +270,7 @@ export function TopicDetailPage() {
           <section aria-labelledby="keypoints-heading" className="mb-8">
             <h2 id="keypoints-heading" className="text-lg font-semibold text-[var(--color-text-main)] mb-3 flex items-center gap-2">
               <ListChecks size={18} className="text-[var(--color-primary)]" />
-              สาระสำคัญ
+              {t('topicDetail.keyPoints')}
             </h2>
             <ul className="space-y-2">
               {topic.keyPoints.map((point, idx) => (
@@ -294,7 +295,7 @@ export function TopicDetailPage() {
           <section aria-labelledby="questions-heading" className="mb-8">
             <h2 id="questions-heading" className="text-lg font-semibold text-[var(--color-text-main)] mb-3 flex items-center gap-2">
               <HelpCircle size={18} className="text-[var(--color-primary)]" />
-              คำถามที่เกี่ยวข้อง
+              {t('topicDetail.relatedQuestions')}
             </h2>
             <ul className="space-y-2">
               {topic.relatedQuestions.map((q, idx) => (
@@ -315,7 +316,7 @@ export function TopicDetailPage() {
         {relatedTopics.length > 0 && (
           <section aria-labelledby="related-heading" className="mb-8">
             <h2 id="related-heading" className="text-lg font-semibold text-[var(--color-text-main)] mb-4">
-              หัวข้อที่ควรศึกษาต่อ
+              {t('topicDetail.furtherStudy')}
             </h2>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               {relatedTopics.map((t) => (

@@ -12,15 +12,11 @@ import { useState, useEffect, useRef } from 'react';
 import { Link, NavLink, useNavigate, useLocation } from 'react-router-dom';
 import { Search, Menu, X, LogIn, LogOut, ChevronDown, Bookmark, History, Calendar } from 'lucide-react';
 import { useAuth } from '../../contexts/AuthContext';
+import { useTranslation } from 'react-i18next';
+import { LanguageSwitcher } from '../common/LanguageSwitcher';
 import yudningLogo from '../../assets/branding/yudning-logo-main.png';
 
-const navLinks = [
-  { to: '/start', label: 'เริ่มต้นที่นี่' },
-  { to: '/learn', label: 'เรียนรู้' },
-  { to: '/topics', label: 'หัวข้อทั้งหมด' },
-  { to: '/library', label: 'คลังสมาธิ' },
-  { to: '/faq', label: 'คำถามที่พบบ่อย' },
-];
+// navLinks moved inside component for translation
 
 // ─── Helper: ดึง display name จาก user object ─────────────────────────────────
 
@@ -47,6 +43,7 @@ interface UserMenuProps {
 
 function UserMenu({ onClose }: UserMenuProps) {
   const { user, signOut } = useAuth();
+  const { t } = useTranslation();
   const navigate = useNavigate();
   const menuRef = useRef<HTMLDivElement>(null);
 
@@ -111,7 +108,7 @@ function UserMenu({ onClose }: UserMenuProps) {
           className="w-full flex items-center gap-2.5 px-4 py-2.5 text-sm text-[var(--color-text-main)] hover:bg-[var(--color-background)] transition-colors duration-200"
         >
           <Calendar size={15} aria-hidden="true" className="text-[var(--color-text-muted)]" />
-          บันทึกการปฏิบัติ
+          {t('userMenu.practiceLog')}
         </Link>
         <Link
           to="/history"
@@ -119,7 +116,7 @@ function UserMenu({ onClose }: UserMenuProps) {
           className="w-full flex items-center gap-2.5 px-4 py-2.5 text-sm text-[var(--color-text-main)] hover:bg-[var(--color-background)] transition-colors duration-200"
         >
           <History size={15} aria-hidden="true" className="text-[var(--color-text-muted)]" />
-          ประวัติการเรียนรู้
+          {t('userMenu.learningHistory')}
         </Link>
         <Link
           to="/saved"
@@ -127,7 +124,7 @@ function UserMenu({ onClose }: UserMenuProps) {
           className="w-full flex items-center gap-2.5 px-4 py-2.5 text-sm text-[var(--color-text-main)] hover:bg-[var(--color-background)] transition-colors duration-200"
         >
           <Bookmark size={15} aria-hidden="true" className="text-[var(--color-text-muted)]" />
-          เนื้อหาที่บันทึกไว้
+          {t('userMenu.savedContent')}
         </Link>
       </div>
       <div className="py-1">
@@ -138,7 +135,7 @@ function UserMenu({ onClose }: UserMenuProps) {
           className="w-full flex items-center gap-2.5 px-4 py-2.5 text-sm text-[var(--color-text-main)] hover:bg-[var(--color-background)] transition-colors duration-200 focus-visible:outline-none focus-visible:bg-[var(--color-background)]"
         >
           <LogOut size={15} aria-hidden="true" className="text-[var(--color-text-muted)]" />
-          ออกจากระบบ
+          {t('auth.logout')}
         </button>
       </div>
     </div>
@@ -195,6 +192,15 @@ export function Header() {
   const navigate = useNavigate();
   const location = useLocation();
   const { user, isLoading: authLoading, signOut } = useAuth();
+  const { t } = useTranslation();
+
+  const navLinks = [
+    { to: '/start', label: t('nav.startHere') },
+    { to: '/learn', label: t('nav.learn') },
+    { to: '/topics', label: t('nav.topics') },
+    { to: '/library', label: t('nav.library') },
+    { to: '/faq', label: t('nav.faq') },
+  ];
 
   useEffect(() => {
     const handleScroll = () => setScrolled(window.scrollY > 8);
@@ -252,7 +258,7 @@ export function Header() {
               className="w-full flex items-center gap-2.5 px-4 py-3 text-sm text-[var(--color-text-main)] hover:bg-gray-50 transition-colors rounded-[var(--radius-btn)]"
             >
               <Calendar size={15} aria-hidden="true" className="text-[var(--color-text-muted)]" />
-              บันทึกการปฏิบัติ
+              {t('userMenu.practiceLog')}
             </Link>
             <Link
               to="/history"
@@ -260,7 +266,7 @@ export function Header() {
               className="w-full flex items-center gap-2.5 px-4 py-3 text-sm text-[var(--color-text-main)] hover:bg-gray-50 transition-colors rounded-[var(--radius-btn)]"
             >
               <History size={15} aria-hidden="true" className="text-[var(--color-text-muted)]" />
-              ประวัติการเรียนรู้
+              {t('userMenu.learningHistory')}
             </Link>
             <Link
               to="/saved"
@@ -268,7 +274,7 @@ export function Header() {
               className="w-full flex items-center gap-2.5 px-4 py-3 text-sm text-[var(--color-text-main)] hover:bg-gray-50 transition-colors rounded-[var(--radius-btn)]"
             >
               <Bookmark size={15} aria-hidden="true" className="text-[var(--color-text-muted)]" />
-              เนื้อหาที่บันทึกไว้
+              {t('userMenu.savedContent')}
             </Link>
             <button
               id="header-mobile-signout"
@@ -282,7 +288,7 @@ export function Header() {
               className="w-full flex items-center gap-2.5 px-4 py-3 text-sm text-[var(--color-text-main)] hover:bg-gray-50 transition-colors rounded-[var(--radius-btn)]"
             >
               <LogOut size={15} aria-hidden="true" className="text-[var(--color-text-muted)]" />
-              ออกจากระบบ
+              {t('auth.logout')}
             </button>
           </div>
         );
@@ -327,7 +333,7 @@ export function Header() {
             className="flex items-center gap-2.5 px-4 py-3 text-sm font-medium text-[var(--color-primary)] hover:bg-[var(--color-primary-soft)] rounded-[var(--radius-btn)] transition-colors duration-200"
           >
             <LogIn size={15} aria-hidden="true" />
-            เข้าสู่ระบบ
+            {t('auth.login')}
           </NavLink>
         </div>
       );
@@ -341,7 +347,7 @@ export function Header() {
         className="flex items-center gap-1.5 px-3 py-1.5 rounded-[var(--radius-btn)] bg-[var(--color-primary)] text-white text-sm font-medium hover:bg-[var(--color-primary-hover)] transition-colors duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-focus-ring)] focus-visible:ring-offset-2 shrink-0"
       >
         <LogIn size={14} aria-hidden="true" />
-        เข้าสู่ระบบ
+        {t('auth.login')}
       </NavLink>
     );
   }
@@ -416,14 +422,15 @@ export function Header() {
                 type="search"
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                placeholder="ค้นหา..."
+                placeholder={t('header.searchPlaceholder')}
                 className="w-full pl-9 pr-3 py-1.5 text-sm bg-[var(--color-background)] border border-[var(--color-border)] rounded-[var(--radius-btn)] text-[var(--color-text-main)] placeholder:text-[var(--color-text-muted)] focus:outline-none focus:border-[var(--color-primary)] focus:ring-2 focus:ring-[var(--color-primary-soft)] transition-colors duration-200"
               />
             </div>
           </form>
 
           {/* Desktop Auth Section */}
-          <div className="hidden md:flex items-center shrink-0">
+          <div className="hidden md:flex items-center gap-3 shrink-0">
+            <LanguageSwitcher />
             {renderAuthSection(false)}
           </div>
 
@@ -466,7 +473,7 @@ export function Header() {
                   type="search"
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
-                  placeholder="ค้นหาหัวข้อสมาธิ..."
+                  placeholder={t('header.searchPlaceholder')}
                   className="w-full pl-9 pr-3 py-3 text-sm bg-[var(--color-background)] border border-[var(--color-border)] rounded-[var(--radius-btn)] text-[var(--color-text-main)] placeholder:text-[var(--color-text-muted)] focus:outline-none focus:border-[var(--color-primary)] focus:ring-2 focus:ring-[var(--color-primary-soft)] transition-colors duration-200"
                 />
               </div>
@@ -500,8 +507,10 @@ export function Header() {
                 }`
               }
             >
-              เกี่ยวกับเรา
+              {t('nav.about')}
             </NavLink>
+
+            <LanguageSwitcher isMobile={true} />
 
             {/* Mobile Auth Section */}
             {renderAuthSection(true)}

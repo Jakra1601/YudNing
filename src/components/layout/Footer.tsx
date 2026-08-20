@@ -1,8 +1,10 @@
 import { Link } from 'react-router-dom';
 import { ExternalLink, Youtube } from 'lucide-react';
+import { useTranslation, Trans } from 'react-i18next';
 import yudningLogo from '../../assets/branding/yudning-logo-main.png';
 
 export function Footer() {
+  const { t } = useTranslation();
   const year = new Date().getFullYear();
 
   return (
@@ -24,8 +26,7 @@ export function Footer() {
               </div>
             </Link>
             <p className="text-sm text-[var(--color-text-muted)] max-w-xs leading-relaxed">
-              คลังความรู้เรื่องการนั่งสมาธิ รวบรวมและเรียบเรียงจากช่อง YouTube{' '}
-              <strong className="text-[var(--color-text-main)]">ธรรมะ โฆษก</strong>
+              <Trans i18nKey="footer.brandDesc" components={[<strong className="text-[var(--color-text-main)]" key="0" />]} />
             </p>
             <a
               href="https://www.youtube.com/@dhammakhosok"
@@ -34,20 +35,20 @@ export function Footer() {
               className="inline-flex items-center gap-1.5 mt-3 text-sm text-[var(--color-primary)] hover:text-[var(--color-primary-hover)] transition-colors duration-200"
             >
               <Youtube size={15} />
-              ช่อง YouTube ต้นฉบับ
+              {t('footer.youtubeLink')}
               <ExternalLink size={12} />
             </a>
           </div>
 
           {/* สำรวจ */}
           <div>
-            <h3 className="text-sm font-semibold text-[var(--color-text-main)] mb-3">สำรวจ</h3>
+            <h3 className="text-sm font-semibold text-[var(--color-text-main)] mb-3">{t('footer.explore')}</h3>
             <ul className="space-y-2">
               {[
-                { to: '/start', label: 'เริ่มต้นที่นี่' },
-                { to: '/learn', label: 'เรียนรู้' },
-                { to: '/topics', label: 'หัวข้อทั้งหมด' },
-                { to: '/library', label: 'คลังสมาธิ' },
+                { to: '/start', label: t('nav.startHere') },
+                { to: '/learn', label: t('nav.learn') },
+                { to: '/topics', label: t('nav.topics') },
+                { to: '/library', label: t('nav.library') },
               ].map((link) => (
                 <li key={link.to}>
                   <Link
@@ -63,12 +64,12 @@ export function Footer() {
 
           {/* ข้อมูล */}
           <div>
-            <h3 className="text-sm font-semibold text-[var(--color-text-main)] mb-3">ข้อมูล</h3>
+            <h3 className="text-sm font-semibold text-[var(--color-text-main)] mb-3">{t('footer.info')}</h3>
             <ul className="space-y-2">
               {[
-                { to: '/faq', label: 'คำถามที่พบบ่อย' },
-                { to: '/about', label: 'เกี่ยวกับเรา' },
-                { to: '/search', label: 'ค้นหา' },
+                { to: '/faq', label: t('nav.faq') },
+                { to: '/about', label: t('nav.about') },
+                { to: '/search', label: t('common.search') },
               ].map((link) => (
                 <li key={link.to}>
                   <Link
@@ -86,12 +87,10 @@ export function Footer() {
         {/* Disclaimer */}
         <div className="mt-8 pt-6 border-t border-[var(--color-border)]">
           <p className="text-xs text-[var(--color-text-muted)] leading-relaxed max-w-2xl">
-            <strong>Disclaimer:</strong> เว็บไซต์นี้จัดทำขึ้นเพื่อรวบรวมและช่วยให้เข้าถึงเนื้อหาได้ง่ายขึ้น
-            เนื้อหาต้นฉบับและสิทธิ์ในวิดีโอเป็นของเจ้าของช่อง YouTube ธรรมะ โฆษก
-            YudNing ไม่ใช่เว็บไซต์ทางการของช่อง
+            <Trans i18nKey="footer.disclaimer" components={[<strong key="0" />]} />
           </p>
           <p className="text-xs text-[var(--color-text-muted)] mt-2">
-            © {year} YudNing — เนื้อหาบางส่วนอยู่ระหว่างการตรวจสอบจากวิดีโอต้นฉบับ
+            {t('footer.copyright', { year })}
           </p>
         </div>
       </div>

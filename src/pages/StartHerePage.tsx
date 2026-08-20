@@ -1,5 +1,6 @@
 import { Link } from 'react-router-dom';
 import { ChevronRight, CheckCircle } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
 import { usePageSEO } from '../hooks/usePageSEO';
 
 const steps = [
@@ -51,10 +52,11 @@ const steps = [
 ];
 
 export function StartHerePage() {
+  const { t } = useTranslation();
+
   usePageSEO({
-    title: 'เริ่มต้นที่นี่',
-    description:
-      'ไม่เคยนั่งสมาธิมาก่อน? เริ่มต้นที่นี่ — คู่มือนั่งสมาธิสำหรับผู้เริ่มต้น 5 ขั้นตอน จากช่อง YouTube ธรรมะ โฆษก',
+    title: t('start.seoTitle'),
+    description: t('start.seoDescription'),
   });
   return (
     <main id="main-content" className="py-10 sm:py-14">
@@ -62,14 +64,13 @@ export function StartHerePage() {
         {/* Page Header */}
         <div className="text-center mb-12">
           <p className="text-sm font-medium text-[var(--color-primary)] tracking-wide mb-2">
-            สำหรับผู้เริ่มต้น
+            {t('start.eyebrow')}
           </p>
           <h1 className="text-2xl sm:text-3xl font-bold text-[var(--color-text-main)] mb-3">
-            เริ่มต้นที่นี่
+            {t('start.title')}
           </h1>
           <p className="text-[var(--color-text-muted)] max-w-md mx-auto leading-relaxed">
-            ไม่รู้ว่าควรเริ่มจากตรงไหน? ไม่เป็นไร เราจัดเนื้อหาเป็นขั้นตอนให้แล้ว
-            ค่อย ๆ อ่านและฝึกไปทีละขั้นได้เลยครับ
+            {t('start.subtitle')}
           </p>
         </div>
 
@@ -86,7 +87,7 @@ export function StartHerePage() {
               <div className="flex items-start gap-3 sm:gap-4">
                 <span
                   className="w-8 h-8 sm:w-10 sm:h-10 rounded-full bg-[var(--color-primary)] text-white flex items-center justify-center font-bold text-xs sm:text-sm shrink-0 mt-0.5 sm:mt-0"
-                  aria-label={`ขั้นตอนที่ ${step.number}`}
+                  aria-label={t('start.stepLabel', { number: step.number })}
                 >
                   {step.number}
                 </span>
@@ -132,16 +133,16 @@ export function StartHerePage() {
         {/* Continue to Learn */}
         <div className="mt-10 text-center bg-[var(--color-primary-soft)] rounded-[var(--radius-card)] p-8">
           <h2 className="text-lg font-semibold text-[var(--color-text-main)] mb-2">
-            พร้อมเรียนรู้ต่อแล้ว?
+            {t('start.readyTitle')}
           </h2>
           <p className="text-sm text-[var(--color-text-muted)] mb-4">
-            เข้าสู่เส้นทางการเรียนรู้ที่ออกแบบมาสำหรับระดับของคุณ
+            {t('start.readyDesc')}
           </p>
           <Link
             to="/learn"
             className="inline-flex items-center gap-2 bg-[var(--color-primary)] hover:bg-[var(--color-primary-hover)] text-white px-5 sm:px-6 py-3 rounded-[var(--radius-btn)] font-medium transition-colors duration-200 whitespace-nowrap text-[15px] sm:text-base"
           >
-            สำรวจเส้นทางการเรียนรู้
+            {t('start.exploreLearn')}
             <ChevronRight size={16} />
           </Link>
         </div>

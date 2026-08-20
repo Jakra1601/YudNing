@@ -22,6 +22,24 @@
 
 ## Current Task
 
+**Session 35 (Phase 1 — i18n Foundation & UI Translation):**
+- ✅ **COMPLETED / MANUAL VERIFIED**
+- ✅ ติดตั้ง `i18next` และ `react-i18next`
+- ✅ สร้าง Translation Dictionary โครงสร้างแบบ Namespace:
+  - `src/i18n/locales/th/common.ts` (Thai)
+  - `src/i18n/locales/en/common.ts` (English)
+- ✅ พัฒนา `LanguageSwitcher` Component (รองรับ Desktop และ Mobile)
+- ✅ ตั้งค่า i18n ให้เก็บค่าภาษาล่าสุดใน `localStorage` ด้วยคีย์ `yudning_locale` (ค่าเริ่มต้นคือ `th`)
+- ✅ ทำการ Migrate UI Component ให้ใช้ `react-i18next` (t และ Trans) ได้แก่:
+  - `Header.tsx`, `Footer.tsx`
+  - `HomePage.tsx`, `StartHerePage.tsx`, `FAQPage.tsx`, `SearchPage.tsx`, `TopicDetailPage.tsx`
+- ✅ จัดการ Knowledge Content (Topic labels/titles) โดยเว้นไว้ไม่แปล เพื่อรักษาความถูกต้องตาม Requirement หลัก
+- ✅ รัน `npm run build` ผ่านสมบูรณ์ (0 errors)
+
+> **หมายเหตุ:** User Manual Verification ผ่านแล้วสำหรับ TH / EN Switching, Locale Persistence, Saved Content, Learning History, Practice Log, Authentication, Navigation / Scroll Behavior, และ Mobile / Desktop UI. Knowledge Content ยังเป็นภาษาไทย และ Phase 2 ยังไม่ได้เริ่ม
+
+> **Next Major Task:** TH/EN Multilingual Support Phase 2 — Knowledge Content Infrastructure
+
 > **Session 13 (Supabase Auth Foundation)** เสร็จสมบูรณ์แล้ว — ดูรายละเอียดในส่วน **Phase 7** ด้านล่าง
 
 **Session 33 (Global Navigation Scroll-to-Top Fix):**

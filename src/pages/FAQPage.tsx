@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { faqs } from '../data/faq';
 import { ChevronDown, ChevronUp, ArrowRight } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
 import { usePageSEO } from '../hooks/usePageSEO';
 
 interface FAQItemProps {
@@ -10,6 +11,7 @@ interface FAQItemProps {
 
 function FAQItem({ faq }: FAQItemProps) {
   const [open, setOpen] = useState(false);
+  const { t } = useTranslation();
 
   return (
     <div className="border border-[var(--color-border)] rounded-[var(--radius-card)] overflow-hidden">
@@ -47,7 +49,7 @@ function FAQItem({ faq }: FAQItemProps) {
               to={`/topics/${faqs.find((f) => f.id === faq.id)?.relatedTopicId ?? ''}`}
               className="inline-flex items-center gap-1 text-sm font-medium text-[var(--color-primary)] hover:text-[var(--color-primary-hover)] transition-colors duration-200"
             >
-              อ่านรายละเอียดเพิ่มเติม
+              {t('faq.readMore')}
               <ArrowRight size={13} />
             </Link>
           )}
@@ -58,10 +60,11 @@ function FAQItem({ faq }: FAQItemProps) {
 }
 
 export function FAQPage() {
+  const { t } = useTranslation();
+
   usePageSEO({
-    title: 'คำถามที่พบบ่อย',
-    description:
-      'คำถามที่พบบ่อยเกี่ยวกับการนั่งสมาธิ — ตอบแทบทุกข้อ เช่น นั่งกี่นาทีดี ใจฟุ้งซ่านทำอย่างไร นั่งแล้วง่วงควรทำอย่างไร จากช่อง YouTube ธรรมะ โฆษก',
+    title: t('faq.seoTitle'),
+    description: t('faq.seoDescription'),
   });
   return (
     <main id="main-content" className="py-10 sm:py-14">
@@ -69,10 +72,10 @@ export function FAQPage() {
         {/* Header */}
         <div className="text-center mb-10">
           <h1 className="text-2xl sm:text-3xl font-bold text-[var(--color-text-main)] mb-3">
-            คำถามที่พบบ่อย
+            {t('faq.title')}
           </h1>
           <p className="text-[var(--color-text-muted)] max-w-md mx-auto leading-relaxed">
-            คำถามที่พบบ่อยในหมู่ผู้ฝึกสมาธิ ทั้งผู้เริ่มต้นและผู้ฝึกเป็นประจำ
+            {t('faq.subtitle')}
           </p>
         </div>
 
@@ -86,24 +89,24 @@ export function FAQPage() {
         {/* More questions */}
         <div className="mt-10 text-center bg-[var(--color-primary-soft)] rounded-[var(--radius-card)] p-8">
           <h2 className="text-base font-semibold text-[var(--color-text-main)] mb-2">
-            ยังมีคำถามอื่น?
+            {t('faq.moreQuestions')}
           </h2>
           <p className="text-sm text-[var(--color-text-muted)] mb-4">
-            <span className="block sm:inline">ลองค้นหาจากหัวข้อทั้งหมด</span>{' '}
-            <span className="block sm:inline">หรือใช้ระบบค้นหา</span>
+            <span className="block sm:inline">{t('faq.searchTopics1')}</span>{' '}
+            <span className="block sm:inline">{t('faq.searchTopics2')}</span>
           </p>
           <div className="flex flex-wrap justify-center gap-3">
             <Link
               to="/search"
               className="inline-flex items-center gap-1.5 bg-[var(--color-primary)] text-white px-4 py-2 rounded-[var(--radius-btn)] text-sm font-medium hover:bg-[var(--color-primary-hover)] transition-colors duration-200"
             >
-              ค้นหา
+              {t('common.search')}
             </Link>
             <Link
               to="/topics"
               className="inline-flex items-center gap-1.5 bg-white border border-[var(--color-border)] text-[var(--color-text-main)] px-4 py-2 rounded-[var(--radius-btn)] text-sm font-medium hover:border-[var(--color-primary)] hover:text-[var(--color-primary)] transition-colors duration-200"
             >
-              หัวข้อทั้งหมด
+              {t('nav.topics')}
             </Link>
           </div>
         </div>
