@@ -5,6 +5,8 @@ interface LanguageSwitcherProps {
 }
 
 export function LanguageSwitcher({ isMobile = false }: LanguageSwitcherProps) {
+  const { t } = useTranslation();
+
   const { i18n } = useTranslation();
 
   const toggleLanguage = () => {
@@ -17,9 +19,9 @@ export function LanguageSwitcher({ isMobile = false }: LanguageSwitcherProps) {
       <button
         onClick={toggleLanguage}
         className="w-full flex items-center justify-between px-4 py-3 mt-1 border-t border-[var(--color-border)] text-sm font-medium text-[var(--color-text-main)] hover:bg-gray-50 transition-colors"
-        aria-label="เปลี่ยนภาษา / Change Language"
+        aria-label={t('common.languageSwitcher.ariaLabel', 'เปลี่ยนภาษา / Change Language')}
       >
-        <span>Language / ภาษา</span>
+        <span>{t('common.languageSwitcher.label', 'Language / ภาษา')}</span>
         <div className="flex items-center gap-2 px-3 py-1 bg-[var(--color-background)] rounded-full border border-[var(--color-border)]">
           <span className={i18n.language === 'th' ? 'font-bold text-[var(--color-primary)]' : 'text-[var(--color-text-muted)]'}>TH</span>
           <span className="text-[var(--color-border)] text-xs">|</span>

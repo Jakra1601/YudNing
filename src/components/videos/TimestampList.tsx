@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next';
 import { Clock, ExternalLink, PlayCircle } from 'lucide-react';
 import type { VideoTimestamp } from '../../types/video';
 import { createYouTubeTimestampUrl, formatDuration } from '../../utils/youtube';
@@ -26,6 +27,8 @@ export function TimestampList({
   filterTopicId,
   onTimestampClick,
 }: TimestampListProps) {
+  const { t } = useTranslation();
+
   const filtered = filterTopicId
     ? timestamps.filter((ts) => ts.topicIds.includes(filterTopicId))
     : timestamps;
@@ -43,10 +46,10 @@ export function TimestampList({
         className="text-lg font-semibold text-[var(--color-text-main)] mb-3 flex items-center gap-2"
       >
         <Clock size={18} className="text-[var(--color-primary)]" />
-        ช่วงเวลาที่เกี่ยวข้อง
+        {t('common.videos.relatedTimestamps', 'ช่วงเวลาที่เกี่ยวข้อง')}
       </h2>
 
-      <ol className="space-y-2" aria-label="รายการช่วงเวลาในวิดีโอ">
+      <ol className="space-y-2" aria-label={t('common.videos.timestampListAria', 'รายการช่วงเวลาในวิดีโอ')}>
         {filtered.map((ts) => {
           const timeLabel = formatDuration(ts.startSeconds);
           const endLabel = ts.endSeconds ? `–${formatDuration(ts.endSeconds)}` : '';
@@ -60,7 +63,7 @@ export function TimestampList({
               {/* Timestamp Badge */}
               <span
                 className="shrink-0 font-mono text-xs font-semibold text-[var(--color-primary)] bg-[var(--color-primary-soft)] px-2 py-1 rounded mt-0.5 min-w-[52px] text-center"
-                aria-label={`เวลา ${timeLabel}`}
+                aria-label={t('common.videos.timeAria', { time: timeLabel, defaultValue: 'เวลา ' + timeLabel })}
               >
                 {timeLabel}{endLabel}
               </span>
@@ -84,8 +87,8 @@ export function TimestampList({
                   <button
                     type="button"
                     onClick={() => onTimestampClick(ts.startSeconds)}
-                    title={`เล่นจาก ${timeLabel}`}
-                    aria-label={`เล่นวิดีโอจากช่วงเวลา ${timeLabel} — ${ts.label}`}
+                    title={t('common.videos.playFromTitle', { time: timeLabel, defaultValue: 'เล่นจาก ' + timeLabel })}
+                    aria-label={t('common.videos.playFromAria', { time: timeLabel, label: ts.label, defaultValue: 'เล่นวิดีโอจากช่วงเวลา ' + timeLabel + ' \u2014 ' + ts.label })}
                     className="w-8 h-8 rounded-[var(--radius-sm)] flex items-center justify-center text-[var(--color-text-muted)] hover:text-[var(--color-primary)] hover:bg-[var(--color-primary-soft)] transition-colors duration-200"
                   >
                     <PlayCircle size={16} />
@@ -98,8 +101,8 @@ export function TimestampList({
                     href={watchUrl}
                     target="_blank"
                     rel="noopener noreferrer"
-                    title={`เปิด YouTube ที่ ${timeLabel}`}
-                    aria-label={`เปิดวิดีโอบน YouTube ที่ช่วงเวลา ${timeLabel} — ${ts.label}`}
+                    title={t('common.videos.openYoutubeTitle', { time: timeLabel, defaultValue: 'เปิด YouTube ที่ ' + timeLabel })}
+                    aria-label={t('common.videos.openYoutubeAria', { time: timeLabel, label: ts.label, defaultValue: 'เปิดวิดีโอบน YouTube ที่ช่วงเวลา ' + timeLabel + ' \u2014 ' + ts.label })}
                     className="w-8 h-8 rounded-[var(--radius-sm)] flex items-center justify-center text-[var(--color-text-muted)] hover:text-[var(--color-primary)] hover:bg-[var(--color-primary-soft)] transition-colors duration-200"
                   >
                     <ExternalLink size={14} />
@@ -108,7 +111,7 @@ export function TimestampList({
                   <span
                     className="w-8 h-8 rounded-[var(--radius-sm)] flex items-center justify-center text-[var(--color-border)]"
                     aria-hidden="true"
-                    title="รอข้อมูลวิดีโอต้นฉบับ"
+                    title={t('common.videos.waitingSourceTitle', 'รอข้อมูลวิดีโอต้นฉบับ')}
                   >
                     <ExternalLink size={14} />
                   </span>

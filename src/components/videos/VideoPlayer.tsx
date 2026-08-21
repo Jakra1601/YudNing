@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next';
 import { useState } from 'react';
 import { Play, ExternalLink } from 'lucide-react';
 import { createYouTubeEmbedUrl, createYouTubeTimestampUrl, getYouTubeThumbnailUrl } from '../../utils/youtube';
@@ -27,6 +28,8 @@ interface VideoPlayerProps {
  * ทำให้หน้าโหลดเร็วขึ้นและไม่เสียแบนด์วิธโดยไม่จำเป็น
  */
 export function VideoPlayer({ youtubeId, title, startSeconds, className = '', videoId }: VideoPlayerProps) {
+  const { t } = useTranslation();
+
   const [isPlaying, setIsPlaying] = useState(false);
   const { user } = useAuth();
 
@@ -50,14 +53,14 @@ export function VideoPlayer({ youtubeId, title, startSeconds, className = '', vi
       <div
         className={`relative w-full aspect-video bg-[var(--color-background)] border border-[var(--color-border)] rounded-[var(--radius-card)] flex items-center justify-center ${className}`}
         role="img"
-        aria-label="วิดีโอตัวอย่าง"
+        aria-label={t('videos.videoPreviewAria', 'วิดีโอตัวอย่าง')}
       >
         <div className="text-center px-4">
           <div className="w-12 h-12 rounded-full bg-[var(--color-border)] flex items-center justify-center mx-auto mb-3">
             <Play size={20} className="text-[var(--color-text-muted)] ml-0.5" />
           </div>
-          <p className="text-sm text-[var(--color-text-muted)]">วิดีโอตัวอย่าง</p>
-          <p className="text-xs text-[var(--color-text-muted)] mt-1">รอการเพิ่มข้อมูลจากวิดีโอต้นฉบับ</p>
+          <p className="text-sm text-[var(--color-text-muted)]">{t('videos.videoPreviewTitle', 'วิดีโอตัวอย่าง')}</p>
+          <p className="text-xs text-[var(--color-text-muted)] mt-1">{t('videos.waitingData', 'รอการเพิ่มข้อมูลจากวิดีโอต้นฉบับ')}</p>
         </div>
       </div>
     );
@@ -86,13 +89,13 @@ export function VideoPlayer({ youtubeId, title, startSeconds, className = '', vi
           <button
             type="button"
             onClick={handlePlay}
-            aria-label={`เล่นวิดีโอ: ${title}`}
+            aria-label={t('videos.playVideoAria', { title, defaultValue: 'เล่นวิดีโอ: ' + title })}
             className="absolute inset-0 w-full h-full group focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-focus-ring)] focus-visible:ring-offset-2"
           >
             {/* Thumbnail */}
             <img
               src={thumbnailUrl}
-              alt={`ภาพปกวิดีโอ: ${title}`}
+              alt={t('videos.coverAria', { title, defaultValue: 'ภาพปกวิดีโอ: ' + title })}
               className="absolute inset-0 w-full h-full object-cover"
               loading="lazy"
             />
@@ -113,7 +116,7 @@ export function VideoPlayer({ youtubeId, title, startSeconds, className = '', vi
             {/* Timestamp label (ถ้ามี) */}
             {startSeconds !== undefined && startSeconds > 0 && (
               <span className="absolute bottom-3 left-3 bg-black/70 text-white text-xs px-2 py-0.5 rounded font-mono" aria-hidden="true">
-                เริ่มที่ {Math.floor(startSeconds / 60)}:{String(startSeconds % 60).padStart(2, '0')}
+                {t('videos.startAt', { time: `${Math.floor(startSeconds / 60)}:${String(startSeconds % 60).padStart(2, '0')}`, defaultValue: 'เริ่มที่ ' + Math.floor(startSeconds / 60) + ':' + String(startSeconds % 60).padStart(2, '0') })}
               </span>
             )}
           </button>
@@ -124,7 +127,7 @@ export function VideoPlayer({ youtubeId, title, startSeconds, className = '', vi
           href={watchUrl}
           target="_blank"
           rel="noopener noreferrer"
-          aria-label={`เปิด "${title}" บน YouTube`}
+          aria-label={t('videos.openOnYoutubeAria', { title, defaultValue: 'เปิด ' + title + ' บน YouTube' })}
           className="absolute top-2 right-2 z-10 bg-black/60 hover:bg-black/80 text-white text-xs px-2 py-1 rounded flex items-center gap-1 transition-colors duration-200"
           onClick={(e) => e.stopPropagation()}
         >
@@ -136,7 +139,7 @@ export function VideoPlayer({ youtubeId, title, startSeconds, className = '', vi
       {/* Fallback Message & Button */}
       <div className="flex flex-col sm:flex-row items-center justify-between bg-[var(--color-surface)] p-3 rounded-[var(--radius-card)] border border-[var(--color-border)] gap-3">
         <p className="text-sm text-[var(--color-text-muted)] text-center sm:text-left">
-          หากวิดีโอไม่สามารถเล่นได้ กรุณารับชมบน YouTube
+          {t('videos.cannotPlay', 'หากวิดีโอไม่สามารถเล่นได้ กรุณารับชมบน YouTube')}
         </p>
         <a
           href={watchUrl}

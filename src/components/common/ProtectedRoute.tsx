@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next';
 /**
  * ProtectedRoute.tsx — Guard component สำหรับ routes ที่ต้องการ Authentication
  *
@@ -18,6 +19,8 @@ interface ProtectedRouteProps {
 }
 
 export function ProtectedRoute({ children }: ProtectedRouteProps) {
+  const { t } = useTranslation();
+
   const { user, isLoading } = useAuth();
   const location = useLocation();
 
@@ -33,7 +36,7 @@ export function ProtectedRoute({ children }: ProtectedRouteProps) {
             className="animate-spin text-[var(--color-primary)]"
             aria-hidden="true"
           />
-          <p className="text-sm">กำลังตรวจสอบสถานะ...</p>
+          <p className="text-sm">{t('common.authCheck.checking', 'กำลังตรวจสอบสถานะ...')}</p>
         </div>
       </div>
     );

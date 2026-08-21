@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next';
 import { useState, useMemo } from 'react';
 import { topics } from '../data/topics';
 import { categories } from '../data/categories';
@@ -9,10 +10,11 @@ import { usePageSEO } from '../hooks/usePageSEO';
 import { EmptyState } from '../components/common/EmptyState';
 
 export function LibraryPage() {
+  const { t } = useTranslation();
   usePageSEO({
-    title: 'คลังสมาธิ',
+    title: t('libraryPage.seoTitle'),
     description:
-      'คลังสมาธิ — รวบรวมหัวข้อและวิดีโอทั้งหมดจากช่อง YouTube ธรรมะ โฆษก ค้นหา กรอง และเรียนรู้ได้ด้วยตัวเอง',
+      t('libraryPage.seoDescription'),
   });
   const [tab, setTab] = useState<'topics' | 'videos'>('topics');
   const [categoryFilter, setCategoryFilter] = useState('all');
@@ -35,18 +37,18 @@ export function LibraryPage() {
         {/* Header */}
         <div className="mb-6">
           <h1 className="text-2xl sm:text-3xl font-bold text-[var(--color-text-main)] mb-2">
-            คลังสมาธิ
+            {t('libraryPage.title')}
           </h1>
           <p className="text-[var(--color-text-muted)] text-sm">
-            หัวข้อและวิดีโอทั้งหมดจากช่อง YouTube ธรรมะ โฆษก
+            {t('libraryPage.subtitle')}
           </p>
         </div>
 
         {/* Tabs */}
         <div className="flex gap-2 mb-6 border-b border-[var(--color-border)] overflow-x-auto whitespace-nowrap hide-scrollbar">
           {[
-            { key: 'topics', label: `หัวข้อ (${topics.length})` },
-            { key: 'videos', label: `วิดีโอ (${videos.filter(v => v.youtubeId !== 'PLACEHOLDER_ID').length})` },
+            { key: 'topics', label: t('libraryPage.tabTopics', { count: topics.length }) },
+            { key: 'videos', label: t('libraryPage.tabVideos', { count: videos.filter(v => v.youtubeId !== 'PLACEHOLDER_ID').length }) },
           ].map((t) => (
             <button
               key={t.key}
@@ -66,7 +68,7 @@ export function LibraryPage() {
 
         {/* Filters (Topics only) */}
         {tab === 'topics' && (
-          <div className="flex flex-wrap gap-3 mb-6" aria-label="ตัวกรอง">
+          <div className="flex flex-wrap gap-3 mb-6" aria-label={t('libraryPage.filtersAria')}>
             {/* Category */}
             <div className="flex items-center gap-2">
               <SlidersHorizontal size={14} className="text-[var(--color-text-muted)]" />
@@ -74,11 +76,11 @@ export function LibraryPage() {
                 value={categoryFilter}
                 onChange={(e) => setCategoryFilter(e.target.value)}
                 className="text-sm border border-[var(--color-border)] rounded-[var(--radius-btn)] px-3 py-1.5 bg-white text-[var(--color-text-main)] focus:outline-none focus:border-[var(--color-primary)] focus:ring-2 focus:ring-[var(--color-primary-soft)] transition-colors duration-200"
-                aria-label="กรองตามหมวดหมู่"
+                aria-label={t('libraryPage.filterCategoryAria')}
               >
-                <option value="all">ทุกหมวดหมู่</option>
+                <option value="all">{t('libraryPage.allCategories')}</option>
                 {categories.map((cat) => (
-                  <option key={cat.id} value={cat.slug}>{cat.name}</option>
+                  <option key={cat.id} value={cat.slug}>{t(`category.${cat.slug}`, cat.name)}</option>
                 ))}
               </select>
             </div>
@@ -88,17 +90,17 @@ export function LibraryPage() {
               value={levelFilter}
               onChange={(e) => setLevelFilter(e.target.value)}
               className="text-sm border border-[var(--color-border)] rounded-[var(--radius-btn)] px-3 py-1.5 bg-white text-[var(--color-text-main)] focus:outline-none focus:border-[var(--color-primary)] focus:ring-2 focus:ring-[var(--color-primary-soft)] transition-colors duration-200"
-              aria-label="กรองตามระดับ"
+              aria-label={t('libraryPage.filterLevelAria')}
             >
-              <option value="all">ทุกระดับ</option>
-              <option value="beginner">ผู้เริ่มต้น</option>
-              <option value="intermediate">ระดับกลาง</option>
-              <option value="advanced">ขั้นสูง</option>
+              <option value="all">{t('libraryPage.allLevels')}</option>
+              <option value="beginner">{t('level.beginner')}</option>
+              <option value="intermediate">{t('level.intermediate')}</option>
+              <option value="advanced">{t('level.advanced')}</option>
             </select>
 
             {/* Result count */}
             <span className="text-sm text-[var(--color-text-muted)] flex items-center">
-              {filteredTopics.length} หัวข้อ
+              {t('libraryPage.topicsCount', { count: filteredTopics.length })}
             </span>
           </div>
         )}
@@ -114,8 +116,8 @@ export function LibraryPage() {
           ) : (
             <EmptyState
               icon={<Search size={40} />}
-              title="ไม่พบหัวข้อที่ตรงกับตัวกรอง"
-              description="ลองเปลี่ยนตัวกรองหมวดหมู่หรือระดับ"
+              title={t('libraryPage.noResultsTitle')}
+              description={t('libraryPage.noResultsDesc')}
               size="compact"
             />
           )
@@ -123,7 +125,7 @@ export function LibraryPage() {
           <div>
             <div className="bg-[var(--color-primary-soft)] border border-[#C8DDD9] rounded-[var(--radius-card)] p-5 mb-6">
               <p className="text-sm text-[var(--color-primary)] font-medium">
-                🎬 วิดีโอในคลังจะถูกเพิ่มเมื่อผ่านการตรวจสอบกับช่อง YouTube "ธรรมะ โฆษก" แล้ว
+                {t('libraryPage.videosNotice')}
               </p>
             </div>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">

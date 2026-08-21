@@ -129,11 +129,27 @@
 - ✅ Mobile UI แสดงผลข้อความภาษาอังกฤษได้ปกติ ไม่ดัน Viewport
 - ✅ Build Result: รัน `npm run build` ผ่าน 100% (0 errors)
 
+**Dev Banner EN Localization Polish:**
+- ✅ **COMPLETED / MANUAL VERIFIED**
+- ✅ EN banner localized (Updated wording to reflect active development reassuringly).
+- ✅ TH banner preserved (Original Thai text and formatting untouched).
+- ✅ No functional behavior changed (Banner structure, close button, persistence intact).
+- ✅ Build Result: `npm run build` passed with 0 TypeScript errors.
+
+**Start Here + Learning Path EN Localization Fix:**
+- ✅ **COMPLETED / MANUAL VERIFIED**
+- ✅ `StartHerePage.tsx`: Extracted step contents to use `react-i18next` with `startHere` namespace keys. 
+- ✅ `StartHerePage.tsx`: Refactored hardcoded topic lists to resolve dynamic topic titles using `getLocalizedTopic` and existing translated Topic objects, preventing duplicate translation logic.
+- ✅ `LearnPage.tsx`: Translated structural UI (e.g., page titles, subtitle).
+- ✅ `LearnPage.tsx`: Localized `learningPath` metadata (title, description) via new `learningPath` keys in translation dictionaries (`commonTh.ts`, `commonEn.ts`).
+- ✅ `LearnPage.tsx`: Refactored Topic list to render correctly using `getLocalizedTopic`, ensuring 100% consistency with Topic Source of Truth.
+- ✅ Verified `npm run build` completed with 0 errors.
+
 **EN UI / Metadata Cleanup Pass:**
 - ✅ **COMPLETED / MANUAL VERIFIED**
 - ✅ Localized `SaveButton`, tags, levels, and categories.
 - ✅ Replaced remaining Thai hardcoded UI text in `TopicCard`, `TopicDetailPage`, `TopicsPage`, `SavedContentPage`, and `HomePage` with i18n variables.
-- ✅ Validated UI integrity across both English and Thai Locales.
+- ⚠ **Note on Verification:** Initial automated report of "0 Thai leak" was incomplete. Subsequent manual browser verification discovered remaining Thai content on Start Here, Learning Path, and Dev Banner, which have now all been fixed and manually verified.
 
 **English Main Search Localization Fix:**
 - ✅ **COMPLETED / MANUAL VERIFIED**
@@ -697,6 +713,19 @@ error_code=unexpected_failure
 error_description=Error getting user profile from external provider
 URL: http://localhost:5173/YudNing/?error=server_error&error_code=unexpected_failure...
 ```
+
+### Final EN UI Thai-Leak Cleanup (Completed)
+- **Goal:** One final targeted pass to fix known Thai UI text leaking into EN mode.
+- **Known Leaks Fixed:**
+  - HomePage Categories (names and descriptions mapped to i18n keys)
+  - Continue Learning Section (stripped invalid 'common.' namespace prefix)
+  - Library Tabs (Topics/Videos counts correctly hooked to i18n)
+  - Library Video Info Banner localized
+  - VideoCard Timestamp headings and Watch Original Links localized
+- **Files Modified:** `src/i18n/locales/en/common.ts`, `src/i18n/locales/th/common.ts`, `src/pages/HomePage.tsx`, `src/components/learning/ContinueLearningSection.tsx`, `src/pages/LibraryPage.tsx`, `src/components/videos/VideoCard.tsx`, `src/components/videos/VideoPlayer.tsx`, `src/components/videos/SourceReference.tsx`
+- **Build Result:** SUCCESS (0 TypeScript errors)
+- **Remaining Intentional Thai:** The proper name "ธรรมะ โฆษก" is preserved exactly as written.
+- **Data Safety Confirmation:** Topic 01–20 and FAQ 01–12 approved English translations remain completely untouched. Thai Source of Truth data (topics.ts, faq.ts, videos.ts) remains completely untouched.
 
 _สถานการณ์ปัจจุบัน:_
 - Supabase Dashboard UI แสดง/บังคับ Issuer URL และ JWKS URI (ลักษณะ OIDC)

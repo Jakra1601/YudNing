@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next';
 import { useEffect, useState } from 'react';
 import { useAuth } from '../../contexts/AuthContext';
 import { getLearningHistory, mapActivityToLocalContent } from '../../services/learningActivity';
@@ -9,6 +10,7 @@ import { Link } from 'react-router-dom';
 type MappedContent = NonNullable<ReturnType<typeof mapActivityToLocalContent>>;
 
 export function ContinueLearningSection() {
+  const { t } = useTranslation();
   const { user } = useAuth();
   const [contentList, setContentList] = useState<MappedContent[]>([]);
   const [isLoading, setIsLoading] = useState(true);
@@ -58,17 +60,17 @@ export function ContinueLearningSection() {
           <div>
             <h2 id="continue-learning-heading" className="text-xl sm:text-2xl font-bold text-[var(--color-text-main)] flex items-center gap-2">
               <PlayCircle size={24} className="text-[var(--color-primary)]" />
-              เรียนรู้ต่อจากที่ค้างไว้
+              {t('learning.continueTitle', 'เรียนรู้ต่อจากที่ค้างไว้')}
             </h2>
             <p className="text-sm text-[var(--color-text-muted)] mt-1">
-              เนื้อหาล่าสุดที่คุณเพิ่งเข้าชม
+              {t('learning.continueDesc', 'เนื้อหาล่าสุดที่คุณเพิ่งเข้าชม')}
             </p>
           </div>
           <Link
             to="/history"
             className="hidden sm:inline-flex items-center gap-1 text-sm font-medium text-[var(--color-primary)] hover:text-[var(--color-primary-hover)] transition-colors duration-200"
           >
-            ประวัติทั้งหมด
+            {t('learning.allHistory', 'ประวัติทั้งหมด')}
             <ArrowRight size={16} />
           </Link>
         </div>

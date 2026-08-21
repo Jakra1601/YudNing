@@ -2,57 +2,44 @@ import { Link } from 'react-router-dom';
 import { ChevronRight, CheckCircle } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import { usePageSEO } from '../hooks/usePageSEO';
+import { topics } from '../data/topics';
+import { getLocalizedTopic } from '../i18n/contentResolver';
 
-const steps = [
+const stepsData = [
   {
     number: 1,
-    title: 'ทำความเข้าใจสมาธิ',
-    description: 'เรียนรู้ความหมายของสมาธิ ทำไมจึงควรฝึก และไม่จำเป็นต้องมีประสบการณ์มาก่อน',
-    topicIds: [
-      { label: 'สมาธิคืออะไร', slug: 'what-is-meditation' },
-    ],
+    titleKey: 'startHere.p1Title',
+    descKey: 'startHere.p1Desc',
+    topicSlugs: ['what-is-meditation'],
   },
   {
     number: 2,
-    title: 'เตรียมร่างกาย',
-    description: 'เลือกสถานที่ จัดท่านั่ง วางมือ และผ่อนคลายร่างกายก่อนเริ่ม',
-    topicIds: [
-      { label: 'ท่านั่งสมาธิสำหรับผู้เริ่มต้น', slug: 'sitting-posture' },
-      { label: 'วิธีผ่อนคลายร่างกายก่อนนั่ง', slug: 'body-relaxation' },
-    ],
+    titleKey: 'startHere.p2Title',
+    descKey: 'startHere.p2Desc',
+    topicSlugs: ['sitting-posture', 'body-relaxation'],
   },
   {
     number: 3,
-    title: 'เริ่มฝึกใจ',
-    description: 'ปล่อยวางความกังวล ทำใจให้สบาย ไม่บังคับใจ และไม่คาดหวังผล',
-    topicIds: [
-      { label: 'วิธีวางใจเบื้องต้น', slug: 'how-to-place-mind' },
-      { label: 'ไม่ควรคาดหวังผลอย่างไร', slug: 'no-expectations' },
-    ],
+    titleKey: 'startHere.p3Title',
+    descKey: 'startHere.p3Desc',
+    topicSlugs: ['how-to-place-mind', 'no-expectations'],
   },
   {
     number: 4,
-    title: 'รับมือกับสิ่งที่เกิดขึ้น',
-    description: 'เรียนรู้วิธีรับมือกับอาการต่าง ๆ ที่อาจเกิดขึ้นระหว่างนั่ง เช่น ง่วง ฟุ้งซ่าน ปวด',
-    topicIds: [
-      { label: 'นั่งสมาธิแล้วง่วง', slug: 'drowsy-during-meditation' },
-      { label: 'ใจฟุ้งซ่าน ควรทำอย่างไร', slug: 'restless-mind' },
-      { label: 'นั่งแล้วปวดขา', slug: 'leg-pain' },
-    ],
+    titleKey: 'startHere.p4Title',
+    descKey: 'startHere.p4Desc',
+    topicSlugs: ['drowsy-during-meditation', 'restless-mind', 'leg-pain'],
   },
   {
     number: 5,
-    title: 'สร้างความสม่ำเสมอ',
-    description: 'เริ่มจากเวลาสั้น ๆ เลือกเวลาที่เหมาะสม ฝึกทุกวัน และไม่เปรียบเทียบกับผู้อื่น',
-    topicIds: [
-      { label: 'ควรนั่งสมาธิกี่นาที', slug: 'how-long-to-meditate' },
-      { label: 'ฝึกสมาธิให้ต่อเนื่องได้อย่างไร', slug: 'consistent-practice' },
-    ],
+    titleKey: 'startHere.p5Title',
+    descKey: 'startHere.p5Desc',
+    topicSlugs: ['how-long-to-meditate', 'consistent-practice'],
   },
 ];
 
 export function StartHerePage() {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
 
   usePageSEO({
     title: t('start.seoTitle'),
@@ -76,7 +63,7 @@ export function StartHerePage() {
 
         {/* Steps */}
         <div className="space-y-6">
-          {steps.map((step, idx) => (
+          {stepsData.map((step, idx) => (
             <article
               key={step.number}
               className="bg-white rounded-[var(--radius-card)] border border-[var(--color-border)] p-4 sm:p-6 shadow-[var(--shadow-card)] animate-fade-in-up"
@@ -96,33 +83,39 @@ export function StartHerePage() {
                     id={`step-${step.number}-title`}
                     className="text-base sm:text-lg font-semibold text-[var(--color-text-main)] mb-1.5"
                   >
-                    {step.title}
+                    {t(step.titleKey)}
                   </h2>
                   <p className="text-[13px] sm:text-sm text-[var(--color-text-muted)] leading-relaxed mb-4">
-                    {step.description}
+                    {t(step.descKey)}
                   </p>
 
                   {/* Related Topics */}
                   <div className="space-y-2">
-                    {step.topicIds.map((topic) => (
-                      <Link
-                        key={topic.slug}
-                        to={`/topics/${topic.slug}`}
-                        className="flex items-center gap-2 text-[13px] sm:text-sm text-[var(--color-primary)] hover:text-[var(--color-primary-hover)] group focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-focus-ring)] rounded"
-                      >
-                        <CheckCircle
-                          size={15}
-                          className="text-[var(--color-primary-soft)] [&>circle]:fill-[var(--color-primary)] [&>path]:stroke-white shrink-0"
-                        />
-                        <span className="underline-offset-2 group-hover:underline">
-                          {topic.label}
-                        </span>
-                        <ChevronRight
-                          size={14}
-                          className="group-hover:translate-x-0.5 transition-transform duration-200"
-                        />
-                      </Link>
-                    ))}
+                    {step.topicSlugs.map((slug) => {
+                      const sourceTopic = topics.find((t) => t.slug === slug);
+                      if (!sourceTopic) return null;
+                      const localizedTopic = getLocalizedTopic(sourceTopic, i18n.language);
+                      
+                      return (
+                        <Link
+                          key={slug}
+                          to={`/topics/${slug}`}
+                          className="flex items-center gap-2 text-[13px] sm:text-sm text-[var(--color-primary)] hover:text-[var(--color-primary-hover)] group focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-focus-ring)] rounded"
+                        >
+                          <CheckCircle
+                            size={15}
+                            className="text-[var(--color-primary-soft)] [&>circle]:fill-[var(--color-primary)] [&>path]:stroke-white shrink-0"
+                          />
+                          <span className="underline-offset-2 group-hover:underline">
+                            {localizedTopic.title}
+                          </span>
+                          <ChevronRight
+                            size={14}
+                            className="group-hover:translate-x-0.5 transition-transform duration-200"
+                          />
+                        </Link>
+                      );
+                    })}
                   </div>
                 </div>
               </div>

@@ -24,6 +24,8 @@ interface VideoCardProps {
  * เมื่อ `onSelect` ถูกส่งเข้ามา การ์ดจะกลายเป็น interactive element
  */
 export function VideoCard({ video: sourceVideo, isSelected, onSelect, highlightTimestampId, showTimestamps = true }: VideoCardProps) {
+  const { t } = useTranslation();
+
   const { i18n } = useTranslation();
   const video = getLocalizedVideo(sourceVideo, i18n.language);
 
@@ -59,20 +61,20 @@ export function VideoCard({ video: sourceVideo, isSelected, onSelect, highlightT
       role={onSelect ? 'button' : undefined}
       tabIndex={onSelect ? 0 : undefined}
       aria-pressed={onSelect ? isSelected : undefined}
-      aria-label={onSelect ? `เลือกวิดีโอ: ${video.title}` : undefined}
+      aria-label={onSelect ? t('videos.selectVideoAria', { title: video.title, defaultValue: 'เลือกวิดีโอ: ' + video.title }) : undefined}
     >
       {/* Thumbnail */}
       <div className="relative aspect-video bg-gray-100">
         {!isPlaceholder ? (
           <img
             src={thumbnailUrl}
-            alt={`ภาพตัวอย่างวิดีโอ: ${video.title}`}
+            alt={t('videos.thumbnailAria', { title: video.title, defaultValue: 'ภาพตัวอย่างวิดีโอ: ' + video.title })}
             className="w-full h-full object-cover"
             loading="lazy"
           />
         ) : (
           <div className="w-full h-full flex items-center justify-center bg-[var(--color-primary-soft)]">
-            <span className="text-sm text-[var(--color-text-muted)]">ตัวอย่างวิดีโอ</span>
+            <span className="text-sm text-[var(--color-text-muted)]">{t('videos.previewBadge', 'ตัวอย่างวิดีโอ')}</span>
           </div>
         )}
         {video.duration && (
@@ -114,7 +116,7 @@ export function VideoCard({ video: sourceVideo, isSelected, onSelect, highlightT
         {showTimestamps && video.timestamps.length > 0 && (
           <div className="mb-3">
             <p className="text-xs font-medium text-[var(--color-text-muted)] mb-2">
-              ช่วงเวลาที่เกี่ยวข้อง:
+              {t('videos.relatedTimestampsLabel', 'ช่วงเวลาที่เกี่ยวข้อง:')}
             </p>
             <ul className="space-y-1.5">
               {video.timestamps.map((ts) => (
@@ -157,11 +159,11 @@ export function VideoCard({ video: sourceVideo, isSelected, onSelect, highlightT
             target="_blank"
             rel="noopener noreferrer"
             onClick={(e) => e.stopPropagation()}
-            aria-label={`ดูวิดีโอ "${video.title}" บน YouTube`}
+            aria-label={t('videos.watchYoutubeAria', { title: video.title, defaultValue: 'ดูวิดีโอ ' + video.title + ' บน YouTube' })}
             className="inline-flex items-center gap-1.5 text-sm font-medium text-[var(--color-primary)] hover:text-[var(--color-primary-hover)] transition-colors duration-200"
           >
             <ExternalLink size={14} />
-            ดูวิดีโอต้นฉบับ
+            {t('videos.watchOriginal', 'ดูวิดีโอต้นฉบับ')}
           </a>
         )}
       </div>

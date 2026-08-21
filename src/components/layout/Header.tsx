@@ -44,8 +44,8 @@ interface UserMenuProps {
 }
 
 function UserMenu({ onClose }: UserMenuProps) {
-  const { user, signOut } = useAuth();
   const { t } = useTranslation();
+  const { user, signOut } = useAuth();
   const navigate = useNavigate();
   const menuRef = useRef<HTMLDivElement>(null);
 

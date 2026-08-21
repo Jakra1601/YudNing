@@ -284,10 +284,10 @@ export function HomePage() {
                 </span>
                 <div>
                   <p className="font-medium text-[var(--color-text-main)] leading-tight">
-                    {cat.name}
+                    {t(`category.${cat.slug}`, cat.name)}
                   </p>
                   <p className="text-xs text-[var(--color-text-muted)] mt-0.5 line-clamp-1">
-                    {cat.description}
+                    {t(`categoryDesc.${cat.slug}`, cat.description)}
                   </p>
                 </div>
               </Link>
