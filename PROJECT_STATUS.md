@@ -22,6 +22,18 @@
 
 ## Current Task
 
+**FAQ Navigation Mapping Verification**
+- ✅ **VERIFIED / NO ISSUE**
+- ✅ faq-05 and faq-06 intentionally share topic-07 ('restless-mind').
+- ✅ topic-07 covers both questions.
+- ✅ all faq-01 through faq-12 mappings were audited.
+- ✅ no invalid/dead mappings were found.
+- ✅ FAQPage navigation is correct in TH and EN.
+- ✅ Search Autocomplete navigation is correct in TH and EN.
+- ✅ no application code changes were required.
+- ✅ build passed.
+- ✅ Production behavior is working as designed.
+
 **TH/EN Multilingual Support — English FAQ Translation**
 - ✅ **COMPLETED / MANUAL VERIFIED**
 - ✅ 12 FAQs translated (question + shortAnswer)
