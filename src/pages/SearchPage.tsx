@@ -9,9 +9,7 @@ import { useSearchSuggestions } from '../hooks/useSearchSuggestions';
 import { SearchAutocompleteDropdown } from '../components/search/SearchAutocompleteDropdown';
 import { useNavigate, useSearchParams, Link } from 'react-router-dom';
 
-const EXAMPLE_QUERIES = [
-  'ง่วง', 'ฟุ้งซ่าน', 'ปวดขา', 'วางใจ', 'นึกภาพไม่ออก', 'สมาธิ',
-];
+
 
 export function SearchPage() {
   const { t } = useTranslation();
@@ -156,7 +154,7 @@ export function SearchPage() {
                 {t('searchPage.tryDifferent')}
               </p>
               <div className="flex flex-wrap justify-center gap-2">
-                {EXAMPLE_QUERIES.map((q) => (
+                {(t('searchPage.exampleQueriesList', { returnObjects: true }) as string[]).map((q) => (
                   <button
                     key={q}
                     onClick={() => setQuery(q)}
@@ -176,7 +174,7 @@ export function SearchPage() {
                 {t('searchPage.exampleQueries')}
               </h2>
               <div className="flex flex-wrap gap-2">
-                {EXAMPLE_QUERIES.map((q) => (
+                {(t('searchPage.exampleQueriesList', { returnObjects: true }) as string[]).map((q) => (
                   <button
                     key={q}
                     onClick={() => setQuery(q)}

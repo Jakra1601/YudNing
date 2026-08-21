@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
 import { Calendar, Clock, Trash2, PlusCircle, History, CheckCircle2, AlertCircle } from 'lucide-react';
 import { useAuth } from '../contexts/AuthContext';
 import { usePageSEO } from '../hooks/usePageSEO';
@@ -17,9 +18,11 @@ function getCurrentLocalDateTimeString() {
 }
 
 export function PracticeLogPage() {
+  const { t, i18n } = useTranslation();
+
   usePageSEO({
-    title: 'บันทึกการปฏิบัติ | YudNing',
-    description: 'บันทึกการนั่งสมาธิและดูประวัติการปฏิบัติของคุณ',
+    title: t('practiceLog.seoTitle', 'บันทึกการปฏิบัติ | YudNing'),
+    description: t('practiceLog.seoDescription', 'บันทึกการนั่งสมาธิและดูประวัติการปฏิบัติของคุณ'),
   });
 
   const { user } = useAuth();
@@ -66,19 +69,19 @@ export function PracticeLogPage() {
     // Validation
     const durationNum = parseInt(duration, 10);
     if (isNaN(durationNum) || durationNum <= 0) {
-      setFormError('กรุณาระบุระยะเวลาให้ถูกต้อง (มากกว่า 0 นาที)');
+      setFormError(t('practiceLog.errDuration', 'กรุณาระบุระยะเวลาให้ถูกต้อง (มากกว่า 0 นาที)'));
       return;
     }
     
     if (!practicedAt) {
-      setFormError('กรุณาระบุวันและเวลา');
+      setFormError(t('practiceLog.errDateTime', 'กรุณาระบุวันและเวลา'));
       return;
     }
 
     // validate valid date
     const parsedDate = new Date(practicedAt);
     if (isNaN(parsedDate.getTime())) {
-      setFormError('รูปแบบวันและเวลาไม่ถูกต้อง');
+      setFormError(t('practiceLog.errFormat', 'รูปแบบวันและเวลาไม่ถูกต้อง'));
       return;
     }
 
@@ -111,7 +114,7 @@ export function PracticeLogPage() {
       setTimeout(() => setFormSuccess(false), 3000);
       
     } catch (error) {
-      setFormError('เกิดข้อผิดพลาดในการบันทึก กรุณาลองอีกครั้ง');
+      setFormError(t('practiceLog.errSave', 'เกิดข้อผิดพลาดในการบันทึก กรุณาลองอีกครั้ง'));
       console.error(error);
     } finally {
       setIsSubmitting(false);
@@ -121,13 +124,13 @@ export function PracticeLogPage() {
   // Handle Delete
   const handleDelete = async (sessionId: string) => {
     if (!user) return;
-    if (!window.confirm('คุณต้องการลบประวัตินี้ใช่หรือไม่?')) return;
+    if (!window.confirm(t('practiceLog.confirmDelete', 'คุณต้องการลบประวัตินี้ใช่หรือไม่?'))) return;
 
     try {
       await deleteMeditationSession(user.id, sessionId);
       setSessions((prev) => prev.filter((s) => s.id !== sessionId));
     } catch (error) {
-      alert('เกิดข้อผิดพลาดในการลบ กรุณาลองอีกครั้ง');
+      alert(t('practiceLog.errSave', 'เกิดข้อผิดพลาดในการลบ กรุณาลองอีกครั้ง'));
       console.error(error);
     }
   };
@@ -140,10 +143,10 @@ export function PracticeLogPage() {
         <div className="mb-8">
           <h1 className="text-2xl sm:text-3xl font-bold text-[var(--color-text-main)] leading-tight mb-2 flex items-center gap-2">
             <Calendar size={28} className="text-[var(--color-primary)]" />
-            บันทึกการปฏิบัติ
+            {t('practiceLog.title', 'บันทึกการปฏิบัติ')}
           </h1>
           <p className="text-[var(--color-text-muted)]">
-            บันทึกเวลาที่คุณได้ฝึกฝนนั่งสมาธิ และดูประวัติย้อนหลังได้ที่นี่
+            {t('practiceLog.desc', 'บันทึกเวลาที่คุณได้ฝึกฝนนั่งสมาธิ และดูประวัติย้อนหลังได้ที่นี่')}
           </p>
         </div>
 
@@ -151,7 +154,7 @@ export function PracticeLogPage() {
         <section aria-labelledby="add-session-heading" className="bg-white border border-[var(--color-border)] rounded-[var(--radius-card)] p-5 sm:p-6 mb-10 shadow-sm">
           <h2 id="add-session-heading" className="text-lg font-semibold text-[var(--color-text-main)] mb-4 flex items-center gap-2">
             <PlusCircle size={20} className="text-[var(--color-secondary)]" />
-            เพิ่มบันทึกใหม่
+            {t('practiceLog.addBtn', 'เพิ่มบันทึกใหม่')}
           </h2>
           
           <form onSubmit={handleSubmit} className="flex flex-col gap-4">
@@ -167,7 +170,7 @@ export function PracticeLogPage() {
             {formSuccess && (
               <div role="alert" className="flex items-center gap-2 p-3 bg-green-50 border border-green-200 text-[var(--color-success)] text-sm rounded-[var(--radius-sm)]">
                 <CheckCircle2 size={16} className="shrink-0" />
-                <span>บันทึกการปฏิบัติสำเร็จ</span>
+                <span>{t('practiceLog.saveSuccess', 'บันทึกการปฏิบัติสำเร็จ')}</span>
               </div>
             )}
 
@@ -175,7 +178,7 @@ export function PracticeLogPage() {
               {/* Date/Time */}
               <div>
                 <label htmlFor="practicedAt" className="block text-sm font-medium text-[var(--color-text-main)] mb-1.5">
-                  วันและเวลา
+                  {t('practiceLog.dateTimeLabel', 'วันและเวลา')}
                 </label>
                 <input
                   id="practicedAt"
@@ -191,7 +194,7 @@ export function PracticeLogPage() {
               {/* Duration */}
               <div>
                 <label htmlFor="duration" className="block text-sm font-medium text-[var(--color-text-main)] mb-1.5">
-                  ระยะเวลา (นาที)
+                  {t('practiceLog.durationLabel', 'ระยะเวลา (นาที)')}
                 </label>
                 <div className="relative">
                   <Clock size={16} className="absolute left-3 top-1/2 -translate-y-1/2 text-[var(--color-text-muted)]" />
@@ -202,7 +205,7 @@ export function PracticeLogPage() {
                     required
                     value={duration}
                     onChange={(e) => setDuration(e.target.value)}
-                    placeholder="เช่น 15"
+                    placeholder={t('practiceLog.durationPlaceholder', 'เช่น 15')}
                     disabled={isSubmitting}
                     className="w-full pl-9 pr-3 py-2 text-sm bg-[var(--color-background)] border border-[var(--color-border)] rounded-[var(--radius-btn)] text-[var(--color-text-main)] placeholder:text-[var(--color-text-muted)] focus:outline-none focus:border-[var(--color-primary)] focus:ring-2 focus:ring-[var(--color-primary-soft)] transition-colors disabled:opacity-60"
                   />
@@ -213,14 +216,14 @@ export function PracticeLogPage() {
             {/* Note */}
             <div>
               <label htmlFor="note" className="block text-sm font-medium text-[var(--color-text-main)] mb-1.5">
-                บันทึกเพิ่มเติม (ไม่บังคับ)
+                {t('practiceLog.notesLabel', 'บันทึกเพิ่มเติม (ไม่บังคับ)')}
               </label>
               <textarea
                 id="note"
                 rows={3}
                 value={note}
                 onChange={(e) => setNote(e.target.value)}
-                placeholder="ความรู้สึก, อุปสรรค, หรือสิ่งที่ได้เรียนรู้จากการนั่งสมาธิครั้งนี้"
+                placeholder={t('practiceLog.notesPlaceholder', 'ความรู้สึก, อุปสรรค, หรือสิ่งที่ได้เรียนรู้จากการนั่งสมาธิครั้งนี้')}
                 disabled={isSubmitting}
                 className="w-full px-3 py-2 text-sm bg-[var(--color-background)] border border-[var(--color-border)] rounded-[var(--radius-btn)] text-[var(--color-text-main)] placeholder:text-[var(--color-text-muted)] focus:outline-none focus:border-[var(--color-primary)] focus:ring-2 focus:ring-[var(--color-primary-soft)] transition-colors disabled:opacity-60 resize-none"
               />
@@ -236,10 +239,10 @@ export function PracticeLogPage() {
                 {isSubmitting ? (
                   <>
                     <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" />
-                    กำลังบันทึก...
+                    {t('practiceLog.saving', 'กำลังบันทึก...')}
                   </>
                 ) : (
-                  'บันทึกการปฏิบัติ'
+                  t('practiceLog.saveBtn', 'บันทึกการปฏิบัติ')
                 )}
               </button>
             </div>
@@ -250,33 +253,34 @@ export function PracticeLogPage() {
         <section aria-labelledby="history-heading">
           <h2 id="history-heading" className="text-xl font-bold text-[var(--color-text-main)] mb-4 flex items-center gap-2">
             <History size={20} className="text-[var(--color-text-muted)]" />
-            ประวัติการปฏิบัติของคุณ
+            {t('practiceLog.historyTitle', 'ประวัติการปฏิบัติของคุณ')}
           </h2>
 
           {isLoadingHistory ? (
             <div className="py-12 flex flex-col items-center justify-center text-[var(--color-text-muted)]">
               <div className="w-8 h-8 border-4 border-[var(--color-border)] border-t-[var(--color-primary)] rounded-full animate-spin mb-3"></div>
-              <p className="text-sm">กำลังโหลดประวัติ...</p>
+              <p className="text-sm">{t('practiceLog.loadingHistory', 'กำลังโหลดประวัติ...')}</p>
             </div>
           ) : sessions.length === 0 ? (
             <div className="py-12 bg-white border border-[var(--color-border)] rounded-[var(--radius-card)] text-center shadow-sm">
               <Calendar size={40} className="mx-auto text-gray-300 mb-3" />
-              <p className="text-[var(--color-text-main)] font-medium mb-1">ยังไม่มีประวัติการปฏิบัติ</p>
+              <p className="text-[var(--color-text-main)] font-medium mb-1">{t('practiceLog.emptyHistory', 'ยังไม่มีประวัติการปฏิบัติ')}</p>
               <p className="text-sm text-[var(--color-text-muted)]">
-                เริ่มต้นฝึกสมาธิและเพิ่มบันทึกครั้งแรกของคุณได้เลย
+                {t('practiceLog.emptyHistoryDesc', 'เริ่มต้นฝึกสมาธิและเพิ่มบันทึกครั้งแรกของคุณได้เลย')}
               </p>
             </div>
           ) : (
             <div className="flex flex-col gap-3">
               {sessions.map((session) => {
+                const dateLocale = i18n.language === 'en' ? 'en-US' : 'th-TH';
                 const dateObj = new Date(session.practiced_at);
-                const formattedDate = dateObj.toLocaleDateString('th-TH', {
+                const formattedDate = dateObj.toLocaleDateString(dateLocale, {
                   year: 'numeric',
                   month: 'long',
                   day: 'numeric',
                 });
-                const formattedTime = dateObj.toLocaleTimeString('th-TH', {
-                  hour: '2-digit',
+                const formattedTime = dateObj.toLocaleTimeString(dateLocale, {
+                  hour: 'numeric',
                   minute: '2-digit',
                 });
 
@@ -289,11 +293,11 @@ export function PracticeLogPage() {
                         </span>
                         <span className="text-sm text-[var(--color-text-muted)] flex items-center gap-1">
                           <Clock size={14} />
-                          {formattedTime} น.
+                          {t('practiceLog.timeFormat', { time: formattedTime })}
                         </span>
                         <span className="inline-block w-1.5 h-1.5 rounded-full bg-gray-300"></span>
                         <span className="text-sm font-medium text-[var(--color-primary)] bg-[var(--color-primary-soft)] px-2 py-0.5 rounded">
-                          {session.duration_minutes} นาที
+                          {t('practiceLog.durationFormat', { duration: session.duration_minutes })}
                         </span>
                       </div>
                       
@@ -308,7 +312,7 @@ export function PracticeLogPage() {
                       type="button"
                       onClick={() => handleDelete(session.id)}
                       className="shrink-0 self-end sm:self-start p-2 text-gray-400 hover:text-red-600 hover:bg-red-50 rounded transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-red-200"
-                      aria-label="ลบบันทึก"
+                      aria-label={t('practiceLog.deleteAria', 'ลบบันทึก')}
                     >
                       <Trash2 size={18} />
                     </button>

@@ -148,7 +148,7 @@ export function VideoPlayer({ youtubeId, title, startSeconds, className = '', vi
           className="inline-flex items-center gap-2 px-4 py-2 bg-[#FF0000] hover:bg-[#CC0000] text-white text-sm font-medium rounded-md transition-colors w-full sm:w-auto justify-center"
         >
           <Play size={16} className="fill-white" />
-          รับชมบน YouTube
+          {t('videos.watchOnYoutube', 'รับชมบน YouTube')}
         </a>
       </div>
     </div>

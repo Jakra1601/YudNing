@@ -244,7 +244,8 @@ export const commonEn = {
     topics: "Topics",
     library: "Library",
     faq: "FAQ",
-    about: "About"
+    about: "About",
+    search: "Search"
   },
   header: {
     searchPlaceholder: "Search..."
@@ -352,6 +353,14 @@ export const commonEn = {
     noResults: "No results found for \"{{query}}\"",
     tryDifferent: "Try different keywords, or select from the examples below",
     exampleQueries: "Example queries",
+    exampleQueriesList: [
+      "Sleepy",
+      "Restless Mind",
+      "Leg Pain",
+      "Mind Placement",
+      "Can't Visualize",
+      "Meditation"
+    ],
     orExploreAll: "Or explore all topics",
     typeTopic: "Topic",
     typeFAQ: "Question"

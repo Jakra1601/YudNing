@@ -9,7 +9,7 @@
 
 | รายการ | ค่า |
 |--------|-----|
-| วันที่อัพเดทล่าสุด | **2026-08-19 (Production Verification — Google OAuth fix)** |
+| วันที่อัพเดทล่าสุด | **2026-08-21 (Final Full-Site English Localization Audit & Fix)** |
 | Phase ปัจจุบัน | **Phase 7 — Authentication (Version 1.2)** |
 | Phase ที่เสร็จแล้ว | Phase 1–6 ✅ |
 | สถานะ Deploy (Frontend) | ✅ Deploy สำเร็จแล้ว (GitHub Pages) — **Member Personalization V1 deployed 2026-08-18** |
@@ -136,19 +136,20 @@
 - ✅ No functional behavior changed (Banner structure, close button, persistence intact).
 - ✅ Build Result: `npm run build` passed with 0 TypeScript errors.
 
-**Start Here + Learning Path EN Localization Fix:**
+**Final Full-Site English Localization Audit & Fix:**
 - ✅ **COMPLETED / MANUAL VERIFIED**
 - ✅ `StartHerePage.tsx`: Extracted step contents to use `react-i18next` with `startHere` namespace keys. 
 - ✅ `StartHerePage.tsx`: Refactored hardcoded topic lists to resolve dynamic topic titles using `getLocalizedTopic` and existing translated Topic objects, preventing duplicate translation logic.
 - ✅ `LearnPage.tsx`: Translated structural UI (e.g., page titles, subtitle).
 - ✅ `LearnPage.tsx`: Localized `learningPath` metadata (title, description) via new `learningPath` keys in translation dictionaries (`commonTh.ts`, `commonEn.ts`).
 - ✅ `LearnPage.tsx`: Refactored Topic list to render correctly using `getLocalizedTopic`, ensuring 100% consistency with Topic Source of Truth.
-- ✅ Verified `npm run build` completed with 0 errors.
-
-**EN UI / Metadata Cleanup Pass:**
+- ✅ `Phase 6: Full-Site Audit & Leak Fixes`: Completed rigorous read-only code audit of all routes/components. Fixed remaining Category F leaks in `AboutPage.tsx`, `LearningHistoryPage.tsx`, `PracticeLogPage.tsx`, and `VideoPlayer.tsx`. Implemented dynamic locale-aware Date/Time presentation.
+- ✅ Search Example Queries EN localization (fixed leak in `SearchPage.tsx`).
+- ✅ Footer Search translation-key fix (fixed missing `search` key in `common` namespace, moved to `nav`).
+- ✅ Automated scans were useful but did not catch every rendered localization issue. Subsequent browser manual verification found additional leaks. Those leaks were fixed and the user has now manually verified the final local state.
 - ✅ **COMPLETED / MANUAL VERIFIED**
 - ✅ Localized `SaveButton`, tags, levels, and categories.
-- ✅ Replaced remaining Thai hardcoded UI text in `TopicCard`, `TopicDetailPage`, `TopicsPage`, `SavedContentPage`, and `HomePage` with i18n variables.
+- ✅ Replaced remaining Thai hardcoded UI text in `TopicCard`, `TopicDetailPage`, `TopicsPage`, and `HomePage` with i18n variables.
 - ⚠ **Note on Verification:** Initial automated report of "0 Thai leak" was incomplete. Subsequent manual browser verification discovered remaining Thai content on Start Here, Learning Path, and Dev Banner, which have now all been fixed and manually verified.
 
 **English Main Search Localization Fix:**

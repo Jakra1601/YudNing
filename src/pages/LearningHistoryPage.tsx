@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
 import { History, LayoutGrid, List } from 'lucide-react';
 import { useAuth } from '../contexts/AuthContext';
@@ -10,9 +11,11 @@ import { usePageSEO } from '../hooks/usePageSEO';
 type MappedContent = NonNullable<ReturnType<typeof mapActivityToLocalContent>>;
 
 export function LearningHistoryPage() {
+  const { t } = useTranslation();
+
   usePageSEO({
-    title: 'ประวัติการเรียนรู้ | YudNing',
-    description: 'ประวัติการเข้าชมเนื้อหาสมาธิของคุณ',
+    title: t('learningHistory.seoTitle', 'ประวัติการเรียนรู้ | YudNing'),
+    description: t('learningHistory.seoDescription', 'ประวัติการเข้าชมเนื้อหาสมาธิของคุณ'),
   });
 
   const { user } = useAuth();
@@ -57,10 +60,10 @@ export function LearningHistoryPage() {
           <div>
             <h1 className="text-2xl sm:text-3xl font-bold text-[var(--color-text-main)] leading-tight mb-1 flex items-center gap-2">
               <History size={24} className="text-[var(--color-primary)]" />
-              ประวัติการเรียนรู้
+              {t('learningHistory.title', 'ประวัติการเรียนรู้')}
             </h1>
             <p className="text-[var(--color-text-muted)]">
-              รายการหัวข้อสมาธิและวิดีโอที่คุณเพิ่งเข้าชม
+              {t('learningHistory.subtitle', 'รายการหัวข้อสมาธิและวิดีโอที่คุณเพิ่งเข้าชม')}
             </p>
           </div>
 
@@ -72,7 +75,7 @@ export function LearningHistoryPage() {
                   ? 'bg-white shadow-sm text-[var(--color-primary)]'
                   : 'text-[var(--color-text-muted)] hover:text-[var(--color-text-main)]'
               }`}
-              aria-label="แสดงแบบกริด"
+              aria-label={t('learningHistory.gridAria', 'แสดงแบบกริด')}
             >
               <LayoutGrid size={18} />
             </button>
@@ -83,7 +86,7 @@ export function LearningHistoryPage() {
                   ? 'bg-white shadow-sm text-[var(--color-primary)]'
                   : 'text-[var(--color-text-muted)] hover:text-[var(--color-text-main)]'
               }`}
-              aria-label="แสดงแบบรายการ"
+              aria-label={t('learningHistory.listAria', 'แสดงแบบรายการ')}
             >
               <List size={18} />
             </button>
@@ -95,7 +98,7 @@ export function LearningHistoryPage() {
           <div className="py-20 flex flex-col items-center justify-center text-[var(--color-text-muted)]">
             <div className="animate-pulse flex flex-col items-center gap-4">
               <div className="w-10 h-10 border-4 border-[var(--color-border)] border-t-[var(--color-primary)] rounded-full animate-spin"></div>
-              <p>กำลังโหลดข้อมูล...</p>
+              <p>{t('learningHistory.loading', 'กำลังโหลดข้อมูล...')}</p>
             </div>
           </div>
         ) : historyItems.length === 0 ? (
@@ -103,17 +106,17 @@ export function LearningHistoryPage() {
           <div className="py-16 bg-white border border-[var(--color-border)] rounded-[var(--radius-card)] text-center shadow-sm">
             <History size={48} className="mx-auto text-gray-200 mb-4" />
             <h3 className="text-lg font-semibold text-[var(--color-text-main)] mb-2">
-              คุณยังไม่มีประวัติการเข้าชมเนื้อหา
+              {t('learningHistory.emptyTitle', 'คุณยังไม่มีประวัติการเข้าชมเนื้อหา')}
             </h3>
             <p className="text-[var(--color-text-muted)] mb-6 max-w-sm mx-auto">
-              เริ่มต้นเรียนรู้การนั่งสมาธิผ่านหัวข้อหรือวิดีโอ ประวัติการเข้าชมจะมาแสดงที่นี่โดยอัตโนมัติ
+              {t('learningHistory.emptyDesc', 'เริ่มต้นเรียนรู้การนั่งสมาธิผ่านหัวข้อหรือวิดีโอ ประวัติการเข้าชมจะมาแสดงที่นี่โดยอัตโนมัติ')}
             </p>
             <div className="flex justify-center gap-3">
               <Link
                 to="/topics"
                 className="px-4 py-2 rounded-[var(--radius-btn)] bg-[var(--color-primary)] text-white text-sm font-medium hover:bg-[var(--color-primary-hover)] transition-colors"
               >
-                ดูหัวข้อทั้งหมด
+                {t('learningHistory.viewAllTopics', 'ดูหัวข้อทั้งหมด')}
               </Link>
             </div>
           </div>

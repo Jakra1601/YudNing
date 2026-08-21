@@ -242,9 +242,10 @@ export const commonTh = {
     startHere: "เริ่มต้นที่นี่",
     learn: "เส้นทางการเรียนรู้",
     topics: "หัวข้อธรรมะ",
-    library: "คลังเนื้อหา",
-    faq: "คำถามที่พบบ่อย",
-    about: "เกี่ยวกับเรา"
+    library: "วิดีโอทั้งหมด",
+    faq: "คำถามพบบ่อย",
+    about: "เกี่ยวกับ YudNing",
+    search: "ค้นหา"
   },
   header: {
     searchPlaceholder: "ค้นหา..."
@@ -352,6 +353,9 @@ export const commonTh = {
     noResults: "ไม่พบผลลัพธ์สำหรับ \"{{query}}\"",
     tryDifferent: "ลองใช้คำอื่น หรือเลือกจากตัวอย่างด้านล่าง",
     exampleQueries: "ตัวอย่างคำค้นหา",
+    exampleQueriesList: [
+      'ง่วง', 'ฟุ้งซ่าน', 'ปวดขา', 'วางใจ', 'นึกภาพไม่ออก', 'สมาธิ'
+    ],
     orExploreAll: "หรือสำรวจหัวข้อทั้งหมด",
     typeTopic: "หัวข้อ",
     typeFAQ: "คำถาม"

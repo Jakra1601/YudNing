@@ -69,7 +69,7 @@ export function Footer() {
               {[
                 { to: '/faq', label: t('nav.faq') },
                 { to: '/about', label: t('nav.about') },
-                { to: '/search', label: t('common.search') },
+                { to: '/search', label: t('nav.search') },
               ].map((link) => (
                 <li key={link.to}>
                   <Link
