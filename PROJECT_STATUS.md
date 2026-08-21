@@ -22,6 +22,17 @@
 
 ## Current Task
 
+**TH/EN Multilingual Support — English FAQ Translation**
+- ✅ **COMPLETED / MANUAL VERIFIED**
+- ✅ 12 FAQs translated (question + shortAnswer)
+- ✅ fullAnswer not populated in Thai Source
+- ✅ Thai → English semantic review completed (User Translation Review = APPROVED)
+- ✅ FAQ 05 and FAQ 06 fidelity concerns explicitly rechecked against Thai Source and passed
+- ✅ Thai Source unchanged
+- ✅ Topic 01–20 English translations unchanged
+- ✅ Video/Timestamp translation not started
+- ✅ build passed
+
 **Topic 04–20 Focused Translation QA:**
 - ✅ **COMPLETED / MANUAL VERIFIED**
 - ✅ User approved Topic 04–20 translations
