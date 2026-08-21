@@ -22,6 +22,18 @@
 
 ## Current Task
 
+**Topic 04–20 Focused Translation QA:**
+- ✅ **COMPLETED / MANUAL VERIFIED**
+- ✅ User approved Topic 04–20 translations
+- ✅ Focused semantic QA passed (Thai source unmodified, semantic distinctions maintained)
+
+**TH/EN Multilingual Support — Topic 04–20 English Translation:**
+- ✅ **COMPLETED / MANUAL VERIFIED**
+- ✅ Topic 01–20 English translation layer now exists
+- ✅ Thai Source remains unchanged
+- ✅ FAQ/Video/Timestamp translations have not started
+- ✅ Next translation areas remain pending
+
 **Session 35 (Phase 1 — i18n Foundation & UI Translation):**
 - ✅ **COMPLETED / MANUAL VERIFIED**
 - ✅ ติดตั้ง `i18next` และ `react-i18next`
